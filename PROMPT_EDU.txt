@@ -1,0 +1,1890 @@
+# PROMPT MASTER — EDUNOTE
+## Développement d'une application mobile Flutter de gestion des notes scolaires — multi-établissements et matière unique
+
+**VERSION RÉVISÉE — 04/11/2026**
+
+**Règles métier non négociables :**
+
+1. Un enseignant peut intervenir dans un nombre quelconque d'établissements et enregistrer, dans chacun, uniquement les classes où il enseigne.
+2. Chaque enseignant enseigne **une seule matière dans l'ensemble de ses établissements et de ses classes**. La matière est choisie une fois dans son profil; il est interdit d'en affecter plusieurs par classe ou établissement.
+3. Chaque établissement constitue un **espace de travail séparé** avec ses propres classes, élèves, évaluations, notes, moyennes et documents. Aucune donnée ne doit se mélanger entre établissements.
+4. Les règles existantes de saisie des notes, de calcul des moyennes, d'absence, de barème et d'arrondi sont maintenues sans changement.
+
+**Exemple fonctionnel central :**
+
+```text
+Enseignant : professeur de Mathématiques — matière unique : Mathématiques
+│
+├── Lycée Béhanzin (espace indépendant)
+│   ├── 3e A → élèves, interrogations, devoirs, résultats
+│   └── 1re C → élèves, interrogations, devoirs, résultats
+│
+├── CEG Anavié (espace indépendant)
+│   ├── 6e A → élèves, interrogations, devoirs, résultats
+│   └── 2nde B → élèves, interrogations, devoirs, résultats
+│
+└── CEG Le Nokoué (espace indépendant)
+    └── 5e A → élèves, interrogations, devoirs, résultats
+```
+
+Les noms des classes donnés ci-dessus sont des exemples. L'enseignant les crée librement et peut avoir des classes portant le même nom dans des établissements différents.
+
+
+# 1. TON RÔLE
+
+Tu es un ingénieur logiciel senior spécialisé dans :
+
+- Flutter et Dart.
+- Clean Architecture.
+- SQLite et Drift.
+- Développement mobile Offline-First.
+- Modélisation de bases de données relationnelles.
+- Expérience utilisateur (UX).
+- Material Design 3.
+- Génération de documents PDF et Excel.
+- Sécurité des données locales.
+- Tests unitaires et tests d'intégration.
+
+Ta mission est de concevoir et développer une véritable application mobile Flutter appelée provisoirement **EduNote**.
+
+Il ne s'agit pas de réaliser une simple démonstration ou une maquette statique.
+
+L'objectif est de construire une application fonctionnelle, fiable, évolutive et utilisable quotidiennement par des enseignants.
+
+Tu dois respecter impérativement les exigences fonctionnelles, techniques et architecturales décrites dans ce document.
+
+---
+
+# 2. PRÉSENTATION DU PROJET
+
+EduNote est une application mobile destinée aux enseignants qui interviennent dans une ou plusieurs écoles et souhaitent gérer facilement les notes de leurs élèves.
+
+Dans de nombreux établissements scolaires, les enseignants utilisent encore des cahiers, des feuilles de calcul ou des documents papier pour enregistrer les interrogations, les devoirs et calculer les moyennes.
+
+Cette méthode présente plusieurs difficultés :
+
+- Risque de perte des informations.
+- Erreurs dans les calculs.
+- Difficulté à gérer plusieurs classes et plusieurs établissements.
+- Difficulté à retrouver les notes d'un élève dans le bon établissement.
+- Temps important consacré aux calculs manuels.
+- Difficulté à préparer les relevés de notes.
+
+EduNote doit résoudre ces problèmes en centralisant toutes les informations dans une application mobile, sans les mélanger.
+
+**Règle de la matière unique :** pour une installation de V1, le profil enseignant possède une et une seule matière enseignée (ex. Mathématiques). Cette matière s'applique automatiquement à toutes les écoles et classes de cet enseignant. Il n'existe ni sélection de plusieurs matières, ni matières affectées individuellement aux classes.
+
+**Règle des espaces par établissement :** l'enseignant peut gérer autant d'établissements que nécessaire. Chaque école possède son propre espace contenant ses classes, ses élèves, ses évaluations, ses notes, ses moyennes, ses statistiques et ses exports. Les vues et opérations filtrent les données par l'identifiant de l'établissement courant.
+
+Il pourra saisir les notes des interrogations et des devoirs, consulter les moyennes calculées automatiquement et exporter les résultats dans le contexte de l'établissement choisi.
+
+L'application doit être adaptée au contexte scolaire africain, particulièrement béninois, tout en restant suffisamment flexible pour d'autres systèmes éducatifs.
+
+---
+
+# 3. PHILOSOPHIE DE L'APPLICATION
+
+EduNote repose sur cinq principes fondamentaux.
+
+## 3.1. Simplicité
+
+L'application doit être compréhensible par un enseignant qui ne possède aucune compétence technique.
+
+Les principales opérations doivent être faciles à effectuer.
+
+## 3.2. Autonomie
+
+L'application doit fonctionner intégralement sans connexion Internet.
+
+Aucun serveur distant ne doit être nécessaire.
+
+## 3.3. Confidentialité
+
+Toutes les données enregistrées appartiennent exclusivement à l'enseignant.
+
+Aucun administrateur, établissement scolaire ou autre utilisateur ne doit pouvoir y accéder à distance.
+
+## 3.4. Contrôle des données
+
+L'enseignant peut :
+
+- Consulter ses informations.
+- Modifier ses informations.
+- Exporter ses données.
+- Sauvegarder ses données.
+- Restaurer ses données.
+- Supprimer certaines informations.
+- Effacer toutes ses données.
+
+## 3.5. Fiabilité
+
+Les calculs des notes doivent être exacts, cohérents et testés.
+
+Les opérations de sauvegarde doivent préserver l'intégrité des données.
+
+## 3.6. Isolation des établissements
+
+Le choix d'un établissement définit un contexte de travail explicite.
+
+Les classes, élèves, évaluations, notes, résultats et exports affichés dans un établissement proviennent uniquement de celui-ci. Changer d'établissement ne doit ni déplacer ni fusionner des données.
+
+## 3.7. Une matière par enseignant
+
+Une seule matière enseignée est associée au compte local. Elle est commune à tous les établissements et n'a pas à être sélectionnée lors de chaque création de classe ou d'évaluation.
+
+---
+
+# 4. STACK TECHNIQUE OBLIGATOIRE
+
+## Framework
+
+Flutter avec Dart.
+
+Utiliser une version stable et compatible des dépendances.
+
+## Architecture
+
+Clean Architecture avec organisation Feature-First.
+
+## Gestion d'état
+
+Utiliser exclusivement :
+
+- StatefulWidget.
+- setState().
+- Les mécanismes natifs de Flutter lorsque nécessaire.
+
+Ne pas utiliser :
+
+- BLoC.
+- Cubit.
+- Riverpod.
+- Provider.
+- GetX pour la gestion d'état.
+
+## Base de données
+
+SQLite avec Drift.
+
+La base de données doit être entièrement locale.
+
+## Injection de dépendances
+
+GetIt.
+
+## Sécurité
+
+Utiliser des solutions adaptées pour :
+
+- Le hachage sécurisé du mot de passe.
+- Le stockage des informations sensibles.
+- La protection des sauvegardes.
+- La sécurisation des accès locaux.
+
+## Documents
+
+Prévoir :
+
+- pdf.
+- printing.
+- excel ou une bibliothèque compatible avec l'exportation XLSX.
+- path_provider.
+- share_plus.
+
+Vérifier la compatibilité des versions avant l'intégration.
+
+Ne pas introduire inutilement des dépendances supplémentaires.
+
+---
+
+# 5. ARCHITECTURE DU PROJET
+
+Utiliser une organisation Feature-First.
+
+Structure indicative :
+
+```text
+lib/
+│
+├── core/
+│   ├── constants/
+│   ├── database/
+│   │   ├── app_database.dart
+│   │   ├── tables/
+│   │   ├── daos/
+│   │   └── migrations/
+│   ├── errors/
+│   ├── security/
+│   ├── services/
+│   ├── theme/
+│   ├── utils/
+│   └── widgets/
+│
+├── features/
+│   │
+│   ├── authentication/
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   ├── models/
+│   │   │   └── repositories/
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   ├── repositories/
+│   │   │   └── usecases/
+│   │   └── presentation/
+│   │       ├── pages/
+│   │       └── widgets/
+│   │
+│   ├── dashboard/
+│   ├── schools/
+│   ├── academic_years/
+│   ├── classes/
+│   ├── students/
+│   ├── teaching_subject/  # configuration de l’unique matière du profil
+│   ├── evaluations/
+│   ├── grades/
+│   ├── results/
+│   ├── exports/
+│   ├── backups/
+│   ├── settings/
+│   └── profile/
+│
+├── app/
+│   ├── app.dart
+│   └── navigation/
+│
+├── injection_container.dart
+└── main.dart
+```
+
+Chaque fonctionnalité doit respecter les couches :
+
+### Data
+
+Responsable de :
+
+- La lecture des données.
+- L'écriture dans SQLite.
+- La conversion des modèles.
+- L'implémentation des repositories.
+
+### Domain
+
+Responsable de :
+
+- La logique métier.
+- Les entités.
+- Les interfaces des repositories.
+- Les Use Cases.
+- Les règles de calcul.
+
+### Presentation
+
+Responsable de :
+
+- L'affichage des interfaces.
+- La gestion des états avec setState().
+- La validation de présentation.
+- La navigation.
+- L'interaction utilisateur.
+
+Interdiction d'écrire des requêtes SQL directement dans les pages Flutter.
+
+Les opérations métier doivent passer par les Use Cases.
+
+Les modèles Drift ne doivent pas être utilisés directement comme entités dans la couche Domain.
+
+Les Use Cases qui manipulent des classes, des élèves ou des évaluations doivent recevoir explicitement le contexte d'établissement (schoolId ou une entité de portée équivalente), même si certaines relations permettent de le retrouver.
+
+Le module teaching_subject ne gère pas des matières différentes par classe : il gère uniquement la matière unique du profil enseignant.
+
+---
+
+# 6. AUTHENTIFICATION LOCALE ET PROFIL ENSEIGNANT
+
+L'application doit proposer un système de compte local.
+
+IMPORTANT : il ne s'agit pas d'une authentification en ligne. Aucun serveur, Firebase ou service OTP n'est nécessaire.
+
+## 6.1. Inscription
+
+L'enseignant doit renseigner :
+
+- Nom.
+- Prénom.
+- Profession.
+- **Matière enseignée unique (obligatoire).**
+- Numéro WhatsApp.
+- Mot de passe.
+- Confirmation du mot de passe.
+
+### Profession
+
+Proposer notamment :
+
+- Instituteur.
+- Professeur de mathématiques.
+- Professeur de français.
+- Professeur de PCT.
+- Professeur de SVT.
+- Professeur d'anglais.
+- Professeur d'histoire-géographie.
+- Autre.
+
+Si l'enseignant choisit « Autre », permettre la saisie d'une profession personnalisée.
+
+La profession est une information de profil; elle ne doit pas créer automatiquement une deuxième matière ni remplacer la sélection explicite de la matière enseignée.
+
+### Matière enseignée — sélection unique
+
+Créer un champ à **sélection simple**, jamais un sélecteur multiple. Proposer notamment :
+
+- Mathématiques.
+- Français.
+- PCT.
+- SVT.
+- Anglais.
+- Histoire-Géographie.
+- Autre (saisie personnalisée).
+
+Cette matière est enregistrée une seule fois dans le compte local et est appliquée à toutes les écoles et à toutes les classes de l'enseignant.
+
+Pour la V1, autoriser la correction de la matière tant qu'aucune évaluation n'a été créée. Après la création d'évaluations, bloquer le changement de matière afin de ne pas réétiqueter des notes historiques. Indiquer clairement cette restriction à l'enseignant. Une future version pourra gérer un changement de matière avec une stratégie explicite d'historisation/migration.
+
+### Numéro WhatsApp
+
+Prévoir un indicatif international. L'indicatif initial peut être +229.
+
+Ne pas envoyer de code OTP. Le numéro WhatsApp constitue un identifiant local et une information de profil.
+
+Ne pas prétendre vérifier la propriété du numéro sans service externe.
+
+### Mot de passe
+
+Appliquer des règles de validation appropriées.
+
+Ne jamais stocker le mot de passe en clair. Utiliser un mécanisme de dérivation de clé adapté aux mots de passe, avec sel unique et paramètres sécurisés.
+
+## 6.2. Compte local
+
+Pour la V1, prévoir un profil enseignant principal par installation.
+
+Un profil possède exactement une matière et peut posséder zéro, une ou plusieurs écoles.
+
+L'application ne doit pas présenter ce compte comme étant synchronisé sur plusieurs téléphones.
+
+## 6.3. Connexion
+
+L'enseignant peut déverrouiller son espace personnel avec son mot de passe.
+
+Prévoir :
+
+- Écran de connexion.
+- Messages d'erreur.
+- Verrouillage de session.
+- Déconnexion.
+- Protection contre les tentatives répétées.
+
+Ne pas créer de récupération du mot de passe fictive. Dans une application totalement hors ligne, la récupération du mot de passe nécessite un mécanisme sécurisé spécifique.
+
+## 6.4. Première ouverture
+
+Si aucun compte local n'existe : afficher les écrans de présentation, puis proposer l'inscription et la sélection de l'unique matière.
+
+Si un compte existe : afficher l'écran de connexion ou restaurer une session locale valide selon les paramètres de sécurité.
+
+---
+
+# 7. ONBOARDING
+
+Créer un onboarding moderne composé de trois écrans.
+
+### Écran 1
+
+Titre :
+
+« Toutes vos classes, au même endroit »
+
+Description :
+
+« Organisez vos établissements et les classes où vous enseignez votre matière, sans mélanger les notes. »
+
+### Écran 2
+
+Titre :
+
+« Vos notes, sans calculs compliqués »
+
+Description :
+
+« Enregistrez les interrogations et les devoirs. EduNote calcule automatiquement les moyennes. »
+
+### Écran 3
+
+Titre :
+
+« Vos données restent entre vos mains »
+
+Description :
+
+« Travaillez sans Internet, sauvegardez vos données et exportez vos résultats. »
+
+Prévoir :
+
+- Illustrations.
+- Indicateurs de progression.
+- Bouton Suivant.
+- Bouton Commencer.
+- Option Passer.
+
+L'onboarding ne doit apparaître qu'à la première utilisation, sauf réinitialisation volontaire.
+
+---
+
+# 8. ÉCRAN D'ACCUEIL ET ESPACES D'ÉTABLISSEMENT
+
+Après l'inscription, l'enseignant accède à son tableau de bord général. Il peut ensuite ouvrir l'espace propre à un établissement.
+
+## 8.1. Première connexion
+
+Lorsque l'enseignant n'a enregistré aucun établissement, afficher un Empty State.
+
+Titre : « Bienvenue sur EduNote ! »
+
+Description : « Ajoutez votre premier établissement scolaire pour commencer à organiser vos classes et suivre les résultats de vos élèves. »
+
+Bouton principal : « Ajouter une école ».
+
+Afficher la matière unique de l'enseignant dans son profil, sans inventer de statistiques.
+
+## 8.2. Tableau de bord général
+
+Lorsque l'enseignant possède des établissements, afficher :
+
+- Message d'accueil personnalisé.
+- **Matière enseignée unique** (lecture seule sauf modification permise au § 6).
+- Nombre d'établissements.
+- Nombre total de classes.
+- Nombre total d'élèves.
+- Nombre total d'évaluations.
+- Liste/cartes des établissements, permettant d'entrer dans chaque espace.
+- Évaluations récentes avec le nom de leur établissement d'origine.
+- Raccourci « Ajouter une école ».
+
+Les chiffres globaux sont des totaux de synthèse; ils ne remplacent pas le filtrage obligatoire des écrans de travail par établissement.
+
+## 8.3. Tableau de bord propre à chaque établissement
+
+Après sélection d'un établissement, afficher un espace identifié de manière permanente : nom de l'école, ville si disponible, année et période actives, et matière enseignée.
+
+Afficher exclusivement les données de cette école :
+
+- Nombre de classes de l'école.
+- Nombre d'élèves de ses classes.
+- Nombre d'évaluations de ses classes.
+- Évaluations récentes réalisées dans cette école.
+- Liste des classes de cet établissement.
+- Résultats et statistiques de ses classes.
+
+Actions rapides **dans cet établissement** :
+
+- Ajouter une classe.
+- Ajouter un élève dans une classe de l'école.
+- Créer une interrogation ou un devoir.
+- Saisir les notes.
+- Consulter les résultats.
+- Exporter en PDF ou Excel.
+
+Un enseignant qui passe de Lycée Béhanzin à CEG Anavié doit voir de nouvelles classes, de nouveaux élèves et de nouvelles notes sans retrouver ceux de l'établissement précédent.
+
+## 8.4. Navigation entre établissements et états vides
+
+- Afficher clairement l'établissement actif en haut des écrans métiers.
+- Prévoir « Changer d'établissement » / « Retour à mes établissements ».
+- Vider les sélections de classe et d'évaluation si elles ne sont plus valables après changement d'école.
+- Les écrans de l'établissement sans classe, sans élève ou sans évaluation montrent des Empty States réels avec actions pertinentes.
+- Ne jamais afficher de données simulées comme réelles.
+
+Toutes les statistiques doivent être calculées depuis SQLite, avec le bon filtre schoolId pour les statistiques par établissement.
+
+---
+
+# 9. GESTION DES ÉTABLISSEMENTS ET ISOLATION DES ESPACES
+
+Un enseignant peut enregistrer un nombre quelconque d'établissements, même si ceux-ci possèdent des classes de même nom.
+
+Exemple obligatoire pour les tests et maquettes (sans données fictives en production) :
+
+```text
+Enseignant (matière unique : Mathématiques)
+│
+├── Lycée Béhanzin
+│   ├── 3e A
+│   └── 1re C
+│
+├── CEG Anavié
+│   ├── 6e A
+│   └── 2nde B
+│
+└── CEG Le Nokoué
+    └── 5e A
+```
+
+Les exemples n'imposent aucune restriction sur les niveaux ou sur le nombre d'établissements/classes créés.
+
+## 9.1. Création
+
+Champs :
+
+- Nom de l'établissement.
+- Type d'établissement.
+- Ville ou commune.
+- Adresse facultative.
+
+Types : Primaire, Collège, Lycée, Autre.
+
+## 9.2. Fonctionnalités
+
+Permettre de :
+
+- Ajouter un établissement.
+- Modifier un établissement.
+- Afficher ses détails et son tableau de bord propre.
+- Consulter et administrer uniquement ses classes.
+- Accéder, depuis cet établissement, uniquement à ses élèves, notes, moyennes et évaluations.
+- Générer les résultats et documents uniquement pour cet établissement.
+- Supprimer un établissement avec confirmation.
+
+## 9.3. Contrat d'isolation
+
+- Le contexte d'établissement courant est explicite, par son identifiant stable `schoolId`.
+- Aucun formulaire ne peut affecter un élève, une classe ou une note à une autre école que celle choisie.
+- Une recherche ou un filtre dans un espace d'école ne doit pas retourner de données d'une autre école.
+- Les moyennes et statistiques d'une école ne mélangent jamais les élèves des autres écoles.
+- Les noms de classes identiques dans deux écoles ne constituent jamais une relation entre les classes.
+- Une opération sur une école ne modifie aucune donnée d'une autre école, sauf une sauvegarde/restauration complète confirmée ou une action globale explicitement prévue.
+- L'isolation est garantie par les relations, la validation métier et les requêtes SQL, pas seulement par le texte de l'interface.
+
+## 9.4. Suppression
+
+La suppression doit afficher une confirmation explicite et nommer l'établissement concerné.
+
+Si l'établissement contient des classes, des élèves, des évaluations et des notes, prévenir l'enseignant des conséquences.
+
+La suppression doit être transactionnelle et ne jamais laisser de données orphelines.
+
+Ne jamais supprimer les classes, élèves et notes des autres établissements.
+
+---
+
+# 10. ANNÉES SCOLAIRES ET PÉRIODES
+
+L'application doit permettre de gérer plusieurs années scolaires.
+
+Exemples :
+
+- 2026-2027.
+- 2027-2028.
+- 2028-2029.
+
+Une même désignation de classe peut exister dans plusieurs établissements ou sur plusieurs années scolaires; il s'agit d'instances distinctes.
+
+Les notes d'une année ne doivent pas se mélanger avec celles d'une autre année, même lorsque l'établissement et le nom de la classe sont identiques.
+
+Les années scolaires et périodes peuvent être proposées par un référentiel commun au profil local; les classes et les évaluations demeurent obligatoirement rattachées à leur établissement via la classe. Il n'est pas nécessaire de dupliquer le catalogue des années pour chaque école.
+
+## Périodes
+
+Prévoir :
+
+- Premier semestre.
+- Deuxième semestre.
+
+Permettre à terme d'autres organisations :
+
+- Trimestres.
+- Séquences.
+- Périodes personnalisées.
+
+L'enseignant doit pouvoir sélectionner une année et une période de consultation dans son établissement actif.
+
+Toute évaluation doit appartenir à une période, et l'année de la période doit correspondre à l'année de la classe évaluée.
+
+Lorsqu'on change d'établissement, le contexte de navigation (classe/évaluation sélectionnées) doit être réinitialisé ou restauré uniquement si les identifiants appartiennent réellement au nouvel établissement.
+
+---
+
+# 11. GESTION DES CLASSES PAR ÉTABLISSEMENT
+
+Chaque établissement peut contenir plusieurs classes. L'enseignant ne crée que les classes dans lesquelles il intervient effectivement.
+
+Exemple :
+
+```text
+Lycée Béhanzin                  CEG Anavié                CEG Le Nokoué
+├── 3e A                        ├── 6e A                   └── 5e A
+└── 1re C                       └── 2nde B
+```
+
+Les classes de chaque école sont indépendantes. « 3e A » au Lycée Béhanzin et « 3e A » dans une autre école restent deux classes distinctes.
+
+## 11.1. Création d'une classe
+
+L'établissement est déterminé par l'espace actif et **ne doit pas être secrètement remplacé par un autre**.
+
+Champs :
+
+- Nom de la classe.
+- Niveau.
+- Année scolaire.
+- Établissement associé (prérempli à partir de `schoolId` actif, en lecture seule).
+
+**Aucun champ de sélection de matière :** la classe utilise automatiquement la matière unique de l'enseignant.
+
+## 11.2. Fonctionnalités
+
+- Ajouter une classe dans l'établissement actif.
+- Modifier une classe.
+- Supprimer une classe après avertissement.
+- Consulter les élèves de cette classe.
+- Créer les interrogations et devoirs de la matière unique.
+- Consulter les évaluations et résultats.
+
+Une classe appartient à un établissement et à une année scolaire.
+
+Éviter les doublons involontaires de classes pour le même établissement et la même année scolaire, sans interdire les noms identiques dans des écoles distinctes.
+
+Interdire tout transfert implicite d'une classe entre écoles. Un éventuel transfert futur nécessiterait une fonctionnalité dédiée, avec validation de l'intégrité des élèves et des notes.
+
+---
+
+# 12. GESTION DES ÉLÈVES
+
+Une classe contient plusieurs élèves, et chaque élève enregistré dans la V1 appartient à une classe d'un établissement déterminé.
+
+## 12.1. Création
+
+Champs :
+
+- Nom.
+- Prénom.
+- Sexe.
+- Date de naissance.
+- Matricule.
+- Classe (choisie uniquement dans l'établissement actif).
+- Numéro d'ordre facultatif.
+
+Le matricule peut être saisi manuellement.
+
+Prévoir également une génération automatique de matricule unique dans le périmètre défini. Pour la V1, garantir au minimum l'unicité du matricule au sein d'une même classe; ne pas supposer une unicité globale entre établissements.
+
+## 12.2. Fonctionnalités
+
+- Ajouter un élève.
+- Modifier un élève.
+- Supprimer un élève, avec avertissement si des notes existent.
+- Consulter son profil.
+- Rechercher un élève dans l'établissement actif.
+- Trier les élèves de l'établissement et/ou de la classe sélectionnés.
+- Consulter ses notes.
+- Consulter ses moyennes.
+
+## 12.3. Liste des élèves
+
+Afficher :
+
+- Nom complet.
+- Matricule.
+- Sexe si renseigné.
+- Moyenne de la matière unique enseignée, lorsqu'elle existe.
+
+Prévoir une recherche et un tri alphabétique.
+
+## 12.4. Profil élève
+
+Afficher :
+
+- Informations personnelles.
+- **Établissement et classe d'appartenance.**
+- Matière unique enseignée par l'enseignant.
+- Notes de cette matière.
+- Moyenne des interrogations et moyenne finale pour la période.
+- Historique des évaluations de cet élève dans sa classe.
+
+Un profil consulté depuis une école ne doit pas afficher les données d'un homonyme d'une autre école.
+
+Les données personnelles des élèves doivent être limitées aux informations réellement nécessaires.
+
+---
+
+# 13. MATIÈRE UNIQUE DE L'ENSEIGNANT
+
+**RÈGLE MÉTIER IMPÉRATIVE : UN ENSEIGNANT = UNE SEULE MATIÈRE.**
+
+Dans EduNote V1, un enseignant enseigne une seule matière dans **tous** les établissements et **toutes** les classes qu'il renseigne.
+
+Exemple :
+
+```text
+Enseignant : Mathématiques
+│
+├── Lycée Béhanzin
+│   ├── 3e A → Mathématiques → interrogations, devoirs, moyennes
+│   └── 1re C → Mathématiques → interrogations, devoirs, moyennes
+│
+├── CEG Anavié
+│   ├── 6e A → Mathématiques → interrogations, devoirs, moyennes
+│   └── 2nde B → Mathématiques → interrogations, devoirs, moyennes
+│
+└── CEG Le Nokoué
+    └── 5e A → Mathématiques → interrogations, devoirs, moyennes
+```
+
+Le système ne permet pas de définir Mathématiques pour une classe et PCT pour une autre classe du même enseignant.
+
+## 13.1. Définition et affichage
+
+- Choisir **une seule matière** à l'inscription; l'enregistrer dans le profil.
+- Afficher cette matière sur le profil et les pages de saisie/résultats.
+- Préremplir automatiquement cette matière lors des créations d'évaluations et dans les exports.
+- Ne pas proposer de liste de matières à gérer par classe ou par école.
+- Si une matière personnalisée est nécessaire, la saisir lors du choix de matière du profil.
+- Respecter la politique de changement exposée au § 6.1 : aucun changement après création d'évaluations en V1.
+
+## 13.2. Modélisation
+
+Une table `Subject` peut servir de catalogue (Mathématiques, Français, PCT, etc.), mais un compte `Teacher` contient **exactement une référence** `subjectId` vers l'une de ses entrées.
+
+Supprimer l'ancienne notion de relation `ClassSubject` et toutes les opérations « associer plusieurs matières à une classe ».
+
+L'évaluation se rattache directement à la classe et à la période, tandis que la matière correspond toujours à celle du profil enseignant.
+
+## 13.3. Indépendance des notes
+
+Bien que la matière soit la même partout, les interrogations, devoirs et moyennes restent **totalement séparés** pour chaque classe, établissement, année scolaire et période.
+
+L'interrogation n°1 de Mathématiques en 3e A au Lycée Béhanzin et l'interrogation n°1 de Mathématiques en 6e A au CEG Anavié sont deux évaluations distinctes.
+
+---
+
+# 14. GESTION DES ÉVALUATIONS
+
+L'enseignant doit pouvoir enregistrer deux types principaux d'évaluations :
+
+1. Interrogation.
+2. Devoir.
+
+## 14.1. Création d'une interrogation
+
+L'enseignant travaille d'abord dans l'espace de l'établissement courant, puis sélectionne :
+
+- Classe (uniquement celles de cet établissement).
+- Année scolaire.
+- Période.
+
+L'établissement est déjà actif et visible; la matière unique de l'enseignant est préremplie et **n'est pas sélectionnable**.
+
+Puis renseigne :
+
+- Numéro de l'interrogation.
+- Titre facultatif.
+- Date.
+- Barème.
+
+Exemple :
+
+Interrogation n°1 de mathématiques.
+
+Classe : 3e A.
+
+Barème : /20.
+
+## 14.2. Création d'un devoir
+
+Les devoirs doivent être identifiés comme :
+
+- Devoir 1.
+- Devoir 2.
+
+Pour une **classe donnée** et une **période donnée**, il ne doit pas exister deux évaluations actives portant le même identifiant « Devoir 1 » ou « Devoir 2 ». Cette unicité est indépendante dans chaque classe et chaque établissement.
+
+Les deux devoirs constituent les deux notes utilisées dans le calcul final de la matière.
+
+## 14.3. Saisie des notes
+
+Après la création d'une évaluation, afficher uniquement la liste des élèves appartenant à la classe de l'établissement actif.
+
+Afficher de manière persistante l'école, la classe, la matière unique et la période pour éviter une saisie au mauvais endroit.
+
+Exemple :
+
+| Élève | Note |
+|---|---|
+| Jean Pierre | 12 |
+| Marie Rose | 16 |
+| Paul Alain | 09 |
+| Fatima Aïcha | 14 |
+
+Permettre la saisie rapide des notes directement depuis cette liste.
+
+### Contraintes
+
+- Une note doit être comprise entre 0 et le barème.
+- Les valeurs décimales sont autorisées.
+- Une note manquante est différente de zéro.
+- Une absence doit être identifiée explicitement.
+- Une seule note est autorisée par élève et par évaluation.
+
+Prévoir une saisie ergonomique avec clavier numérique adapté.
+
+## 14.4. Sauvegarde
+
+Les notes doivent être enregistrées dans SQLite.
+
+La sauvegarde de plusieurs notes doit être transactionnelle.
+
+Chaque enregistrement doit vérifier l'appartenance de l'élève à la classe de l'évaluation et l'appartenance de cette classe à l'établissement actif. Refuser toute tentative de sauvegarde croisée entre écoles.
+
+Afficher un message de confirmation après une sauvegarde réussie.
+
+En cas d'erreur, conserver les valeurs saisies dans le formulaire pour éviter toute perte de travail.
+
+---
+
+# 15. RÈGLES DE CALCUL DES MOYENNES
+
+CETTE SECTION EST PRIORITAIRE.
+
+Le système de calcul doit respecter exactement les règles suivantes.
+
+**Portée des calculs :** tous les calculs s'effectuent pour un élève, dans une classe, une année scolaire et une période donnés, à l'intérieur d'un établissement précis. La matière est celle, unique, de l'enseignant. Les notes d'établissements différents ne doivent jamais participer à une même moyenne.
+
+## 15.1. Moyenne des interrogations
+
+Une matière peut contenir plusieurs interrogations.
+
+Exemple :
+
+Interrogation 1 : 12/20.
+
+Interrogation 2 : 16/20.
+
+Interrogation 3 : 14/20.
+
+La moyenne des interrogations est :
+
+MI = (12 + 16 + 14) / 3
+
+Résultat :
+
+MI = 14/20.
+
+Cette moyenne doit être affichée distinctement.
+
+## 15.2. Moyenne de la matière
+
+La moyenne finale d'une matière est calculée à partir de trois éléments :
+
+1. La moyenne des interrogations.
+2. La note du devoir 1.
+3. La note du devoir 2.
+
+Formule :
+
+**Moyenne matière = (Moyenne interrogations + Devoir 1 + Devoir 2) / 3**
+
+Exemple :
+
+Moyenne interrogations : 14.
+
+Devoir 1 : 13.
+
+Devoir 2 : 16.
+
+Moyenne matière :
+
+(14 + 13 + 16) / 3 = 14,33/20.
+
+## 15.3. Actualisation automatique
+
+Chaque fois qu'une note est :
+
+- Ajoutée.
+- Modifiée.
+- Supprimée.
+
+Les résultats concernés doivent être recalculés.
+
+L'interface doit afficher les nouvelles moyennes immédiatement après la validation locale de l'opération.
+
+## 15.4. Notes manquantes
+
+Ne jamais remplacer automatiquement une note manquante par zéro.
+
+Si le devoir 1 ou le devoir 2 n'a pas encore été renseigné, la moyenne finale de la matière doit être considérée comme incomplète.
+
+Afficher par exemple :
+
+« Moyenne en attente ».
+
+La moyenne des interrogations doit néanmoins rester visible.
+
+## 15.5. Absences
+
+Prévoir plusieurs états :
+
+- Note renseignée.
+- Note non renseignée.
+- Élève absent.
+
+Une absence ne doit pas automatiquement valoir zéro.
+
+Prévoir une distinction entre une absence et un zéro réellement attribué.
+
+## 15.6. Barèmes
+
+Utiliser /20 comme barème de référence pour les moyennes.
+
+Si une évaluation utilise un autre barème, normaliser la note sur 20 avant son intégration au calcul.
+
+Exemple :
+
+8/10 = 16/20.
+
+## 15.7. Arrondis
+
+Afficher les moyennes avec deux chiffres après la virgule.
+
+Effectuer les calculs avec une précision suffisante.
+
+Ne pas arrondir inutilement les résultats intermédiaires.
+
+## 15.8. Tests
+
+Créer des tests unitaires couvrant :
+
+- Une interrogation.
+- Plusieurs interrogations.
+- Deux devoirs renseignés.
+- Un devoir manquant.
+- Aucune interrogation.
+- Une note égale à zéro.
+- Une absence.
+- Une modification de note.
+- Une suppression de note.
+- Des barèmes différents.
+- Des moyennes décimales.
+
+Centraliser toute cette logique dans la couche Domain.
+
+Aucun calcul métier complexe ne doit être directement écrit dans les widgets.
+
+---
+
+# 16. CONSULTATION DES RÉSULTATS PAR ÉTABLISSEMENT
+
+Les résultats doivent toujours appartenir à un établissement actif. Permettre les filtres suivants :
+
+- Établissement (déjà sélectionné en entrant dans son espace).
+- Année scolaire.
+- Classe de l'établissement.
+- Période.
+
+La matière unique de l'enseignant est affichée, sans filtre de sélection de matière.
+
+## 16.1. Tableau des résultats
+
+Afficher les colonnes :
+
+| N° | Élève | Int. 1 | Int. 2 | Moy. Int. | Dev. 1 | Dev. 2 | Moy. finale |
+|---|---|---|---|---|---|---|---|
+
+Le nombre d'interrogations pouvant varier, le tableau doit prendre en charge un nombre dynamique de colonnes.
+
+Prévoir un défilement horizontal lorsque nécessaire.
+
+Afficher dans l'en-tête du tableau : établissement, classe, matière unique, année et période.
+
+Le tableau d'une classe du Lycée Béhanzin n'inclut jamais des élèves du CEG Anavié, même si ces écoles utilisent les mêmes noms de classe ou de matricule.
+
+## 16.2. Résultats individuels
+
+Le profil de l'élève doit permettre de consulter :
+
+- Les interrogations de sa classe.
+- Les devoirs de sa classe.
+- La moyenne des interrogations.
+- La moyenne finale de la matière unique.
+
+## 16.3. Statistiques
+
+Afficher pour la classe et la période sélectionnées :
+
+- Nombre d'élèves.
+- Nombre d'élèves évalués.
+- Moyenne de la classe.
+- Meilleure moyenne.
+- Moyenne la plus faible.
+
+Les statistiques doivent être calculées uniquement à partir des résultats éligibles et complets.
+
+## 16.4. Séparation des résultats
+
+- Ne jamais calculer une moyenne de classe à partir de deux classes ou écoles différentes.
+- Ne jamais fusionner des tableaux de résultats d'établissements distincts dans la V1.
+- Les statistiques globales du tableau de bord général peuvent compter les écoles/classes/élèves, mais les **statistiques pédagogiques** restent propres à la classe et à l'école sélectionnées.
+
+---
+
+# 17. EXPORTATION PDF
+
+L'exportation PDF est obligatoire dès la V1.
+
+Elle doit fonctionner sans Internet.
+
+## 17.1. Sélection
+
+Depuis l'espace d'un établissement, l'enseignant choisit :
+
+- Année scolaire.
+- Classe (uniquement dans l'établissement actif).
+- Période.
+
+Le nom de l'établissement actif et la matière unique sont renseignés automatiquement, sans choix d'une autre matière.
+
+Puis sélectionne :
+
+« Exporter en PDF ».
+
+## 17.2. Contenu
+
+Le document doit contenir :
+
+- Nom de l'établissement actif (obligatoire; aucune école mélangée).
+- Année scolaire.
+- Nom de la classe.
+- Matière.
+- Période.
+- Nom complet de l'enseignant.
+- Date de génération.
+- Tableau des élèves et des notes.
+- Moyenne des interrogations.
+- Devoir 1.
+- Devoir 2.
+- Moyenne finale.
+
+## 17.3. Présentation
+
+Générer un document professionnel.
+
+Prévoir :
+
+- En-tête clair.
+- Titre du relevé.
+- Tableau structuré.
+- Pagination.
+- Numérotation des élèves.
+- Alignement correct des notes.
+- Mise en page adaptée à l'impression.
+
+Si le tableau contient de nombreuses interrogations, adapter automatiquement l'orientation et la largeur des colonnes.
+
+L'export PDF d'une école doit être construit à partir des données filtrées par l'identifiant de cette école; vérifier ce filtre avant la génération.
+
+Éviter les débordements.
+
+## 17.4. Actions
+
+L'enseignant peut :
+
+- Prévisualiser le document.
+- L'enregistrer.
+- L'imprimer.
+- Le partager via les applications installées.
+
+---
+
+# 18. EXPORTATION EXCEL
+
+L'exportation Excel est obligatoire dès la V1.
+
+Générer un véritable fichier .xlsx.
+
+L'export Excel est réalisé depuis l'espace de l'établissement actif : il contient **uniquement** les élèves, évaluations et résultats de la classe et de l'école sélectionnées. La matière est automatiquement celle de l'enseignant.
+
+## Contenu
+
+Inclure :
+
+- Informations de l'établissement.
+- Classe.
+- Matière unique du professeur.
+- Période.
+- Année scolaire.
+- Liste des élèves de la classe de l'établissement actif.
+- Toutes les interrogations.
+- Moyenne des interrogations.
+- Devoir 1.
+- Devoir 2.
+- Moyenne finale.
+
+## Mise en forme
+
+Prévoir :
+
+- En-têtes lisibles.
+- Colonnes adaptées.
+- Bordures.
+- Formats numériques cohérents.
+- Titres.
+- Alignements.
+
+Les notes doivent être enregistrées comme des valeurs numériques lorsque c'est applicable.
+
+Les cellules correspondant à des notes absentes ne doivent pas être remplacées par zéro.
+
+L'export doit produire un fichier compatible avec Microsoft Excel et les principaux tableurs.
+
+## Partage
+
+Permettre :
+
+- L'enregistrement local.
+- Le partage du fichier.
+- Son ouverture dans une application compatible.
+
+Les fichiers exportés sont des copies des données : leur suppression ne doit pas modifier les données enregistrées dans EduNote.
+
+Le nom des fichiers exportés doit permettre d'identifier sans ambiguïté l'établissement, la classe et la période (avec nettoyage des caractères incompatibles avec le système de fichiers).
+
+---
+
+# 19. SAUVEGARDE ET RESTAURATION
+
+Cette fonctionnalité est essentielle puisque l'application fonctionne sans serveur.
+
+## 19.1. Sauvegarde
+
+Permettre à l'enseignant de créer manuellement une sauvegarde complète.
+
+Une sauvegarde complète contient **tous les établissements** du profil local et préserve leur séparation; elle ne fusionne jamais les classes ni les évaluations d'écoles différentes.
+
+Elle doit inclure :
+
+- Profil, incluant l'identifiant de la matière unique.
+- Établissements et identifiants nécessaires à leur séparation.
+- Années scolaires.
+- Classes.
+- Élèves.
+- Matières.
+- Évaluations.
+- Notes.
+- Paramètres nécessaires à la restauration.
+
+Utiliser un format versionné et chiffré.
+
+La sauvegarde ne doit pas contenir de mot de passe en clair.
+
+Prévoir une protection par mot de passe de sauvegarde indépendant ou un mécanisme équivalent adapté.
+
+## 19.2. Restauration
+
+Permettre de sélectionner un fichier de sauvegarde.
+
+Avant la restauration :
+
+- Vérifier le format.
+- Vérifier la version.
+- Vérifier l'intégrité.
+- Déchiffrer le fichier.
+- Vérifier la compatibilité.
+
+Afficher une confirmation avant de remplacer les données existantes.
+
+La restauration doit être atomique ou disposer d'un mécanisme fiable de retour arrière.
+
+Après restauration, vérifier les rattachements `School → SchoolClass → Student/Evaluation → Grade`, ainsi que l'unicité de la matière du profil. Les écoles restaurées doivent apparaître comme espaces distincts.
+
+Une restauration échouée ne doit pas détruire les données existantes.
+
+## 19.3. Suppression complète
+
+Dans les paramètres, proposer :
+
+« Supprimer toutes mes données ».
+
+Distinguer soigneusement cette action globale de « Supprimer cet établissement », qui ne doit cibler que l'établissement courant et ses dépendances.
+
+Afficher un avertissement explicite.
+
+Après confirmation et vérification locale appropriée, effacer :
+
+- Les établissements.
+- Les classes.
+- Les élèves.
+- Les évaluations.
+- Les notes.
+- Les données de profil.
+- Les autres données applicatives locales.
+
+Ne pas affirmer que cette action supprime automatiquement des sauvegardes déjà exportées dans des emplacements externes.
+
+---
+
+# 20. MODÉLISATION DE LA BASE DE DONNÉES
+
+Utiliser SQLite avec Drift. Le modèle doit satisfaire simultanément les deux règles : **une seule matière par enseignant**, **isolation des données par établissement**.
+
+## Teacher
+
+- id.
+- firstName.
+- lastName.
+- profession.
+- **subjectId (obligatoire; une seule valeur)**.
+- whatsappNumber.
+- passwordHash.
+- passwordSalt ou paramètres adaptés.
+- createdAt.
+- updatedAt.
+
+En V1, un seul enregistrement `Teacher` est autorisé par installation. Le champ `subjectId` est une clé étrangère non nulle vers `Subject`. Aucune liste de matières dans `Teacher`.
+
+## Subject
+
+- id.
+- name.
+- createdAt.
+- updatedAt.
+
+Cette table sert seulement de **catalogue de choix de matières** et permet une matière personnalisée. Elle ne signifie pas que le professeur peut en utiliser plusieurs : le profil référence **une seule** entrée.
+
+## School
+
+- id.
+- teacherId.
+- name.
+- type.
+- city.
+- address.
+- createdAt.
+- updatedAt.
+
+Relation : un Teacher peut posséder plusieurs School.
+
+## AcademicYear
+
+- id.
+- label.
+- startDate.
+- endDate.
+- isActive.
+
+Une année scolaire peut être partagée comme référentiel par plusieurs établissements. Elle n'autorise pas à partager leurs notes.
+
+## AcademicPeriod
+
+- id.
+- academicYearId.
+- name.
+- startDate.
+- endDate.
+
+## SchoolClass
+
+- id.
+- **schoolId**.
+- academicYearId.
+- name.
+- level.
+- createdAt.
+- updatedAt.
+
+Relation : chaque SchoolClass appartient à une seule école et à une seule année scolaire.
+
+Contrainte d'unicité : `UNIQUE(schoolId, academicYearId, normalizedClassName)` ou solution équivalente validée par Drift/SQLite. Le même nom de classe est autorisé dans d'autres écoles ou années.
+
+**Pas de champ subjectId dans SchoolClass :** la matière est celle du profil `Teacher`.
+
+## Student
+
+- id.
+- classId.
+- firstName.
+- lastName.
+- gender.
+- dateOfBirth.
+- registrationNumber.
+- orderNumber.
+- createdAt.
+- updatedAt.
+
+Un Student appartient à une SchoolClass, donc à un seul établissement pour cette inscription.
+
+Définir au minimum l'unicité `(classId, registrationNumber)` si le matricule est renseigné (index unique partiel ou politique adaptée aux valeurs nulles). Un matricule identique peut exister dans d'autres classes ou écoles.
+
+## Evaluation
+
+- id.
+- **classId (référence directe à SchoolClass)**.
+- academicPeriodId.
+- type (`interrogation` ou `devoir`).
+- evaluationNumber.
+- title.
+- evaluationDate.
+- maxScore.
+- createdAt.
+- updatedAt.
+
+Ne **pas** créer de `ClassSubject` ni de `classSubjectId`.
+
+La matière de l'évaluation est implicitement l'unique matière référencée par le profil Teacher propriétaire de l'établissement. Toute nouvelle évaluation doit utiliser cette matière et ne jamais permettre une matière divergente.
+
+L'année de `AcademicPeriod` doit être égale à celle de `SchoolClass`.
+
+Imposer l'unicité des deux devoirs actifs selon `(classId, academicPeriodId, type='devoir', evaluationNumber)` pour les numéros 1 et 2. Le même « Devoir 1 » reste autorisé dans une autre classe ou période.
+
+## Grade
+
+- id.
+- evaluationId.
+- studentId.
+- score (nullable pour note manquante/absence).
+- status (`renseignée`, `non_renseignée`, `absent` ou codes techniques stables).
+- createdAt.
+- updatedAt.
+
+Imposer `UNIQUE(evaluationId, studentId)` et vérifier que l'élève appartient exactement à la classe de l'évaluation.
+
+Les règles de valeur 0, notes nulles, absences et barèmes restent celles du § 14 et du § 15.
+
+## AppSettings
+
+Prévoir les paramètres nécessaires au fonctionnement de l'application et, si utile, l'identifiant du dernier établissement consulté. Cette préférence ne doit pas remplacer les contrôles d'appartenance des données.
+
+## 20.1. Schéma logique simplifié
+
+```text
+Teacher (1) ──── (N) School (1) ──── (N) SchoolClass
+    │                                          │
+    └── (1) Subject [matière unique]           ├── (N) Student
+                                               └── (N) Evaluation ──── (N) Grade
+                                                        │                  │
+AcademicYear (1) ── (N) AcademicPeriod ────────────────┘                  │
+      │                                                                    │
+      └── (N) SchoolClass                                    Grade → Student
+```
+
+Les diagrammes et les clés étrangères réels doivent préciser les cardinalités et garantir l'intégrité; ce dessin est une vue pédagogique.
+
+## 20.2. Contraintes importantes
+
+- Activer les clés étrangères SQLite (`PRAGMA foreign_keys = ON`).
+- Définir des clés étrangères non nulles pour toutes les dépendances obligatoires.
+- Définir les contraintes d'unicité et les index utiles, en particulier sur `School.teacherId`, `SchoolClass.schoolId`, `Student.classId`, `Evaluation.classId`, `Evaluation.academicPeriodId`, `Grade.evaluationId` et `Grade.studentId`.
+- Prévoir les migrations Drift.
+- Utiliser des transactions pour toutes les créations groupées, suppressions en cascade contrôlées et sauvegardes de notes.
+- Vérifier systématiquement qu'une note est associée à un élève appartenant à la classe de l'évaluation concernée.
+- Vérifier que la classe est rattachée au schoolId actif et que l'établissement appartient au Teacher local.
+- Empêcher les incohérences entre établissements, classes, années, périodes, évaluations et élèves, y compris lorsqu'un identifiant provient d'un ancien écran.
+- Définir explicitement les règles de suppression et ne jamais supprimer les dépendances d'une autre école.
+- **Interdire toute réintroduction de `ClassSubject`, d'une collection de `subjectIds` ou d'un sélecteur multiple de matières.**
+
+## 20.3. Exemples de requêtes et de règles de portée
+
+- Liste des classes : filtrer directement `SchoolClass.schoolId = activeSchoolId`.
+- Liste des élèves de l'école : joindre `Student.classId → SchoolClass.id` et filtrer `SchoolClass.schoolId = activeSchoolId`.
+- Liste des évaluations : joindre `Evaluation.classId → SchoolClass.id`, filtrer l'école et éventuellement classe/période.
+- Résultats : joindre `Grade → Evaluation → SchoolClass`, filtrer l'école et vérifier que `Grade.studentId` correspond à la classe.
+- Statistiques de la classe : filtrer `classId`, année et période, et ne compter que les moyennes complètes.
+- Une demande qui inclut un identifiant d'une autre école doit échouer de manière contrôlée et non retourner silencieusement ses données.
+
+---
+
+# 21. DESIGN SYSTEM
+
+Concevoir une identité visuelle professionnelle.
+
+## Direction artistique
+
+L'application doit inspirer :
+
+- Clarté sur l'établissement actuellement ouvert.
+- Confiance.
+- Sérieux.
+- Simplicité.
+- Modernité.
+- Organisation.
+
+## Couleurs
+
+Proposer une palette dominée par :
+
+- Bleu profond.
+- Bleu clair.
+- Couleurs neutres.
+- Vert discret pour les validations.
+- Rouge pour les erreurs et suppressions.
+
+Ne pas multiplier les couleurs.
+
+## Typographie
+
+Utiliser une typographie moderne, lisible et adaptée aux interfaces mobiles.
+
+## Composants
+
+Créer des composants réutilisables :
+
+- Bandeau de contexte indiquant l'établissement actif et la matière unique.
+- Sélecteur pour changer d'établissement.
+- Boutons principaux.
+- Champs de formulaire.
+- Cartes d'établissements.
+- Cartes de classes.
+- Listes d'élèves.
+- Badges de notes.
+- Boîtes de dialogue.
+- Empty States.
+- Indicateurs de chargement.
+- Barres de recherche.
+- Filtres.
+- Messages de confirmation.
+
+Utiliser Material Design 3.
+
+## Responsive
+
+Adapter l'interface aux différentes tailles de téléphones.
+
+Prendre en charge les petits écrans.
+
+Éviter les débordements horizontaux non souhaités.
+
+---
+
+# 22. NAVIGATION
+
+Prévoir une navigation principale comportant cinq sections :
+
+1. Accueil.
+2. Établissements.
+3. Évaluations.
+4. Résultats.
+5. Profil.
+
+## Accueil
+
+Tableau de bord général : récapitulatif du profil, matière unique et cartes d'établissements. Les chiffres globaux servent de synthèse.
+
+## Établissements
+
+Liste des écoles et accès à l'espace d'une école.
+
+Dans l'espace de l'établissement : tableau de bord propre, liste des classes, listes d'élèves, évaluations, notes et résultats de cette école exclusivement.
+
+## Évaluations
+
+Consultation, création et saisie des notes dans le contexte de l'école active. Si aucune école n'est sélectionnée, demander explicitement de choisir un établissement avant toute création.
+
+## Résultats
+
+Consultation et export des tableaux de notes de l'école et de la classe actives. Les écrans ne doivent jamais sélectionner automatiquement une classe d'une autre école.
+
+## Profil
+
+Informations personnelles, matière enseignée unique, sécurité, sauvegarde et paramètres.
+
+La navigation doit rester fluide et cohérente. Le contexte actif (`schoolId`, puis `classId`, `academicYearId`, `periodId`) doit être visible et systématiquement validé lors des opérations.
+
+**Parcours de référence :** Accueil → Établissements → Lycée Béhanzin → 3e A → Évaluations → Interrogation 1 → Notes → Résultats → Export.
+
+---
+
+# 23. GESTION DES ÉTATS AVEC SETSTATE
+
+Toutes les pages nécessitant des interactions doivent utiliser StatefulWidget lorsque cela est pertinent.
+
+Les états classiques doivent être gérés avec setState() :
+
+- isLoading.
+- isSaving.
+- errorMessage.
+- selectedSchool.
+- selectedClass.
+- teacherSubject (matière unique provenant du profil, non sélectionnable par classe).
+- selectedPeriod.
+- Données chargées.
+
+Exemple de fonctionnement attendu :
+
+1. L'utilisateur ouvre une page.
+2. La page appelle un Use Case.
+3. L'état de chargement est activé.
+4. Le Use Case récupère les données via le Repository.
+5. La page reçoit les résultats.
+6. setState() actualise l'interface.
+7. L'état de chargement est désactivé.
+
+Au changement d'établissement, invalider `selectedClass`, `selectedPeriod` si inapproprié et les données chargées de l'ancien établissement. Toute réponse asynchrone issue de l'ancien espace doit être ignorée si l'utilisateur a changé d'école entre-temps.
+
+Prévoir les vérifications de cycle de vie nécessaires avant l'appel à setState() après une opération asynchrone.
+
+Ne pas mélanger la logique métier avec la logique de présentation.
+
+Ne pas créer de système complexe de gestion d'état qui contourne la préférence pour setState().
+
+---
+
+# 24. GESTION DES ERREURS
+
+Prévoir une gestion centralisée et cohérente des erreurs.
+
+Exemples :
+
+- Erreur de lecture SQLite.
+- Erreur d'écriture.
+- Données invalides.
+- Classe inexistante.
+- Élève inexistant.
+- Évaluation introuvable.
+- Classe/élève/évaluation n'appartenant pas à l'établissement actif.
+- Tentative d'affecter une matière différente de la matière unique de l'enseignant.
+- Tentative de changer de matière alors que des évaluations existent.
+- Note hors barème.
+- Échec d'export PDF.
+- Échec d'export Excel.
+- Sauvegarde corrompue.
+- Restauration incompatible.
+
+Les messages affichés doivent être compréhensibles pour les enseignants.
+
+Ne jamais afficher directement des exceptions techniques à l'utilisateur final.
+
+Les détails techniques peuvent être enregistrés dans des journaux locaux sécurisés, sans exposer les informations personnelles des élèves.
+
+---
+
+# 25. TESTS
+
+Créer des tests unitaires et des tests d'intégration pertinents.
+
+## Tests métier
+
+Vérifier :
+
+- Le calcul des moyennes.
+- Les contraintes des notes.
+- Les calculs avec barèmes différents.
+- Les notes manquantes.
+- Les absences.
+- Les règles des deux devoirs.
+- La matière unique du profil et son application dans toutes les écoles/classes.
+- La séparation des résultats de deux établissements, même lorsque les classes portent le même nom.
+- Le refus d'une note attribuée à un élève d'une autre école.
+
+## Tests de persistance
+
+Vérifier :
+
+- Création d'un établissement.
+- Création d'une classe.
+- Ajout d'un élève.
+- Sélection initiale de la matière unique et interdiction de matières par classe.
+- Création d'une même classe nommée « 3e A » dans deux écoles différentes.
+- Création d'une évaluation.
+- Sauvegarde des notes.
+- Modification des notes.
+- Suppression et intégrité référentielle.
+- Suppression d'une école sans conséquence pour les autres écoles.
+- Changement d'école pendant un chargement asynchrone (aucune donnée de l'ancien espace ne doit s'afficher).
+- Blocage d'un changement de matière après création d'évaluations.
+
+## Tests des documents
+
+Vérifier :
+
+- Génération PDF.
+- Génération XLSX.
+- Cohérence des notes exportées.
+- Isolation des exports : aucun élève/aucune note d'une autre école.
+- Présence des informations obligatoires.
+
+## Tests de sauvegarde
+
+Vérifier :
+
+- Création d'une sauvegarde.
+- Restauration.
+- Détection des fichiers invalides.
+- Conservation des données en cas d'échec.
+- Préservation de plusieurs écoles distinctes à la restauration et de l'unique matière du profil.
+
+---
+
+# 26. DÉROULEMENT DU DÉVELOPPEMENT
+
+Ne commence pas par développer toutes les fonctionnalités simultanément.
+
+Le travail doit être organisé en phases.
+
+## PHASE 1 — Analyse et architecture
+
+Produire :
+
+- Analyse fonctionnelle.
+- Structure des dossiers.
+- Modèle de données.
+- Relations entre les entités.
+- Architecture de navigation.
+- Design system.
+- Stratégie de persistance.
+- Stratégie de sécurité.
+
+## PHASE 2 — Initialisation Flutter
+
+- Initialiser le projet.
+- Configurer la Clean Architecture.
+- Configurer Drift.
+- Configurer GetIt.
+- Configurer le thème.
+- Configurer la navigation.
+- Préparer les composants communs.
+
+## PHASE 3 — Authentification locale
+
+- Onboarding.
+- Inscription avec choix obligatoire de la matière unique.
+- Connexion.
+- Protection de session.
+- Déconnexion.
+
+## PHASE 4 — Gestion des établissements
+
+- Liste des écoles.
+- Ajout.
+- Modification.
+- Suppression transactionnelle, isolée.
+- Espace distinct par établissement et navigation/filtrage `schoolId`.
+- Tests de non-mélange entre écoles.
+
+## PHASE 5 — Années scolaires et classes
+
+- Gestion des années.
+- Gestion des périodes.
+- Création des classes dans l'établissement actif.
+- Modification des classes.
+- Suppression des classes.
+- Acceptation des noms de classes identiques dans deux écoles distinctes.
+
+## PHASE 6 — Gestion des élèves
+
+- Ajout.
+- Modification.
+- Suppression.
+- Recherche.
+- Profil.
+
+## PHASE 7 — Matière unique de l'enseignant
+
+- Sélection simple et stockage de l'unique matière dans le profil (si non finalisés en phase 3).
+- Affichage automatique de cette matière dans toutes les écoles/classes/évaluations.
+- Interdiction de gestion de matières par classe.
+- Politique de changement avant/après création d'évaluations.
+- Tests de cohérence de la matière unique.
+
+## PHASE 8 — Évaluations et notes
+
+- Création des interrogations dans la classe et l'école actives.
+- Création des devoirs.
+- Saisie des notes.
+- Modification des notes.
+- Suppression des notes.
+- Gestion des absences.
+- Vérification stricte de l'appartenance des notes et élèves à l'école active.
+
+## PHASE 9 — Calculs automatiques
+
+- Moyenne des interrogations.
+- Moyenne des matières.
+- Actualisation des résultats.
+- Tests métier.
+
+## PHASE 10 — Résultats et statistiques
+
+- Tableau des résultats exclusivement par établissement et classe.
+- Résultats individuels.
+- Statistiques par classe.
+- Filtres par période.
+
+## PHASE 11 — PDF et Excel
+
+- Export PDF filtré par établissement et classe.
+- Prévisualisation.
+- Impression.
+- Export XLSX filtré par établissement et classe.
+- Enregistrement.
+- Partage.
+
+## PHASE 12 — Sauvegardes et sécurité
+
+- Export de sauvegarde.
+- Restauration complète préservant la séparation entre écoles.
+- Protection du compte.
+- Suppression complète des données.
+
+## PHASE 13 — Finalisation
+
+- Tests.
+- Correction des erreurs.
+- Optimisation.
+- Vérification UX.
+- Vérification du fonctionnement hors ligne.
+- Vérification de la sécurité.
+- Préparation d'une version distribuable.
+
+---
+
+# 27. RÈGLES IMPÉRATIVES POUR L'AGENT IA
+
+Tu dois impérativement respecter les consignes suivantes :
+
+1. Ne jamais utiliser BLoC ou Cubit.
+
+2. Ne jamais utiliser Riverpod, Provider ou GetX pour la gestion d'état.
+
+3. Utiliser setState() pour les états d'interface.
+
+4. Respecter la Clean Architecture.
+
+5. Organiser le code par fonctionnalités.
+
+6. Éviter les abstractions inutiles.
+
+7. Ne jamais placer les calculs métier dans les widgets.
+
+8. Ne jamais accéder directement à SQLite depuis les pages.
+
+9. Utiliser GetIt pour l'injection des dépendances.
+
+10. Utiliser des Use Cases pour les opérations métier.
+
+11. Ne jamais imposer Firebase ou un backend distant.
+
+12. Garantir le fonctionnement intégral hors connexion.
+
+13. Ne pas utiliser de fausses données dans les écrans fonctionnels de production.
+
+14. Ne pas introduire de fonctionnalités simulées présentées comme fonctionnelles.
+
+15. Écrire du code maintenable et correctement organisé.
+
+16. Vérifier les contraintes des notes.
+
+17. Respecter strictement la formule des moyennes.
+
+18. Prévoir une gestion fiable des erreurs.
+
+19. Ne pas oublier les transactions SQLite.
+
+20. Protéger les données personnelles.
+
+21. Prévoir les migrations de la base de données.
+
+22. Créer des composants réutilisables.
+
+23. Éviter les fichiers inutilement volumineux.
+
+24. Respecter les conventions Dart et Flutter.
+
+25. Exécuter les analyses et les tests disponibles.
+
+26. Corriger les erreurs détectées avant de considérer une phase comme terminée.
+
+27. Ne pas réécrire une fonctionnalité existante sans nécessité.
+
+28. Documenter les décisions architecturales importantes.
+
+29. Prioriser la fiabilité plutôt que la complexité.
+
+30. Ne jamais affirmer qu'une fonctionnalité est terminée si elle n'a pas été réellement implémentée et vérifiée.
+
+31. Un enseignant ne peut enseigner qu'**une seule matière** dans toutes ses écoles et classes.
+
+32. Ne pas recréer `ClassSubject` ni d'association matière-classe.
+
+33. Ne jamais mélanger les classes, élèves, évaluations, notes et moyennes de deux établissements.
+
+34. Afficher clairement l'établissement actif dans les écrans métiers et vérifier `schoolId` dans les opérations.
+
+35. Les exports PDF et Excel doivent être propres à l'établissement actif et à la classe sélectionnée.
+
+36. Accepter qu'une même désignation de classe existe dans deux écoles différentes.
+
+37. Ne jamais permettre d'enregistrer une note sur un élève d'une autre classe, même si son matricule ou son nom est identique.
+
+38. Préserver intégralement la formule et les règles des § 14 et § 15.
+
+39. Ne pas changer la matière unique du profil après la création d'évaluations en V1.
+
+40. Prévoir des tests d'isolation des établissements et d'unicité de la matière, en plus des tests de moyennes.
+
+---
+
+# 28. LIVRABLES ATTENDUS
+
+Avant de commencer à écrire le code, présente :
+
+1. Une synthèse du fonctionnement de l'application.
+2. Une proposition d'architecture Flutter.
+3. La structure des dossiers.
+4. Le diagramme des relations entre les entités, avec un `Teacher.subjectId` unique et sans `ClassSubject`.
+5. Le schéma SQLite/Drift.
+6. Les principaux Use Cases.
+7. La liste détaillée des écrans, y compris l'espace propre à chaque établissement.
+8. Le parcours utilisateur.
+9. La description des calculs inchangés et leur portée école/classe/année/période.
+10. La stratégie de sauvegarde.
+11. Les principales contraintes de sécurité.
+12. Le plan de développement.
+13. La stratégie de séparation des données entre établissements et les tests associés.
+
+Ensuite, commence immédiatement le développement de la première phase réalisable dans le dépôt de travail.
+
+Si un projet Flutter existe déjà, commence par analyser son contenu, ses dépendances, son architecture et ses conventions avant toute modification.
+
+Ne détruis pas les fonctionnalités existantes.
+
+Travaille progressivement en maintenant une application compilable après chaque phase.
+
+Pour chaque phase terminée :
+
+- Présente les fichiers créés ou modifiés.
+- Explique brièvement les décisions prises.
+- Indique les fonctionnalités opérationnelles.
+- Exécute les vérifications possibles.
+- Signale clairement les éventuelles limites.
+
+# OBJECTIF FINAL
+
+Livrer une application Flutter de gestion des notes scolaires :
+
+- Moderne.
+- Intuitive.
+- Fiable.
+- Rapide.
+- Sécurisée.
+- Entièrement hors connexion.
+- Basée sur Clean Architecture.
+- Utilisant setState().
+- Permettant la gestion de plusieurs écoles.
+- Permettant la gestion de plusieurs classes indépendantes dans chaque établissement.
+- Offrant un espace distinct à chaque école pour ses classes, élèves, évaluations, notes, moyennes et résultats.
+- Imposant **une matière unique par enseignant**, identique dans tous ses établissements.
+- Permettant la gestion des élèves.
+- Calculant automatiquement les moyennes.
+- Générant des relevés PDF et Excel filtrés strictement par établissement et classe.
+- Permettant la sauvegarde et la restauration.
+- Garantissant à l'enseignant le contrôle de ses données.
+
+EduNote doit être un outil réellement utile au quotidien, et non simplement une application de démonstration.

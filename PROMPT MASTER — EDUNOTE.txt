@@ -1,0 +1,1672 @@
+# PROMPT MASTER — EDUNOTE
+## Développement d'une application mobile Flutter de gestion des notes scolaires
+
+# 1. TON RÔLE
+
+Tu es un ingénieur logiciel senior spécialisé dans :
+
+- Flutter et Dart.
+- Clean Architecture.
+- SQLite et Drift.
+- Développement mobile Offline-First.
+- Modélisation de bases de données relationnelles.
+- Expérience utilisateur (UX).
+- Material Design 3.
+- Génération de documents PDF et Excel.
+- Sécurité des données locales.
+- Tests unitaires et tests d'intégration.
+
+Ta mission est de concevoir et développer une véritable application mobile Flutter appelée provisoirement **EduNote**.
+
+Il ne s'agit pas de réaliser une simple démonstration ou une maquette statique.
+
+L'objectif est de construire une application fonctionnelle, fiable, évolutive et utilisable quotidiennement par des enseignants.
+
+Tu dois respecter impérativement les exigences fonctionnelles, techniques et architecturales décrites dans ce document.
+
+---
+
+# 2. PRÉSENTATION DU PROJET
+
+EduNote est une application mobile destinée aux enseignants qui interviennent dans une ou plusieurs écoles et souhaitent gérer facilement les notes de leurs élèves.
+
+Dans de nombreux établissements scolaires, les enseignants utilisent encore des cahiers, des feuilles de calcul ou des documents papier pour enregistrer les interrogations, les devoirs et calculer les moyennes.
+
+Cette méthode présente plusieurs difficultés :
+
+- Risque de perte des informations.
+- Erreurs dans les calculs.
+- Difficulté à gérer plusieurs classes.
+- Difficulté à retrouver les notes d'un élève.
+- Temps important consacré aux calculs manuels.
+- Difficulté à préparer les relevés de notes.
+
+EduNote doit résoudre ces problèmes en centralisant toutes les informations dans une application mobile.
+
+L'enseignant pourra gérer plusieurs établissements, plusieurs classes, plusieurs matières et plusieurs élèves.
+
+Il pourra saisir les notes des interrogations et des devoirs, consulter les moyennes calculées automatiquement et exporter les résultats.
+
+L'application doit être adaptée au contexte scolaire africain, particulièrement béninois, tout en restant suffisamment flexible pour d'autres systèmes éducatifs.
+
+---
+
+# 3. PHILOSOPHIE DE L'APPLICATION
+
+EduNote repose sur cinq principes fondamentaux.
+
+## 3.1. Simplicité
+
+L'application doit être compréhensible par un enseignant qui ne possède aucune compétence technique.
+
+Les principales opérations doivent être faciles à effectuer.
+
+## 3.2. Autonomie
+
+L'application doit fonctionner intégralement sans connexion Internet.
+
+Aucun serveur distant ne doit être nécessaire.
+
+## 3.3. Confidentialité
+
+Toutes les données enregistrées appartiennent exclusivement à l'enseignant.
+
+Aucun administrateur, établissement scolaire ou autre utilisateur ne doit pouvoir y accéder à distance.
+
+## 3.4. Contrôle des données
+
+L'enseignant peut :
+
+- Consulter ses informations.
+- Modifier ses informations.
+- Exporter ses données.
+- Sauvegarder ses données.
+- Restaurer ses données.
+- Supprimer certaines informations.
+- Effacer toutes ses données.
+
+## 3.5. Fiabilité
+
+Les calculs des notes doivent être exacts, cohérents et testés.
+
+Les opérations de sauvegarde doivent préserver l'intégrité des données.
+
+---
+
+# 4. STACK TECHNIQUE OBLIGATOIRE
+
+## Framework
+
+Flutter avec Dart.
+
+Utiliser une version stable et compatible des dépendances.
+
+## Architecture
+
+Clean Architecture avec organisation Feature-First.
+
+## Gestion d'état
+
+Utiliser exclusivement :
+
+- StatefulWidget.
+- setState().
+- Les mécanismes natifs de Flutter lorsque nécessaire.
+
+Ne pas utiliser :
+
+- BLoC.
+- Cubit.
+- Riverpod.
+- Provider.
+- GetX pour la gestion d'état.
+
+## Base de données
+
+SQLite avec Drift.
+
+La base de données doit être entièrement locale.
+
+## Injection de dépendances
+
+GetIt.
+
+## Sécurité
+
+Utiliser des solutions adaptées pour :
+
+- Le hachage sécurisé du mot de passe.
+- Le stockage des informations sensibles.
+- La protection des sauvegardes.
+- La sécurisation des accès locaux.
+
+## Documents
+
+Prévoir :
+
+- pdf.
+- printing.
+- excel ou une bibliothèque compatible avec l'exportation XLSX.
+- path_provider.
+- share_plus.
+
+Vérifier la compatibilité des versions avant l'intégration.
+
+Ne pas introduire inutilement des dépendances supplémentaires.
+
+---
+
+# 5. ARCHITECTURE DU PROJET
+
+Utiliser une organisation Feature-First.
+
+Structure indicative :
+
+```text
+lib/
+│
+├── core/
+│   ├── constants/
+│   ├── database/
+│   │   ├── app_database.dart
+│   │   ├── tables/
+│   │   ├── daos/
+│   │   └── migrations/
+│   ├── errors/
+│   ├── security/
+│   ├── services/
+│   ├── theme/
+│   ├── utils/
+│   └── widgets/
+│
+├── features/
+│   │
+│   ├── authentication/
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   ├── models/
+│   │   │   └── repositories/
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   ├── repositories/
+│   │   │   └── usecases/
+│   │   └── presentation/
+│   │       ├── pages/
+│   │       └── widgets/
+│   │
+│   ├── dashboard/
+│   ├── schools/
+│   ├── academic_years/
+│   ├── classes/
+│   ├── students/
+│   ├── subjects/
+│   ├── evaluations/
+│   ├── grades/
+│   ├── results/
+│   ├── exports/
+│   ├── backups/
+│   ├── settings/
+│   └── profile/
+│
+├── app/
+│   ├── app.dart
+│   └── navigation/
+│
+├── injection_container.dart
+└── main.dart
+```
+
+Chaque fonctionnalité doit respecter les couches :
+
+### Data
+
+Responsable de :
+
+- La lecture des données.
+- L'écriture dans SQLite.
+- La conversion des modèles.
+- L'implémentation des repositories.
+
+### Domain
+
+Responsable de :
+
+- La logique métier.
+- Les entités.
+- Les interfaces des repositories.
+- Les Use Cases.
+- Les règles de calcul.
+
+### Presentation
+
+Responsable de :
+
+- L'affichage des interfaces.
+- La gestion des états avec setState().
+- La validation de présentation.
+- La navigation.
+- L'interaction utilisateur.
+
+Interdiction d'écrire des requêtes SQL directement dans les pages Flutter.
+
+Les opérations métier doivent passer par les Use Cases.
+
+Les modèles Drift ne doivent pas être utilisés directement comme entités dans la couche Domain.
+
+---
+
+# 6. AUTHENTIFICATION LOCALE
+
+L'application doit proposer un système de compte local.
+
+IMPORTANT :
+
+Il ne s'agit pas d'une authentification en ligne.
+
+Aucun serveur, Firebase ou service OTP n'est nécessaire.
+
+## 6.1. Inscription
+
+L'enseignant doit renseigner :
+
+- Nom.
+- Prénom.
+- Profession.
+- Numéro WhatsApp.
+- Mot de passe.
+- Confirmation du mot de passe.
+
+### Profession
+
+Proposer notamment :
+
+- Instituteur.
+- Professeur de mathématiques.
+- Professeur de français.
+- Professeur de PCT.
+- Professeur de SVT.
+- Professeur d'anglais.
+- Professeur d'histoire-géographie.
+- Autre.
+
+Si l'enseignant choisit « Autre », permettre la saisie d'une profession personnalisée.
+
+### Numéro WhatsApp
+
+Prévoir un indicatif international.
+
+L'indicatif initial peut être +229.
+
+Ne pas envoyer de code OTP.
+
+Le numéro WhatsApp constitue un identifiant local et une information de profil.
+
+Ne pas prétendre vérifier la propriété du numéro sans service externe.
+
+### Mot de passe
+
+Appliquer des règles de validation appropriées.
+
+Ne jamais stocker le mot de passe en clair.
+
+Utiliser un mécanisme de dérivation de clé adapté aux mots de passe, avec sel unique et paramètres sécurisés.
+
+## 6.2. Compte local
+
+Pour la V1, prévoir un profil enseignant principal par installation.
+
+L'application ne doit pas présenter ce compte comme étant synchronisé sur plusieurs téléphones.
+
+## 6.3. Connexion
+
+L'enseignant peut déverrouiller son espace personnel avec son mot de passe.
+
+Prévoir :
+
+- Écran de connexion.
+- Messages d'erreur.
+- Verrouillage de session.
+- Déconnexion.
+- Protection contre les tentatives répétées.
+
+Ne pas créer de récupération du mot de passe fictive.
+
+Dans une application totalement hors ligne, la récupération du mot de passe nécessite un mécanisme sécurisé spécifique.
+
+## 6.4. Première ouverture
+
+Si aucun compte local n'existe :
+
+Afficher les écrans de présentation, puis proposer l'inscription.
+
+Si un compte existe :
+
+Afficher l'écran de connexion ou restaurer une session locale valide selon les paramètres de sécurité.
+
+---
+
+# 7. ONBOARDING
+
+Créer un onboarding moderne composé de trois écrans.
+
+### Écran 1
+
+Titre :
+
+« Toutes vos classes, au même endroit »
+
+Description :
+
+« Organisez facilement les établissements et les classes dans lesquels vous enseignez. »
+
+### Écran 2
+
+Titre :
+
+« Vos notes, sans calculs compliqués »
+
+Description :
+
+« Enregistrez les interrogations et les devoirs. EduNote calcule automatiquement les moyennes. »
+
+### Écran 3
+
+Titre :
+
+« Vos données restent entre vos mains »
+
+Description :
+
+« Travaillez sans Internet, sauvegardez vos données et exportez vos résultats. »
+
+Prévoir :
+
+- Illustrations.
+- Indicateurs de progression.
+- Bouton Suivant.
+- Bouton Commencer.
+- Option Passer.
+
+L'onboarding ne doit apparaître qu'à la première utilisation, sauf réinitialisation volontaire.
+
+---
+
+# 8. ÉCRAN D'ACCUEIL
+
+Après l'inscription, l'enseignant accède à son tableau de bord.
+
+## 8.1. Première connexion
+
+Lorsque l'enseignant n'a enregistré aucun établissement, afficher un Empty State.
+
+Titre :
+
+« Bienvenue sur EduNote ! »
+
+Description :
+
+« Ajoutez votre premier établissement scolaire pour commencer à organiser vos classes et suivre les résultats de vos élèves. »
+
+Bouton principal :
+
+« Ajouter une école »
+
+Ne pas afficher de statistiques fictives.
+
+## 8.2. Tableau de bord normal
+
+Lorsque l'enseignant possède des établissements, afficher :
+
+- Message d'accueil personnalisé.
+- Nombre d'établissements.
+- Nombre de classes.
+- Nombre d'élèves.
+- Nombre d'évaluations.
+- Évaluations récentes.
+- Raccourcis vers les principales fonctionnalités.
+
+### Actions rapides
+
+- Ajouter une école.
+- Ajouter une classe.
+- Ajouter un élève.
+- Créer une évaluation.
+- Saisir des notes.
+- Consulter les résultats.
+
+Les statistiques doivent être calculées depuis SQLite.
+
+---
+
+# 9. GESTION DES ÉTABLISSEMENTS
+
+Un enseignant peut enregistrer plusieurs établissements scolaires.
+
+Exemple :
+
+```text
+Enseignant
+│
+├── CEG Porto-Novo
+│
+├── CEG Sèmè-Podji
+│
+└── Collège privé Exemple
+```
+
+## 9.1. Création
+
+Champs :
+
+- Nom de l'établissement.
+- Type d'établissement.
+- Ville ou commune.
+- Adresse facultative.
+
+Types :
+
+- Primaire.
+- Collège.
+- Lycée.
+- Autre.
+
+## 9.2. Fonctionnalités
+
+Permettre de :
+
+- Ajouter un établissement.
+- Modifier un établissement.
+- Afficher ses détails.
+- Consulter ses classes.
+- Supprimer un établissement.
+
+## 9.3. Suppression
+
+La suppression doit afficher une confirmation explicite.
+
+Si l'établissement contient des classes, des élèves et des notes, prévenir l'enseignant des conséquences.
+
+La suppression doit être transactionnelle.
+
+Ne jamais laisser de données orphelines.
+
+---
+
+# 10. ANNÉES SCOLAIRES ET PÉRIODES
+
+L'application doit permettre de gérer plusieurs années scolaires.
+
+Exemples :
+
+- 2026-2027.
+- 2027-2028.
+- 2028-2029.
+
+Une même classe peut exister sur différentes années scolaires.
+
+Les notes d'une année ne doivent pas se mélanger avec celles des années suivantes.
+
+## Périodes
+
+Prévoir :
+
+- Premier semestre.
+- Deuxième semestre.
+
+Permettre à terme d'autres organisations :
+
+- Trimestres.
+- Séquences.
+- Périodes personnalisées.
+
+L'enseignant doit pouvoir sélectionner la période active.
+
+Toutes les évaluations doivent être associées à une année scolaire et une période.
+
+---
+
+# 11. GESTION DES CLASSES
+
+Chaque établissement peut contenir plusieurs classes.
+
+Exemple :
+
+```text
+CEG Porto-Novo
+│
+├── 6e A
+├── 5e B
+├── 4e A
+└── 3e C
+```
+
+## 11.1. Création d'une classe
+
+Champs :
+
+- Nom de la classe.
+- Niveau.
+- Année scolaire.
+- Établissement associé.
+
+## 11.2. Fonctionnalités
+
+- Ajouter une classe.
+- Modifier une classe.
+- Supprimer une classe.
+- Consulter les élèves.
+- Gérer les matières.
+- Gérer les évaluations.
+- Consulter les résultats.
+
+Une classe appartient à un établissement et à une année scolaire.
+
+Éviter les doublons involontaires de classes dans le même contexte.
+
+---
+
+# 12. GESTION DES ÉLÈVES
+
+Une classe contient plusieurs élèves.
+
+## 12.1. Création
+
+Champs :
+
+- Nom.
+- Prénom.
+- Sexe.
+- Date de naissance.
+- Matricule.
+- Classe.
+- Numéro d'ordre facultatif.
+
+Le matricule peut être saisi manuellement.
+
+Prévoir également une génération automatique de matricule unique dans le périmètre défini.
+
+## 12.2. Fonctionnalités
+
+- Ajouter un élève.
+- Modifier un élève.
+- Supprimer un élève.
+- Consulter son profil.
+- Rechercher un élève.
+- Trier les élèves.
+- Consulter ses notes.
+- Consulter ses moyennes.
+
+## 12.3. Liste des élèves
+
+Afficher :
+
+- Nom complet.
+- Matricule.
+- Sexe si renseigné.
+- Moyenne de la matière sélectionnée, lorsqu'elle existe.
+
+Prévoir une recherche et un tri alphabétique.
+
+## 12.4. Profil élève
+
+Afficher :
+
+- Informations personnelles.
+- Classe.
+- Matières suivies.
+- Notes.
+- Moyennes par matière.
+- Historique des évaluations.
+
+Les données personnelles des élèves doivent être limitées aux informations réellement nécessaires.
+
+---
+
+# 13. GESTION DES MATIÈRES
+
+IMPORTANT :
+
+Un enseignant peut enseigner plusieurs matières dans une même classe.
+
+Chaque matière doit posséder ses propres évaluations et notes.
+
+Exemple :
+
+```text
+Classe 3e A
+│
+├── Mathématiques
+│   ├── Interrogations
+│   ├── Devoirs
+│   └── Moyennes
+│
+├── PCT
+│   ├── Interrogations
+│   ├── Devoirs
+│   └── Moyennes
+│
+└── SVT
+    ├── Interrogations
+    ├── Devoirs
+    └── Moyennes
+```
+
+## Fonctionnalités
+
+- Ajouter une matière.
+- Associer une matière à une classe.
+- Modifier une matière.
+- Retirer une matière d'une classe.
+- Consulter les évaluations.
+- Consulter les résultats.
+
+Les notes de mathématiques ne doivent jamais être mélangées avec celles de PCT.
+
+Une matière peut être associée à plusieurs classes.
+
+La relation classe-matière doit être correctement modélisée.
+
+---
+
+# 14. GESTION DES ÉVALUATIONS
+
+L'enseignant doit pouvoir enregistrer deux types principaux d'évaluations :
+
+1. Interrogation.
+2. Devoir.
+
+## 14.1. Création d'une interrogation
+
+L'enseignant sélectionne :
+
+- Établissement.
+- Classe.
+- Matière.
+- Année scolaire.
+- Période.
+
+Puis renseigne :
+
+- Numéro de l'interrogation.
+- Titre facultatif.
+- Date.
+- Barème.
+
+Exemple :
+
+Interrogation n°1 de mathématiques.
+
+Classe : 3e A.
+
+Barème : /20.
+
+## 14.2. Création d'un devoir
+
+Les devoirs doivent être identifiés comme :
+
+- Devoir 1.
+- Devoir 2.
+
+Pour une matière et une période données, il ne doit pas exister deux évaluations actives portant le même identifiant « Devoir 1 » ou « Devoir 2 ».
+
+Les deux devoirs constituent les deux notes utilisées dans le calcul final de la matière.
+
+## 14.3. Saisie des notes
+
+Après la création d'une évaluation, afficher la liste des élèves de la classe.
+
+Exemple :
+
+| Élève | Note |
+|---|---|
+| Jean Pierre | 12 |
+| Marie Rose | 16 |
+| Paul Alain | 09 |
+| Fatima Aïcha | 14 |
+
+Permettre la saisie rapide des notes directement depuis cette liste.
+
+### Contraintes
+
+- Une note doit être comprise entre 0 et le barème.
+- Les valeurs décimales sont autorisées.
+- Une note manquante est différente de zéro.
+- Une absence doit être identifiée explicitement.
+- Une seule note est autorisée par élève et par évaluation.
+
+Prévoir une saisie ergonomique avec clavier numérique adapté.
+
+## 14.4. Sauvegarde
+
+Les notes doivent être enregistrées dans SQLite.
+
+La sauvegarde de plusieurs notes doit être transactionnelle.
+
+Afficher un message de confirmation après une sauvegarde réussie.
+
+En cas d'erreur, conserver les valeurs saisies dans le formulaire pour éviter toute perte de travail.
+
+---
+
+# 15. RÈGLES DE CALCUL DES MOYENNES
+
+CETTE SECTION EST PRIORITAIRE.
+
+Le système de calcul doit respecter exactement les règles suivantes.
+
+## 15.1. Moyenne des interrogations
+
+Une matière peut contenir plusieurs interrogations.
+
+Exemple :
+
+Interrogation 1 : 12/20.
+
+Interrogation 2 : 16/20.
+
+Interrogation 3 : 14/20.
+
+La moyenne des interrogations est :
+
+MI = (12 + 16 + 14) / 3
+
+Résultat :
+
+MI = 14/20.
+
+Cette moyenne doit être affichée distinctement.
+
+## 15.2. Moyenne de la matière
+
+La moyenne finale d'une matière est calculée à partir de trois éléments :
+
+1. La moyenne des interrogations.
+2. La note du devoir 1.
+3. La note du devoir 2.
+
+Formule :
+
+**Moyenne matière = (Moyenne interrogations + Devoir 1 + Devoir 2) / 3**
+
+Exemple :
+
+Moyenne interrogations : 14.
+
+Devoir 1 : 13.
+
+Devoir 2 : 16.
+
+Moyenne matière :
+
+(14 + 13 + 16) / 3 = 14,33/20.
+
+## 15.3. Actualisation automatique
+
+Chaque fois qu'une note est :
+
+- Ajoutée.
+- Modifiée.
+- Supprimée.
+
+Les résultats concernés doivent être recalculés.
+
+L'interface doit afficher les nouvelles moyennes immédiatement après la validation locale de l'opération.
+
+## 15.4. Notes manquantes
+
+Ne jamais remplacer automatiquement une note manquante par zéro.
+
+Si le devoir 1 ou le devoir 2 n'a pas encore été renseigné, la moyenne finale de la matière doit être considérée comme incomplète.
+
+Afficher par exemple :
+
+« Moyenne en attente ».
+
+La moyenne des interrogations doit néanmoins rester visible.
+
+## 15.5. Absences
+
+Prévoir plusieurs états :
+
+- Note renseignée.
+- Note non renseignée.
+- Élève absent.
+
+Une absence ne doit pas automatiquement valoir zéro.
+
+Prévoir une distinction entre une absence et un zéro réellement attribué.
+
+## 15.6. Barèmes
+
+Utiliser /20 comme barème de référence pour les moyennes.
+
+Si une évaluation utilise un autre barème, normaliser la note sur 20 avant son intégration au calcul.
+
+Exemple :
+
+8/10 = 16/20.
+
+## 15.7. Arrondis
+
+Afficher les moyennes avec deux chiffres après la virgule.
+
+Effectuer les calculs avec une précision suffisante.
+
+Ne pas arrondir inutilement les résultats intermédiaires.
+
+## 15.8. Tests
+
+Créer des tests unitaires couvrant :
+
+- Une interrogation.
+- Plusieurs interrogations.
+- Deux devoirs renseignés.
+- Un devoir manquant.
+- Aucune interrogation.
+- Une note égale à zéro.
+- Une absence.
+- Une modification de note.
+- Une suppression de note.
+- Des barèmes différents.
+- Des moyennes décimales.
+
+Centraliser toute cette logique dans la couche Domain.
+
+Aucun calcul métier complexe ne doit être directement écrit dans les widgets.
+
+---
+
+# 16. CONSULTATION DES RÉSULTATS
+
+Permettre à l'enseignant de consulter les résultats selon :
+
+- L'établissement.
+- L'année scolaire.
+- La classe.
+- La matière.
+- La période.
+
+## 16.1. Tableau des résultats
+
+Afficher les colonnes :
+
+| N° | Élève | Int. 1 | Int. 2 | Moy. Int. | Dev. 1 | Dev. 2 | Moy. finale |
+|---|---|---|---|---|---|---|---|
+
+Le nombre d'interrogations pouvant varier, le tableau doit prendre en charge un nombre dynamique de colonnes.
+
+Prévoir un défilement horizontal lorsque nécessaire.
+
+## 16.2. Résultats individuels
+
+Le profil de l'élève doit permettre de consulter :
+
+- Les interrogations.
+- Les devoirs.
+- La moyenne des interrogations.
+- La moyenne finale de chaque matière.
+
+## 16.3. Statistiques
+
+Afficher :
+
+- Nombre d'élèves.
+- Nombre d'élèves évalués.
+- Moyenne de la classe.
+- Meilleure moyenne.
+- Moyenne la plus faible.
+
+Les statistiques doivent être calculées uniquement à partir des résultats éligibles et complets.
+
+---
+
+# 17. EXPORTATION PDF
+
+L'exportation PDF est obligatoire dès la V1.
+
+Elle doit fonctionner sans Internet.
+
+## 17.1. Sélection
+
+L'enseignant choisit :
+
+- Établissement.
+- Année scolaire.
+- Classe.
+- Matière.
+- Période.
+
+Puis sélectionne :
+
+« Exporter en PDF ».
+
+## 17.2. Contenu
+
+Le document doit contenir :
+
+- Nom de l'établissement.
+- Année scolaire.
+- Nom de la classe.
+- Matière.
+- Période.
+- Nom complet de l'enseignant.
+- Date de génération.
+- Tableau des élèves et des notes.
+- Moyenne des interrogations.
+- Devoir 1.
+- Devoir 2.
+- Moyenne finale.
+
+## 17.3. Présentation
+
+Générer un document professionnel.
+
+Prévoir :
+
+- En-tête clair.
+- Titre du relevé.
+- Tableau structuré.
+- Pagination.
+- Numérotation des élèves.
+- Alignement correct des notes.
+- Mise en page adaptée à l'impression.
+
+Si le tableau contient de nombreuses interrogations, adapter automatiquement l'orientation et la largeur des colonnes.
+
+Éviter les débordements.
+
+## 17.4. Actions
+
+L'enseignant peut :
+
+- Prévisualiser le document.
+- L'enregistrer.
+- L'imprimer.
+- Le partager via les applications installées.
+
+---
+
+# 18. EXPORTATION EXCEL
+
+L'exportation Excel est obligatoire dès la V1.
+
+Générer un véritable fichier .xlsx.
+
+## Contenu
+
+Inclure :
+
+- Informations de l'établissement.
+- Classe.
+- Matière.
+- Période.
+- Année scolaire.
+- Liste des élèves.
+- Toutes les interrogations.
+- Moyenne des interrogations.
+- Devoir 1.
+- Devoir 2.
+- Moyenne finale.
+
+## Mise en forme
+
+Prévoir :
+
+- En-têtes lisibles.
+- Colonnes adaptées.
+- Bordures.
+- Formats numériques cohérents.
+- Titres.
+- Alignements.
+
+Les notes doivent être enregistrées comme des valeurs numériques lorsque c'est applicable.
+
+Les cellules correspondant à des notes absentes ne doivent pas être remplacées par zéro.
+
+L'export doit produire un fichier compatible avec Microsoft Excel et les principaux tableurs.
+
+## Partage
+
+Permettre :
+
+- L'enregistrement local.
+- Le partage du fichier.
+- Son ouverture dans une application compatible.
+
+Les fichiers exportés sont des copies des données : leur suppression ne doit pas modifier les données enregistrées dans EduNote.
+
+---
+
+# 19. SAUVEGARDE ET RESTAURATION
+
+Cette fonctionnalité est essentielle puisque l'application fonctionne sans serveur.
+
+## 19.1. Sauvegarde
+
+Permettre à l'enseignant de créer manuellement une sauvegarde complète.
+
+Elle doit inclure :
+
+- Profil.
+- Établissements.
+- Années scolaires.
+- Classes.
+- Élèves.
+- Matières.
+- Évaluations.
+- Notes.
+- Paramètres nécessaires à la restauration.
+
+Utiliser un format versionné et chiffré.
+
+La sauvegarde ne doit pas contenir de mot de passe en clair.
+
+Prévoir une protection par mot de passe de sauvegarde indépendant ou un mécanisme équivalent adapté.
+
+## 19.2. Restauration
+
+Permettre de sélectionner un fichier de sauvegarde.
+
+Avant la restauration :
+
+- Vérifier le format.
+- Vérifier la version.
+- Vérifier l'intégrité.
+- Déchiffrer le fichier.
+- Vérifier la compatibilité.
+
+Afficher une confirmation avant de remplacer les données existantes.
+
+La restauration doit être atomique ou disposer d'un mécanisme fiable de retour arrière.
+
+Une restauration échouée ne doit pas détruire les données existantes.
+
+## 19.3. Suppression complète
+
+Dans les paramètres, proposer :
+
+« Supprimer toutes mes données ».
+
+Afficher un avertissement explicite.
+
+Après confirmation et vérification locale appropriée, effacer :
+
+- Les établissements.
+- Les classes.
+- Les élèves.
+- Les évaluations.
+- Les notes.
+- Les données de profil.
+- Les autres données applicatives locales.
+
+Ne pas affirmer que cette action supprime automatiquement des sauvegardes déjà exportées dans des emplacements externes.
+
+---
+
+# 20. MODÉLISATION DE LA BASE DE DONNÉES
+
+Utiliser SQLite avec Drift.
+
+Prévoir au minimum les entités suivantes :
+
+## Teacher
+
+- id.
+- firstName.
+- lastName.
+- profession.
+- whatsappNumber.
+- passwordHash.
+- passwordSalt ou paramètres adaptés.
+- createdAt.
+- updatedAt.
+
+## School
+
+- id.
+- teacherId.
+- name.
+- type.
+- city.
+- address.
+- createdAt.
+- updatedAt.
+
+## AcademicYear
+
+- id.
+- label.
+- startDate.
+- endDate.
+- isActive.
+
+## AcademicPeriod
+
+- id.
+- academicYearId.
+- name.
+- startDate.
+- endDate.
+
+## SchoolClass
+
+- id.
+- schoolId.
+- academicYearId.
+- name.
+- level.
+- createdAt.
+- updatedAt.
+
+## Student
+
+- id.
+- classId.
+- firstName.
+- lastName.
+- gender.
+- dateOfBirth.
+- registrationNumber.
+- orderNumber.
+- createdAt.
+- updatedAt.
+
+## Subject
+
+- id.
+- name.
+- createdAt.
+- updatedAt.
+
+## ClassSubject
+
+- id.
+- classId.
+- subjectId.
+
+## Evaluation
+
+- id.
+- classSubjectId.
+- academicPeriodId.
+- type.
+- evaluationNumber.
+- title.
+- evaluationDate.
+- maxScore.
+- createdAt.
+- updatedAt.
+
+## Grade
+
+- id.
+- evaluationId.
+- studentId.
+- score.
+- status.
+- createdAt.
+- updatedAt.
+
+## AppSettings
+
+Prévoir les paramètres nécessaires au fonctionnement de l'application.
+
+### Contraintes importantes
+
+Activer les clés étrangères SQLite.
+
+Définir les relations et les contraintes d'unicité nécessaires.
+
+Prévoir les index utiles.
+
+Créer les migrations Drift.
+
+Utiliser des transactions pour les opérations critiques.
+
+Vérifier systématiquement qu'une note est associée à un élève appartenant à la classe de l'évaluation concernée.
+
+Empêcher les incohérences entre établissements, classes, matières, périodes et élèves.
+
+Les règles de suppression doivent être explicitement définies.
+
+---
+
+# 21. DESIGN SYSTEM
+
+Concevoir une identité visuelle professionnelle.
+
+## Direction artistique
+
+L'application doit inspirer :
+
+- Confiance.
+- Sérieux.
+- Simplicité.
+- Modernité.
+- Organisation.
+
+## Couleurs
+
+Proposer une palette dominée par :
+
+- Bleu profond.
+- Bleu clair.
+- Couleurs neutres.
+- Vert discret pour les validations.
+- Rouge pour les erreurs et suppressions.
+
+Ne pas multiplier les couleurs.
+
+## Typographie
+
+Utiliser une typographie moderne, lisible et adaptée aux interfaces mobiles.
+
+## Composants
+
+Créer des composants réutilisables :
+
+- Boutons principaux.
+- Champs de formulaire.
+- Cartes d'établissements.
+- Cartes de classes.
+- Listes d'élèves.
+- Badges de notes.
+- Boîtes de dialogue.
+- Empty States.
+- Indicateurs de chargement.
+- Barres de recherche.
+- Filtres.
+- Messages de confirmation.
+
+Utiliser Material Design 3.
+
+## Responsive
+
+Adapter l'interface aux différentes tailles de téléphones.
+
+Prendre en charge les petits écrans.
+
+Éviter les débordements horizontaux non souhaités.
+
+---
+
+# 22. NAVIGATION
+
+Prévoir une navigation principale comportant cinq sections :
+
+1. Accueil.
+2. Établissements.
+3. Évaluations.
+4. Résultats.
+5. Profil.
+
+## Accueil
+
+Dashboard et raccourcis.
+
+## Établissements
+
+Liste des écoles et accès aux classes.
+
+## Évaluations
+
+Consultation des évaluations, création et saisie des notes.
+
+## Résultats
+
+Consultation et export des tableaux de notes.
+
+## Profil
+
+Informations personnelles, sécurité, sauvegarde et paramètres.
+
+La navigation doit rester fluide et cohérente.
+
+---
+
+# 23. GESTION DES ÉTATS AVEC SETSTATE
+
+Toutes les pages nécessitant des interactions doivent utiliser StatefulWidget lorsque cela est pertinent.
+
+Les états classiques doivent être gérés avec setState() :
+
+- isLoading.
+- isSaving.
+- errorMessage.
+- selectedSchool.
+- selectedClass.
+- selectedSubject.
+- selectedPeriod.
+- Données chargées.
+
+Exemple de fonctionnement attendu :
+
+1. L'utilisateur ouvre une page.
+2. La page appelle un Use Case.
+3. L'état de chargement est activé.
+4. Le Use Case récupère les données via le Repository.
+5. La page reçoit les résultats.
+6. setState() actualise l'interface.
+7. L'état de chargement est désactivé.
+
+Prévoir les vérifications de cycle de vie nécessaires avant l'appel à setState() après une opération asynchrone.
+
+Ne pas mélanger la logique métier avec la logique de présentation.
+
+Ne pas créer de système complexe de gestion d'état qui contourne la préférence pour setState().
+
+---
+
+# 24. GESTION DES ERREURS
+
+Prévoir une gestion centralisée et cohérente des erreurs.
+
+Exemples :
+
+- Erreur de lecture SQLite.
+- Erreur d'écriture.
+- Données invalides.
+- Classe inexistante.
+- Élève inexistant.
+- Évaluation introuvable.
+- Note hors barème.
+- Échec d'export PDF.
+- Échec d'export Excel.
+- Sauvegarde corrompue.
+- Restauration incompatible.
+
+Les messages affichés doivent être compréhensibles pour les enseignants.
+
+Ne jamais afficher directement des exceptions techniques à l'utilisateur final.
+
+Les détails techniques peuvent être enregistrés dans des journaux locaux sécurisés, sans exposer les informations personnelles des élèves.
+
+---
+
+# 25. TESTS
+
+Créer des tests unitaires et des tests d'intégration pertinents.
+
+## Tests métier
+
+Vérifier :
+
+- Le calcul des moyennes.
+- Les contraintes des notes.
+- Les calculs avec barèmes différents.
+- Les notes manquantes.
+- Les absences.
+- Les règles des deux devoirs.
+- Les relations entre classes et matières.
+
+## Tests de persistance
+
+Vérifier :
+
+- Création d'un établissement.
+- Création d'une classe.
+- Ajout d'un élève.
+- Ajout d'une matière.
+- Création d'une évaluation.
+- Sauvegarde des notes.
+- Modification des notes.
+- Suppression et intégrité référentielle.
+
+## Tests des documents
+
+Vérifier :
+
+- Génération PDF.
+- Génération XLSX.
+- Cohérence des notes exportées.
+- Présence des informations obligatoires.
+
+## Tests de sauvegarde
+
+Vérifier :
+
+- Création d'une sauvegarde.
+- Restauration.
+- Détection des fichiers invalides.
+- Conservation des données en cas d'échec.
+
+---
+
+# 26. DÉROULEMENT DU DÉVELOPPEMENT
+
+Ne commence pas par développer toutes les fonctionnalités simultanément.
+
+Le travail doit être organisé en phases.
+
+## PHASE 1 — Analyse et architecture
+
+Produire :
+
+- Analyse fonctionnelle.
+- Structure des dossiers.
+- Modèle de données.
+- Relations entre les entités.
+- Architecture de navigation.
+- Design system.
+- Stratégie de persistance.
+- Stratégie de sécurité.
+
+## PHASE 2 — Initialisation Flutter
+
+- Initialiser le projet.
+- Configurer la Clean Architecture.
+- Configurer Drift.
+- Configurer GetIt.
+- Configurer le thème.
+- Configurer la navigation.
+- Préparer les composants communs.
+
+## PHASE 3 — Authentification locale
+
+- Onboarding.
+- Inscription.
+- Connexion.
+- Protection de session.
+- Déconnexion.
+
+## PHASE 4 — Gestion des établissements
+
+- Liste.
+- Ajout.
+- Modification.
+- Suppression.
+
+## PHASE 5 — Années scolaires et classes
+
+- Gestion des années.
+- Gestion des périodes.
+- Création des classes.
+- Modification des classes.
+- Suppression des classes.
+
+## PHASE 6 — Gestion des élèves
+
+- Ajout.
+- Modification.
+- Suppression.
+- Recherche.
+- Profil.
+
+## PHASE 7 — Gestion des matières
+
+- Création.
+- Association aux classes.
+- Consultation.
+
+## PHASE 8 — Évaluations et notes
+
+- Création des interrogations.
+- Création des devoirs.
+- Saisie des notes.
+- Modification des notes.
+- Suppression des notes.
+- Gestion des absences.
+
+## PHASE 9 — Calculs automatiques
+
+- Moyenne des interrogations.
+- Moyenne des matières.
+- Actualisation des résultats.
+- Tests métier.
+
+## PHASE 10 — Résultats et statistiques
+
+- Tableau des résultats.
+- Résultats individuels.
+- Statistiques par classe.
+- Filtres par période.
+
+## PHASE 11 — PDF et Excel
+
+- Export PDF.
+- Prévisualisation.
+- Impression.
+- Export XLSX.
+- Enregistrement.
+- Partage.
+
+## PHASE 12 — Sauvegardes et sécurité
+
+- Export de sauvegarde.
+- Restauration.
+- Protection du compte.
+- Suppression complète des données.
+
+## PHASE 13 — Finalisation
+
+- Tests.
+- Correction des erreurs.
+- Optimisation.
+- Vérification UX.
+- Vérification du fonctionnement hors ligne.
+- Vérification de la sécurité.
+- Préparation d'une version distribuable.
+
+---
+
+# 27. RÈGLES IMPÉRATIVES POUR L'AGENT IA
+
+Tu dois impérativement respecter les consignes suivantes :
+
+1. Ne jamais utiliser BLoC ou Cubit.
+
+2. Ne jamais utiliser Riverpod, Provider ou GetX pour la gestion d'état.
+
+3. Utiliser setState() pour les états d'interface.
+
+4. Respecter la Clean Architecture.
+
+5. Organiser le code par fonctionnalités.
+
+6. Éviter les abstractions inutiles.
+
+7. Ne jamais placer les calculs métier dans les widgets.
+
+8. Ne jamais accéder directement à SQLite depuis les pages.
+
+9. Utiliser GetIt pour l'injection des dépendances.
+
+10. Utiliser des Use Cases pour les opérations métier.
+
+11. Ne jamais imposer Firebase ou un backend distant.
+
+12. Garantir le fonctionnement intégral hors connexion.
+
+13. Ne pas utiliser de fausses données dans les écrans fonctionnels de production.
+
+14. Ne pas introduire de fonctionnalités simulées présentées comme fonctionnelles.
+
+15. Écrire du code maintenable et correctement organisé.
+
+16. Vérifier les contraintes des notes.
+
+17. Respecter strictement la formule des moyennes.
+
+18. Prévoir une gestion fiable des erreurs.
+
+19. Ne pas oublier les transactions SQLite.
+
+20. Protéger les données personnelles.
+
+21. Prévoir les migrations de la base de données.
+
+22. Créer des composants réutilisables.
+
+23. Éviter les fichiers inutilement volumineux.
+
+24. Respecter les conventions Dart et Flutter.
+
+25. Exécuter les analyses et les tests disponibles.
+
+26. Corriger les erreurs détectées avant de considérer une phase comme terminée.
+
+27. Ne pas réécrire une fonctionnalité existante sans nécessité.
+
+28. Documenter les décisions architecturales importantes.
+
+29. Prioriser la fiabilité plutôt que la complexité.
+
+30. Ne jamais affirmer qu'une fonctionnalité est terminée si elle n'a pas été réellement implémentée et vérifiée.
+
+---
+
+# 28. LIVRABLES ATTENDUS
+
+Avant de commencer à écrire le code, présente :
+
+1. Une synthèse du fonctionnement de l'application.
+2. Une proposition d'architecture Flutter.
+3. La structure des dossiers.
+4. Le diagramme des relations entre les entités.
+5. Le schéma SQLite/Drift.
+6. Les principaux Use Cases.
+7. La liste détaillée des écrans.
+8. Le parcours utilisateur.
+9. La description des calculs.
+10. La stratégie de sauvegarde.
+11. Les principales contraintes de sécurité.
+12. Le plan de développement.
+
+Ensuite, commence immédiatement le développement de la première phase réalisable dans le dépôt de travail.
+
+Si un projet Flutter existe déjà, commence par analyser son contenu, ses dépendances, son architecture et ses conventions avant toute modification.
+
+Ne détruis pas les fonctionnalités existantes.
+
+Travaille progressivement en maintenant une application compilable après chaque phase.
+
+Pour chaque phase terminée :
+
+- Présente les fichiers créés ou modifiés.
+- Explique brièvement les décisions prises.
+- Indique les fonctionnalités opérationnelles.
+- Exécute les vérifications possibles.
+- Signale clairement les éventuelles limites.
+
+# OBJECTIF FINAL
+
+Livrer une application Flutter de gestion des notes scolaires :
+
+- Moderne.
+- Intuitive.
+- Fiable.
+- Rapide.
+- Sécurisée.
+- Entièrement hors connexion.
+- Basée sur Clean Architecture.
+- Utilisant setState().
+- Permettant la gestion de plusieurs écoles.
+- Permettant la gestion de plusieurs classes.
+- Permettant la gestion de plusieurs matières.
+- Permettant la gestion des élèves.
+- Calculant automatiquement les moyennes.
+- Générant des relevés PDF et Excel.
+- Permettant la sauvegarde et la restauration.
+- Garantissant à l'enseignant le contrôle de ses données.
+
+EduNote doit être un outil réellement utile au quotidien, et non simplement une application de démonstration.
