@@ -1,0 +1,4902 @@
+{
+  "teacher": {
+    "id": "teacher-demo",
+    "firstName": "Moussa",
+    "lastName": "Kérékou",
+    "profession": "Professeur de Mathématiques",
+    "subjectName": "Mathématiques",
+    "whatsappNumber": "+229 97 12 34 56",
+    "password": "password123"
+  },
+  "academicYear": {
+    "id": "year-2026-2027",
+    "label": "2026-2027",
+    "startDate": "2026-09-15",
+    "endDate": "2027-06-30"
+  },
+  "periods": [
+    {
+      "id": "period-sem1",
+      "name": "Premier Semestre",
+      "startDate": "2026-09-15",
+      "endDate": "2027-01-31"
+    },
+    {
+      "id": "period-sem2",
+      "name": "Deuxième Semestre",
+      "startDate": "2027-02-01",
+      "endDate": "2027-06-30"
+    }
+  ],
+  "schools": [
+    {
+      "id": "school-behanzin",
+      "name": "Lycée Béhanzin",
+      "type": "Lycée",
+      "city": "Porto-Novo",
+      "address": "Quartier Avakpa, Porto-Novo",
+      "classes": [
+        {
+          "id": "class-behanzin-3a",
+          "name": "3e A",
+          "level": "3ème",
+          "students": [
+            {
+              "id": "student-class-behanzin-3a-1",
+              "firstName": "Mawuli",
+              "lastName": "Dossou",
+              "gender": "M",
+              "dateOfBirth": "2012-04-08",
+              "registrationNumber": "3eA-001",
+              "orderNumber": 1
+            },
+            {
+              "id": "student-class-behanzin-3a-2",
+              "firstName": "Sènami",
+              "lastName": "Bio",
+              "gender": "F",
+              "dateOfBirth": "2010-10-14",
+              "registrationNumber": "3eA-002",
+              "orderNumber": 2
+            },
+            {
+              "id": "student-class-behanzin-3a-3",
+              "firstName": "Codjo",
+              "lastName": "Dossou",
+              "gender": "M",
+              "dateOfBirth": "2010-04-08",
+              "registrationNumber": "3eA-003",
+              "orderNumber": 3
+            },
+            {
+              "id": "student-class-behanzin-3a-4",
+              "firstName": "Béatrice",
+              "lastName": "Assogba",
+              "gender": "F",
+              "dateOfBirth": "2010-09-07",
+              "registrationNumber": "3eA-004",
+              "orderNumber": 4
+            },
+            {
+              "id": "student-class-behanzin-3a-5",
+              "firstName": "Benoît",
+              "lastName": "Ahouandjinou",
+              "gender": "M",
+              "dateOfBirth": "2011-08-19",
+              "registrationNumber": "3eA-005",
+              "orderNumber": 5
+            },
+            {
+              "id": "student-class-behanzin-3a-6",
+              "firstName": "Mariam",
+              "lastName": "Dossou",
+              "gender": "F",
+              "dateOfBirth": "2011-12-14",
+              "registrationNumber": "3eA-006",
+              "orderNumber": 6
+            },
+            {
+              "id": "student-class-behanzin-3a-7",
+              "firstName": "Gérard",
+              "lastName": "Kérékou",
+              "gender": "M",
+              "dateOfBirth": "2011-04-25",
+              "registrationNumber": "3eA-007",
+              "orderNumber": 7
+            },
+            {
+              "id": "student-class-behanzin-3a-8",
+              "firstName": "Mireille",
+              "lastName": "Bio",
+              "gender": "F",
+              "dateOfBirth": "2010-07-04",
+              "registrationNumber": "3eA-008",
+              "orderNumber": 8
+            },
+            {
+              "id": "student-class-behanzin-3a-9",
+              "firstName": "Jean-Baptiste",
+              "lastName": "Hounkpatin",
+              "gender": "M",
+              "dateOfBirth": "2012-01-24",
+              "registrationNumber": "3eA-009",
+              "orderNumber": 9
+            },
+            {
+              "id": "student-class-behanzin-3a-10",
+              "firstName": "Estelle",
+              "lastName": "Chabi",
+              "gender": "F",
+              "dateOfBirth": "2010-07-03",
+              "registrationNumber": "3eA-010",
+              "orderNumber": 10
+            },
+            {
+              "id": "student-class-behanzin-3a-11",
+              "firstName": "Benoît",
+              "lastName": "Talon",
+              "gender": "M",
+              "dateOfBirth": "2012-10-07",
+              "registrationNumber": "3eA-011",
+              "orderNumber": 11
+            },
+            {
+              "id": "student-class-behanzin-3a-12",
+              "firstName": "Akouavi",
+              "lastName": "Mensah",
+              "gender": "F",
+              "dateOfBirth": "2011-05-03",
+              "registrationNumber": "3eA-012",
+              "orderNumber": 12
+            },
+            {
+              "id": "student-class-behanzin-3a-13",
+              "firstName": "Sèwanou",
+              "lastName": "Bio",
+              "gender": "M",
+              "dateOfBirth": "2013-05-15",
+              "registrationNumber": "3eA-013",
+              "orderNumber": 13
+            },
+            {
+              "id": "student-class-behanzin-3a-14",
+              "firstName": "Carine",
+              "lastName": "Agossa",
+              "gender": "F",
+              "dateOfBirth": "2012-06-07",
+              "registrationNumber": "3eA-014",
+              "orderNumber": 14
+            },
+            {
+              "id": "student-class-behanzin-3a-15",
+              "firstName": "Yacoubou",
+              "lastName": "Gnonlonfoun",
+              "gender": "M",
+              "dateOfBirth": "2010-10-21",
+              "registrationNumber": "3eA-015",
+              "orderNumber": 15
+            }
+          ],
+          "evaluations": [
+            {
+              "id": "eval-class-behanzin-3a-int1",
+              "type": "interrogation",
+              "number": 1,
+              "title": "Interrogation n°1",
+              "date": "2026-10-15",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-behanzin-3a-int2",
+              "type": "interrogation",
+              "number": 2,
+              "title": "Interrogation n°2",
+              "date": "2026-11-20",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-behanzin-3a-dev1",
+              "type": "homework1",
+              "number": 1,
+              "title": "Devoir surveillé 1",
+              "date": "2026-11-28",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-behanzin-3a-dev2",
+              "type": "homework2",
+              "number": 2,
+              "title": "Devoir surveillé 2",
+              "date": "2027-01-10",
+              "maxScore": 20
+            }
+          ],
+          "grades": [
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-1",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-2",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-3",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-4",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-5",
+              "status": "renseignée",
+              "score": 18.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-6",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-7",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-8",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-9",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-10",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-11",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-12",
+              "status": "renseignée",
+              "score": 5.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-13",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-14",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int1",
+              "studentId": "student-class-behanzin-3a-15",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-1",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-2",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-3",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-4",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-5",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-6",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-8",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-9",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-10",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-11",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-12",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-13",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-14",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-int2",
+              "studentId": "student-class-behanzin-3a-15",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-1",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-2",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-3",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-4",
+              "status": "renseignée",
+              "score": 6.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-5",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-6",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-7",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-8",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-9",
+              "status": "renseignée",
+              "score": 16.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-10",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-11",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-12",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-13",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-14",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev1",
+              "studentId": "student-class-behanzin-3a-15",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-1",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-2",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-3",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-4",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-5",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-6",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-7",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-8",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-9",
+              "status": "renseignée",
+              "score": 16.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-10",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-11",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-12",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-13",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-14",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-3a-dev2",
+              "studentId": "student-class-behanzin-3a-15",
+              "status": "renseignée",
+              "score": 9.5
+            }
+          ]
+        },
+        {
+          "id": "class-behanzin-1c",
+          "name": "1re C",
+          "level": "1ère",
+          "students": [
+            {
+              "id": "student-class-behanzin-1c-1",
+              "firstName": "Mawuli",
+              "lastName": "Houndété",
+              "gender": "M",
+              "dateOfBirth": "2012-11-17",
+              "registrationNumber": "1reC-001",
+              "orderNumber": 1
+            },
+            {
+              "id": "student-class-behanzin-1c-2",
+              "firstName": "Nadine",
+              "lastName": "Adanho",
+              "gender": "F",
+              "dateOfBirth": "2011-06-25",
+              "registrationNumber": "1reC-002",
+              "orderNumber": 2
+            },
+            {
+              "id": "student-class-behanzin-1c-3",
+              "firstName": "Tidjani",
+              "lastName": "Chabi",
+              "gender": "M",
+              "dateOfBirth": "2010-10-11",
+              "registrationNumber": "1reC-003",
+              "orderNumber": 3
+            },
+            {
+              "id": "student-class-behanzin-1c-4",
+              "firstName": "Clarisse",
+              "lastName": "Dossou",
+              "gender": "F",
+              "dateOfBirth": "2010-06-27",
+              "registrationNumber": "1reC-004",
+              "orderNumber": 4
+            },
+            {
+              "id": "student-class-behanzin-1c-5",
+              "firstName": "Babou",
+              "lastName": "Soglo",
+              "gender": "M",
+              "dateOfBirth": "2010-04-19",
+              "registrationNumber": "1reC-005",
+              "orderNumber": 5
+            },
+            {
+              "id": "student-class-behanzin-1c-6",
+              "firstName": "Akouavi",
+              "lastName": "Houngbédji",
+              "gender": "F",
+              "dateOfBirth": "2013-02-25",
+              "registrationNumber": "1reC-006",
+              "orderNumber": 6
+            },
+            {
+              "id": "student-class-behanzin-1c-7",
+              "firstName": "Benoît",
+              "lastName": "Zinsou",
+              "gender": "M",
+              "dateOfBirth": "2011-11-16",
+              "registrationNumber": "1reC-007",
+              "orderNumber": 7
+            },
+            {
+              "id": "student-class-behanzin-1c-8",
+              "firstName": "Hortense",
+              "lastName": "Agossa",
+              "gender": "F",
+              "dateOfBirth": "2012-09-28",
+              "registrationNumber": "1reC-008",
+              "orderNumber": 8
+            },
+            {
+              "id": "student-class-behanzin-1c-9",
+              "firstName": "Rodrigue",
+              "lastName": "Ahouandjinou",
+              "gender": "M",
+              "dateOfBirth": "2011-09-25",
+              "registrationNumber": "1reC-009",
+              "orderNumber": 9
+            },
+            {
+              "id": "student-class-behanzin-1c-10",
+              "firstName": "Yéyinou",
+              "lastName": "Gnonlonfoun",
+              "gender": "F",
+              "dateOfBirth": "2012-07-22",
+              "registrationNumber": "1reC-010",
+              "orderNumber": 10
+            },
+            {
+              "id": "student-class-behanzin-1c-11",
+              "firstName": "Jean-Baptiste",
+              "lastName": "Kodjo",
+              "gender": "M",
+              "dateOfBirth": "2013-02-08",
+              "registrationNumber": "1reC-011",
+              "orderNumber": 11
+            },
+            {
+              "id": "student-class-behanzin-1c-12",
+              "firstName": "Délali",
+              "lastName": "Houngbédji",
+              "gender": "F",
+              "dateOfBirth": "2012-01-19",
+              "registrationNumber": "1reC-012",
+              "orderNumber": 12
+            },
+            {
+              "id": "student-class-behanzin-1c-13",
+              "firstName": "Benoît",
+              "lastName": "Soglo",
+              "gender": "M",
+              "dateOfBirth": "2011-01-03",
+              "registrationNumber": "1reC-013",
+              "orderNumber": 13
+            },
+            {
+              "id": "student-class-behanzin-1c-14",
+              "firstName": "Folakè",
+              "lastName": "Soglo",
+              "gender": "F",
+              "dateOfBirth": "2010-01-28",
+              "registrationNumber": "1reC-014",
+              "orderNumber": 14
+            },
+            {
+              "id": "student-class-behanzin-1c-15",
+              "firstName": "Gérard",
+              "lastName": "Houngbédji",
+              "gender": "M",
+              "dateOfBirth": "2011-05-22",
+              "registrationNumber": "1reC-015",
+              "orderNumber": 15
+            }
+          ],
+          "evaluations": [
+            {
+              "id": "eval-class-behanzin-1c-int1",
+              "type": "interrogation",
+              "number": 1,
+              "title": "Interrogation n°1",
+              "date": "2026-10-15",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-behanzin-1c-int2",
+              "type": "interrogation",
+              "number": 2,
+              "title": "Interrogation n°2",
+              "date": "2026-11-20",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-behanzin-1c-dev1",
+              "type": "homework1",
+              "number": 1,
+              "title": "Devoir surveillé 1",
+              "date": "2026-11-28",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-behanzin-1c-dev2",
+              "type": "homework2",
+              "number": 2,
+              "title": "Devoir surveillé 2",
+              "date": "2027-01-10",
+              "maxScore": 20
+            }
+          ],
+          "grades": [
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-1",
+              "status": "renseignée",
+              "score": 16.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-2",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-3",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-4",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-5",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-6",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-7",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-8",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-9",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-10",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-11",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-12",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-13",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-14",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int1",
+              "studentId": "student-class-behanzin-1c-15",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-1",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-2",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-3",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-4",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-5",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-6",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-7",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-8",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-9",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-10",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-11",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-12",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-13",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-14",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-int2",
+              "studentId": "student-class-behanzin-1c-15",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-1",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-2",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-3",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-4",
+              "status": "renseignée",
+              "score": 5.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-5",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-6",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-7",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-8",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-9",
+              "status": "renseignée",
+              "score": 16.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-10",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-11",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-12",
+              "status": "renseignée",
+              "score": 6.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-13",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-14",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev1",
+              "studentId": "student-class-behanzin-1c-15",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-1",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-2",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-3",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-4",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-5",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-6",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-7",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-8",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-9",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-10",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-11",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-12",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-13",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-14",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-1c-dev2",
+              "studentId": "student-class-behanzin-1c-15",
+              "status": "renseignée",
+              "score": 9.0
+            }
+          ]
+        },
+        {
+          "id": "class-behanzin-td",
+          "name": "Tle D",
+          "level": "Terminale",
+          "students": [
+            {
+              "id": "student-class-behanzin-td-1",
+              "firstName": "Landry",
+              "lastName": "Affo",
+              "gender": "M",
+              "dateOfBirth": "2011-01-17",
+              "registrationNumber": "TleD-001",
+              "orderNumber": 1
+            },
+            {
+              "id": "student-class-behanzin-td-2",
+              "firstName": "Akouavi",
+              "lastName": "Agossa",
+              "gender": "F",
+              "dateOfBirth": "2010-10-03",
+              "registrationNumber": "TleD-002",
+              "orderNumber": 2
+            },
+            {
+              "id": "student-class-behanzin-td-3",
+              "firstName": "Sèwanou",
+              "lastName": "Tossou",
+              "gender": "M",
+              "dateOfBirth": "2010-10-08",
+              "registrationNumber": "TleD-003",
+              "orderNumber": 3
+            },
+            {
+              "id": "student-class-behanzin-td-4",
+              "firstName": "Prisca",
+              "lastName": "Assogba",
+              "gender": "F",
+              "dateOfBirth": "2010-10-03",
+              "registrationNumber": "TleD-004",
+              "orderNumber": 4
+            },
+            {
+              "id": "student-class-behanzin-td-5",
+              "firstName": "Arnaud",
+              "lastName": "Ogou",
+              "gender": "M",
+              "dateOfBirth": "2012-05-07",
+              "registrationNumber": "TleD-005",
+              "orderNumber": 5
+            },
+            {
+              "id": "student-class-behanzin-td-6",
+              "firstName": "Mireille",
+              "lastName": "Soglo",
+              "gender": "F",
+              "dateOfBirth": "2012-07-05",
+              "registrationNumber": "TleD-006",
+              "orderNumber": 6
+            },
+            {
+              "id": "student-class-behanzin-td-7",
+              "firstName": "Babou",
+              "lastName": "Kodjo",
+              "gender": "M",
+              "dateOfBirth": "2012-02-01",
+              "registrationNumber": "TleD-007",
+              "orderNumber": 7
+            },
+            {
+              "id": "student-class-behanzin-td-8",
+              "firstName": "Estelle",
+              "lastName": "Assogba",
+              "gender": "F",
+              "dateOfBirth": "2010-02-18",
+              "registrationNumber": "TleD-008",
+              "orderNumber": 8
+            },
+            {
+              "id": "student-class-behanzin-td-9",
+              "firstName": "Bio",
+              "lastName": "Affo",
+              "gender": "M",
+              "dateOfBirth": "2012-03-12",
+              "registrationNumber": "TleD-009",
+              "orderNumber": 9
+            },
+            {
+              "id": "student-class-behanzin-td-10",
+              "firstName": "Akouavi",
+              "lastName": "Soglo",
+              "gender": "F",
+              "dateOfBirth": "2012-05-06",
+              "registrationNumber": "TleD-010",
+              "orderNumber": 10
+            },
+            {
+              "id": "student-class-behanzin-td-11",
+              "firstName": "Patrice",
+              "lastName": "Chabi",
+              "gender": "M",
+              "dateOfBirth": "2012-10-26",
+              "registrationNumber": "TleD-011",
+              "orderNumber": 11
+            },
+            {
+              "id": "student-class-behanzin-td-12",
+              "firstName": "Béatrice",
+              "lastName": "Dossou",
+              "gender": "F",
+              "dateOfBirth": "2012-11-04",
+              "registrationNumber": "TleD-012",
+              "orderNumber": 12
+            },
+            {
+              "id": "student-class-behanzin-td-13",
+              "firstName": "Femi",
+              "lastName": "Kérékou",
+              "gender": "M",
+              "dateOfBirth": "2010-02-24",
+              "registrationNumber": "TleD-013",
+              "orderNumber": 13
+            },
+            {
+              "id": "student-class-behanzin-td-14",
+              "firstName": "Hortense",
+              "lastName": "Zinsou",
+              "gender": "F",
+              "dateOfBirth": "2012-05-20",
+              "registrationNumber": "TleD-014",
+              "orderNumber": 14
+            },
+            {
+              "id": "student-class-behanzin-td-15",
+              "firstName": "Bio",
+              "lastName": "Gnonlonfoun",
+              "gender": "M",
+              "dateOfBirth": "2012-04-22",
+              "registrationNumber": "TleD-015",
+              "orderNumber": 15
+            }
+          ],
+          "evaluations": [
+            {
+              "id": "eval-class-behanzin-td-int1",
+              "type": "interrogation",
+              "number": 1,
+              "title": "Interrogation n°1",
+              "date": "2026-10-15",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-behanzin-td-int2",
+              "type": "interrogation",
+              "number": 2,
+              "title": "Interrogation n°2",
+              "date": "2026-11-20",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-behanzin-td-dev1",
+              "type": "homework1",
+              "number": 1,
+              "title": "Devoir surveillé 1",
+              "date": "2026-11-28",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-behanzin-td-dev2",
+              "type": "homework2",
+              "number": 2,
+              "title": "Devoir surveillé 2",
+              "date": "2027-01-10",
+              "maxScore": 20
+            }
+          ],
+          "grades": [
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-1",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-2",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-3",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-4",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-5",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-6",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-7",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-8",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-9",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-10",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-11",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-12",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-13",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-14",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int1",
+              "studentId": "student-class-behanzin-td-15",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-1",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-2",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-3",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-4",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-5",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-6",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-8",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-9",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-10",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-11",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-12",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-13",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-14",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-int2",
+              "studentId": "student-class-behanzin-td-15",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-1",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-2",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-3",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-4",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-5",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-6",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-7",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-8",
+              "status": "renseignée",
+              "score": 6.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-9",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-10",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-11",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-12",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-13",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-14",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev1",
+              "studentId": "student-class-behanzin-td-15",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-1",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-2",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-3",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-4",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-5",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-6",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-8",
+              "status": "renseignée",
+              "score": 6.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-9",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-10",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-11",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-12",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-13",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-14",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-behanzin-td-dev2",
+              "studentId": "student-class-behanzin-td-15",
+              "status": "renseignée",
+              "score": 10.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "school-anavie",
+      "name": "CEG Anavié",
+      "type": "Collège",
+      "city": "Porto-Novo",
+      "address": "Quartier Anavié, Porto-Novo",
+      "classes": [
+        {
+          "id": "class-anavie-6a",
+          "name": "6e A",
+          "level": "6ème",
+          "students": [
+            {
+              "id": "student-class-anavie-6a-1",
+              "firstName": "Sèwanou",
+              "lastName": "Soglo",
+              "gender": "M",
+              "dateOfBirth": "2010-11-07",
+              "registrationNumber": "6eA-001",
+              "orderNumber": 1
+            },
+            {
+              "id": "student-class-anavie-6a-2",
+              "firstName": "Sandrine",
+              "lastName": "Gbaguidi",
+              "gender": "F",
+              "dateOfBirth": "2012-02-25",
+              "registrationNumber": "6eA-002",
+              "orderNumber": 2
+            },
+            {
+              "id": "student-class-anavie-6a-3",
+              "firstName": "Yacoubou",
+              "lastName": "Hounkpatin",
+              "gender": "M",
+              "dateOfBirth": "2013-11-27",
+              "registrationNumber": "6eA-003",
+              "orderNumber": 3
+            },
+            {
+              "id": "student-class-anavie-6a-4",
+              "firstName": "Hortense",
+              "lastName": "Gbaguidi",
+              "gender": "F",
+              "dateOfBirth": "2010-02-09",
+              "registrationNumber": "6eA-004",
+              "orderNumber": 4
+            },
+            {
+              "id": "student-class-anavie-6a-5",
+              "firstName": "Tidjani",
+              "lastName": "Dako",
+              "gender": "M",
+              "dateOfBirth": "2012-01-04",
+              "registrationNumber": "6eA-005",
+              "orderNumber": 5
+            },
+            {
+              "id": "student-class-anavie-6a-6",
+              "firstName": "Nadine",
+              "lastName": "Ahouandjinou",
+              "gender": "F",
+              "dateOfBirth": "2012-12-26",
+              "registrationNumber": "6eA-006",
+              "orderNumber": 6
+            },
+            {
+              "id": "student-class-anavie-6a-7",
+              "firstName": "Gérard",
+              "lastName": "Ahouandjinou",
+              "gender": "M",
+              "dateOfBirth": "2010-07-19",
+              "registrationNumber": "6eA-007",
+              "orderNumber": 7
+            },
+            {
+              "id": "student-class-anavie-6a-8",
+              "firstName": "Yéyinou",
+              "lastName": "Kérékou",
+              "gender": "F",
+              "dateOfBirth": "2010-12-14",
+              "registrationNumber": "6eA-008",
+              "orderNumber": 8
+            },
+            {
+              "id": "student-class-anavie-6a-9",
+              "firstName": "Koffi",
+              "lastName": "Affo",
+              "gender": "M",
+              "dateOfBirth": "2011-06-14",
+              "registrationNumber": "6eA-009",
+              "orderNumber": 9
+            },
+            {
+              "id": "student-class-anavie-6a-10",
+              "firstName": "Akouavi",
+              "lastName": "Ogou",
+              "gender": "F",
+              "dateOfBirth": "2012-10-11",
+              "registrationNumber": "6eA-010",
+              "orderNumber": 10
+            },
+            {
+              "id": "student-class-anavie-6a-11",
+              "firstName": "Mawuli",
+              "lastName": "Talon",
+              "gender": "M",
+              "dateOfBirth": "2012-11-14",
+              "registrationNumber": "6eA-011",
+              "orderNumber": 11
+            },
+            {
+              "id": "student-class-anavie-6a-12",
+              "firstName": "Mireille",
+              "lastName": "Tossou",
+              "gender": "F",
+              "dateOfBirth": "2012-09-05",
+              "registrationNumber": "6eA-012",
+              "orderNumber": 12
+            },
+            {
+              "id": "student-class-anavie-6a-13",
+              "firstName": "Bio",
+              "lastName": "Ahouandjinou",
+              "gender": "M",
+              "dateOfBirth": "2013-11-24",
+              "registrationNumber": "6eA-013",
+              "orderNumber": 13
+            },
+            {
+              "id": "student-class-anavie-6a-14",
+              "firstName": "Bignon",
+              "lastName": "Assogba",
+              "gender": "F",
+              "dateOfBirth": "2012-07-18",
+              "registrationNumber": "6eA-014",
+              "orderNumber": 14
+            },
+            {
+              "id": "student-class-anavie-6a-15",
+              "firstName": "Koffi",
+              "lastName": "Talon",
+              "gender": "M",
+              "dateOfBirth": "2012-04-14",
+              "registrationNumber": "6eA-015",
+              "orderNumber": 15
+            }
+          ],
+          "evaluations": [
+            {
+              "id": "eval-class-anavie-6a-int1",
+              "type": "interrogation",
+              "number": 1,
+              "title": "Interrogation n°1",
+              "date": "2026-10-15",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-anavie-6a-int2",
+              "type": "interrogation",
+              "number": 2,
+              "title": "Interrogation n°2",
+              "date": "2026-11-20",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-anavie-6a-dev1",
+              "type": "homework1",
+              "number": 1,
+              "title": "Devoir surveillé 1",
+              "date": "2026-11-28",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-anavie-6a-dev2",
+              "type": "homework2",
+              "number": 2,
+              "title": "Devoir surveillé 2",
+              "date": "2027-01-10",
+              "maxScore": 20
+            }
+          ],
+          "grades": [
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-1",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-2",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-3",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-4",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-5",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-6",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-8",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-9",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-10",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-11",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-12",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-13",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-14",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int1",
+              "studentId": "student-class-anavie-6a-15",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-1",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-2",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-3",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-4",
+              "status": "renseignée",
+              "score": 6.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-5",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-6",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-7",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-8",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-9",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-10",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-11",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-12",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-13",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-14",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-int2",
+              "studentId": "student-class-anavie-6a-15",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-1",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-2",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-3",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-4",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-5",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-6",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-7",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-8",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-9",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-10",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-11",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-12",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-13",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-14",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev1",
+              "studentId": "student-class-anavie-6a-15",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-1",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-2",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-3",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-4",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-5",
+              "status": "renseignée",
+              "score": 16.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-6",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-8",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-9",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-10",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-11",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-12",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-13",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-14",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-6a-dev2",
+              "studentId": "student-class-anavie-6a-15",
+              "status": "renseignée",
+              "score": 11.5
+            }
+          ]
+        },
+        {
+          "id": "class-anavie-5b",
+          "name": "5e B",
+          "level": "5ème",
+          "students": [
+            {
+              "id": "student-class-anavie-5b-1",
+              "firstName": "Yacoubou",
+              "lastName": "Affo",
+              "gender": "M",
+              "dateOfBirth": "2013-11-08",
+              "registrationNumber": "5eB-001",
+              "orderNumber": 1
+            },
+            {
+              "id": "student-class-anavie-5b-2",
+              "firstName": "Mariam",
+              "lastName": "Kodjo",
+              "gender": "F",
+              "dateOfBirth": "2010-12-10",
+              "registrationNumber": "5eB-002",
+              "orderNumber": 2
+            },
+            {
+              "id": "student-class-anavie-5b-3",
+              "firstName": "Sèwanou",
+              "lastName": "Kérékou",
+              "gender": "M",
+              "dateOfBirth": "2012-06-18",
+              "registrationNumber": "5eB-003",
+              "orderNumber": 3
+            },
+            {
+              "id": "student-class-anavie-5b-4",
+              "firstName": "Akouavi",
+              "lastName": "Zinsou",
+              "gender": "F",
+              "dateOfBirth": "2011-04-13",
+              "registrationNumber": "5eB-004",
+              "orderNumber": 4
+            },
+            {
+              "id": "student-class-anavie-5b-5",
+              "firstName": "Femi",
+              "lastName": "Gnonlonfoun",
+              "gender": "M",
+              "dateOfBirth": "2011-02-14",
+              "registrationNumber": "5eB-005",
+              "orderNumber": 5
+            },
+            {
+              "id": "student-class-anavie-5b-6",
+              "firstName": "Christelle",
+              "lastName": "Gbaguidi",
+              "gender": "F",
+              "dateOfBirth": "2013-07-02",
+              "registrationNumber": "5eB-006",
+              "orderNumber": 6
+            },
+            {
+              "id": "student-class-anavie-5b-7",
+              "firstName": "Bio",
+              "lastName": "Ahouandjinou",
+              "gender": "M",
+              "dateOfBirth": "2013-10-23",
+              "registrationNumber": "5eB-007",
+              "orderNumber": 7
+            },
+            {
+              "id": "student-class-anavie-5b-8",
+              "firstName": "Aïcha",
+              "lastName": "Dako",
+              "gender": "F",
+              "dateOfBirth": "2013-08-01",
+              "registrationNumber": "5eB-008",
+              "orderNumber": 8
+            },
+            {
+              "id": "student-class-anavie-5b-9",
+              "firstName": "Jean-Baptiste",
+              "lastName": "Talon",
+              "gender": "M",
+              "dateOfBirth": "2013-07-18",
+              "registrationNumber": "5eB-009",
+              "orderNumber": 9
+            },
+            {
+              "id": "student-class-anavie-5b-10",
+              "firstName": "Hortense",
+              "lastName": "Assogba",
+              "gender": "F",
+              "dateOfBirth": "2011-08-08",
+              "registrationNumber": "5eB-010",
+              "orderNumber": 10
+            },
+            {
+              "id": "student-class-anavie-5b-11",
+              "firstName": "Yacoubou",
+              "lastName": "Ahouandjinou",
+              "gender": "M",
+              "dateOfBirth": "2013-01-13",
+              "registrationNumber": "5eB-011",
+              "orderNumber": 11
+            },
+            {
+              "id": "student-class-anavie-5b-12",
+              "firstName": "Mireille",
+              "lastName": "Ogou",
+              "gender": "F",
+              "dateOfBirth": "2013-12-06",
+              "registrationNumber": "5eB-012",
+              "orderNumber": 12
+            },
+            {
+              "id": "student-class-anavie-5b-13",
+              "firstName": "Patrice",
+              "lastName": "Zinsou",
+              "gender": "M",
+              "dateOfBirth": "2010-07-19",
+              "registrationNumber": "5eB-013",
+              "orderNumber": 13
+            },
+            {
+              "id": "student-class-anavie-5b-14",
+              "firstName": "Prisca",
+              "lastName": "Ogou",
+              "gender": "F",
+              "dateOfBirth": "2010-02-21",
+              "registrationNumber": "5eB-014",
+              "orderNumber": 14
+            },
+            {
+              "id": "student-class-anavie-5b-15",
+              "firstName": "Arnaud",
+              "lastName": "Zinsou",
+              "gender": "M",
+              "dateOfBirth": "2013-03-02",
+              "registrationNumber": "5eB-015",
+              "orderNumber": 15
+            }
+          ],
+          "evaluations": [
+            {
+              "id": "eval-class-anavie-5b-int1",
+              "type": "interrogation",
+              "number": 1,
+              "title": "Interrogation n°1",
+              "date": "2026-10-15",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-anavie-5b-int2",
+              "type": "interrogation",
+              "number": 2,
+              "title": "Interrogation n°2",
+              "date": "2026-11-20",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-anavie-5b-dev1",
+              "type": "homework1",
+              "number": 1,
+              "title": "Devoir surveillé 1",
+              "date": "2026-11-28",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-anavie-5b-dev2",
+              "type": "homework2",
+              "number": 2,
+              "title": "Devoir surveillé 2",
+              "date": "2027-01-10",
+              "maxScore": 20
+            }
+          ],
+          "grades": [
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-1",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-2",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-3",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-4",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-5",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-6",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-7",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-8",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-9",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-10",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-11",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-12",
+              "status": "renseignée",
+              "score": 5.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-13",
+              "status": "renseignée",
+              "score": 18.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-14",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int1",
+              "studentId": "student-class-anavie-5b-15",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-1",
+              "status": "renseignée",
+              "score": 18.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-2",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-3",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-4",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-5",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-6",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-7",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-8",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-9",
+              "status": "renseignée",
+              "score": 16.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-10",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-11",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-12",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-13",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-14",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-int2",
+              "studentId": "student-class-anavie-5b-15",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-1",
+              "status": "renseignée",
+              "score": 18.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-2",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-3",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-4",
+              "status": "renseignée",
+              "score": 6.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-5",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-6",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-7",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-8",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-9",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-10",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-11",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-12",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-13",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-14",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev1",
+              "studentId": "student-class-anavie-5b-15",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-1",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-2",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-3",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-4",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-5",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-6",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-7",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-8",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-9",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-10",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-11",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-12",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-13",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-14",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-5b-dev2",
+              "studentId": "student-class-anavie-5b-15",
+              "status": "renseignée",
+              "score": 10.5
+            }
+          ]
+        },
+        {
+          "id": "class-anavie-4a",
+          "name": "4e A",
+          "level": "4ème",
+          "students": [
+            {
+              "id": "student-class-anavie-4a-1",
+              "firstName": "Arnaud",
+              "lastName": "Hounkpatin",
+              "gender": "M",
+              "dateOfBirth": "2013-12-05",
+              "registrationNumber": "4eA-001",
+              "orderNumber": 1
+            },
+            {
+              "id": "student-class-anavie-4a-2",
+              "firstName": "Christelle",
+              "lastName": "Agossa",
+              "gender": "F",
+              "dateOfBirth": "2012-10-26",
+              "registrationNumber": "4eA-002",
+              "orderNumber": 2
+            },
+            {
+              "id": "student-class-anavie-4a-3",
+              "firstName": "Benoît",
+              "lastName": "Badarou",
+              "gender": "M",
+              "dateOfBirth": "2013-07-27",
+              "registrationNumber": "4eA-003",
+              "orderNumber": 3
+            },
+            {
+              "id": "student-class-anavie-4a-4",
+              "firstName": "Prisca",
+              "lastName": "Kérékou",
+              "gender": "F",
+              "dateOfBirth": "2012-04-27",
+              "registrationNumber": "4eA-004",
+              "orderNumber": 4
+            },
+            {
+              "id": "student-class-anavie-4a-5",
+              "firstName": "Sena",
+              "lastName": "Kérékou",
+              "gender": "M",
+              "dateOfBirth": "2013-04-25",
+              "registrationNumber": "4eA-005",
+              "orderNumber": 5
+            },
+            {
+              "id": "student-class-anavie-4a-6",
+              "firstName": "Estelle",
+              "lastName": "Dako",
+              "gender": "F",
+              "dateOfBirth": "2013-06-01",
+              "registrationNumber": "4eA-006",
+              "orderNumber": 6
+            },
+            {
+              "id": "student-class-anavie-4a-7",
+              "firstName": "Landry",
+              "lastName": "Gbaguidi",
+              "gender": "M",
+              "dateOfBirth": "2011-08-07",
+              "registrationNumber": "4eA-007",
+              "orderNumber": 7
+            },
+            {
+              "id": "student-class-anavie-4a-8",
+              "firstName": "Carine",
+              "lastName": "Kérékou",
+              "gender": "F",
+              "dateOfBirth": "2012-05-20",
+              "registrationNumber": "4eA-008",
+              "orderNumber": 8
+            },
+            {
+              "id": "student-class-anavie-4a-9",
+              "firstName": "Yacoubou",
+              "lastName": "Chabi",
+              "gender": "M",
+              "dateOfBirth": "2010-09-07",
+              "registrationNumber": "4eA-009",
+              "orderNumber": 9
+            },
+            {
+              "id": "student-class-anavie-4a-10",
+              "firstName": "Akouavi",
+              "lastName": "Soglo",
+              "gender": "F",
+              "dateOfBirth": "2013-08-18",
+              "registrationNumber": "4eA-010",
+              "orderNumber": 10
+            },
+            {
+              "id": "student-class-anavie-4a-11",
+              "firstName": "Sèwanou",
+              "lastName": "Gnonlonfoun",
+              "gender": "M",
+              "dateOfBirth": "2013-11-23",
+              "registrationNumber": "4eA-011",
+              "orderNumber": 11
+            },
+            {
+              "id": "student-class-anavie-4a-12",
+              "firstName": "Clarisse",
+              "lastName": "Kodjo",
+              "gender": "F",
+              "dateOfBirth": "2010-02-10",
+              "registrationNumber": "4eA-012",
+              "orderNumber": 12
+            },
+            {
+              "id": "student-class-anavie-4a-13",
+              "firstName": "Sèwanou",
+              "lastName": "Tossou",
+              "gender": "M",
+              "dateOfBirth": "2011-05-22",
+              "registrationNumber": "4eA-013",
+              "orderNumber": 13
+            },
+            {
+              "id": "student-class-anavie-4a-14",
+              "firstName": "Prisca",
+              "lastName": "Hounkpatin",
+              "gender": "F",
+              "dateOfBirth": "2013-09-17",
+              "registrationNumber": "4eA-014",
+              "orderNumber": 14
+            },
+            {
+              "id": "student-class-anavie-4a-15",
+              "firstName": "Jean-Baptiste",
+              "lastName": "Ahouandjinou",
+              "gender": "M",
+              "dateOfBirth": "2012-06-23",
+              "registrationNumber": "4eA-015",
+              "orderNumber": 15
+            }
+          ],
+          "evaluations": [
+            {
+              "id": "eval-class-anavie-4a-int1",
+              "type": "interrogation",
+              "number": 1,
+              "title": "Interrogation n°1",
+              "date": "2026-10-15",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-anavie-4a-int2",
+              "type": "interrogation",
+              "number": 2,
+              "title": "Interrogation n°2",
+              "date": "2026-11-20",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-anavie-4a-dev1",
+              "type": "homework1",
+              "number": 1,
+              "title": "Devoir surveillé 1",
+              "date": "2026-11-28",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-anavie-4a-dev2",
+              "type": "homework2",
+              "number": 2,
+              "title": "Devoir surveillé 2",
+              "date": "2027-01-10",
+              "maxScore": 20
+            }
+          ],
+          "grades": [
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-1",
+              "status": "renseignée",
+              "score": 16.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-2",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-3",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-4",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-5",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-6",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-7",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-8",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-9",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-10",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-11",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-12",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-13",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-14",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int1",
+              "studentId": "student-class-anavie-4a-15",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-1",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-2",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-3",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-4",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-5",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-6",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-7",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-8",
+              "status": "renseignée",
+              "score": 5.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-9",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-10",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-11",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-12",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-13",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-14",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-int2",
+              "studentId": "student-class-anavie-4a-15",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-1",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-2",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-3",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-4",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-5",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-6",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-7",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-8",
+              "status": "renseignée",
+              "score": 6.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-9",
+              "status": "renseignée",
+              "score": 16.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-10",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-11",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-12",
+              "status": "renseignée",
+              "score": 6.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-13",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-14",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev1",
+              "studentId": "student-class-anavie-4a-15",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-1",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-2",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-3",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-4",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-5",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-6",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-7",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-8",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-9",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-10",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-11",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-12",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-13",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-14",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-anavie-4a-dev2",
+              "studentId": "student-class-anavie-4a-15",
+              "status": "renseignée",
+              "score": 12.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "school-nokoue",
+      "name": "CEG Le Nokoué",
+      "type": "Collège",
+      "city": "Cotonou",
+      "address": "Quartier Sainte-Rita, Cotonou",
+      "classes": [
+        {
+          "id": "class-nokoue-6b",
+          "name": "6e B",
+          "level": "6ème",
+          "students": [
+            {
+              "id": "student-class-nokoue-6b-1",
+              "firstName": "Mawuli",
+              "lastName": "Adanho",
+              "gender": "M",
+              "dateOfBirth": "2011-05-22",
+              "registrationNumber": "6eB-001",
+              "orderNumber": 1
+            },
+            {
+              "id": "student-class-nokoue-6b-2",
+              "firstName": "Akouavi",
+              "lastName": "Agossa",
+              "gender": "F",
+              "dateOfBirth": "2011-03-18",
+              "registrationNumber": "6eB-002",
+              "orderNumber": 2
+            },
+            {
+              "id": "student-class-nokoue-6b-3",
+              "firstName": "Sena",
+              "lastName": "Agossa",
+              "gender": "M",
+              "dateOfBirth": "2010-07-15",
+              "registrationNumber": "6eB-003",
+              "orderNumber": 3
+            },
+            {
+              "id": "student-class-nokoue-6b-4",
+              "firstName": "Nadine",
+              "lastName": "Badarou",
+              "gender": "F",
+              "dateOfBirth": "2012-01-08",
+              "registrationNumber": "6eB-004",
+              "orderNumber": 4
+            },
+            {
+              "id": "student-class-nokoue-6b-5",
+              "firstName": "Babou",
+              "lastName": "Gnonlonfoun",
+              "gender": "M",
+              "dateOfBirth": "2012-12-28",
+              "registrationNumber": "6eB-005",
+              "orderNumber": 5
+            },
+            {
+              "id": "student-class-nokoue-6b-6",
+              "firstName": "Estelle",
+              "lastName": "Houngbédji",
+              "gender": "F",
+              "dateOfBirth": "2011-05-26",
+              "registrationNumber": "6eB-006",
+              "orderNumber": 6
+            },
+            {
+              "id": "student-class-nokoue-6b-7",
+              "firstName": "Christian",
+              "lastName": "Ogou",
+              "gender": "M",
+              "dateOfBirth": "2011-07-04",
+              "registrationNumber": "6eB-007",
+              "orderNumber": 7
+            },
+            {
+              "id": "student-class-nokoue-6b-8",
+              "firstName": "Hortense",
+              "lastName": "Soglo",
+              "gender": "F",
+              "dateOfBirth": "2011-05-27",
+              "registrationNumber": "6eB-008",
+              "orderNumber": 8
+            },
+            {
+              "id": "student-class-nokoue-6b-9",
+              "firstName": "Femi",
+              "lastName": "Houngbédji",
+              "gender": "M",
+              "dateOfBirth": "2010-03-26",
+              "registrationNumber": "6eB-009",
+              "orderNumber": 9
+            },
+            {
+              "id": "student-class-nokoue-6b-10",
+              "firstName": "Fatou",
+              "lastName": "Assogba",
+              "gender": "F",
+              "dateOfBirth": "2012-08-04",
+              "registrationNumber": "6eB-010",
+              "orderNumber": 10
+            },
+            {
+              "id": "student-class-nokoue-6b-11",
+              "firstName": "Patrice",
+              "lastName": "Gnonlonfoun",
+              "gender": "M",
+              "dateOfBirth": "2012-12-13",
+              "registrationNumber": "6eB-011",
+              "orderNumber": 11
+            },
+            {
+              "id": "student-class-nokoue-6b-12",
+              "firstName": "Mariam",
+              "lastName": "Affo",
+              "gender": "F",
+              "dateOfBirth": "2013-08-03",
+              "registrationNumber": "6eB-012",
+              "orderNumber": 12
+            },
+            {
+              "id": "student-class-nokoue-6b-13",
+              "firstName": "Rodrigue",
+              "lastName": "Mensah",
+              "gender": "M",
+              "dateOfBirth": "2013-12-11",
+              "registrationNumber": "6eB-013",
+              "orderNumber": 13
+            },
+            {
+              "id": "student-class-nokoue-6b-14",
+              "firstName": "Nadine",
+              "lastName": "Kérékou",
+              "gender": "F",
+              "dateOfBirth": "2010-02-08",
+              "registrationNumber": "6eB-014",
+              "orderNumber": 14
+            },
+            {
+              "id": "student-class-nokoue-6b-15",
+              "firstName": "Christian",
+              "lastName": "Dako",
+              "gender": "M",
+              "dateOfBirth": "2010-11-27",
+              "registrationNumber": "6eB-015",
+              "orderNumber": 15
+            }
+          ],
+          "evaluations": [
+            {
+              "id": "eval-class-nokoue-6b-int1",
+              "type": "interrogation",
+              "number": 1,
+              "title": "Interrogation n°1",
+              "date": "2026-10-15",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-nokoue-6b-int2",
+              "type": "interrogation",
+              "number": 2,
+              "title": "Interrogation n°2",
+              "date": "2026-11-20",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-nokoue-6b-dev1",
+              "type": "homework1",
+              "number": 1,
+              "title": "Devoir surveillé 1",
+              "date": "2026-11-28",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-nokoue-6b-dev2",
+              "type": "homework2",
+              "number": 2,
+              "title": "Devoir surveillé 2",
+              "date": "2027-01-10",
+              "maxScore": 20
+            }
+          ],
+          "grades": [
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-1",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-2",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-3",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-4",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-5",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-6",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-7",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-8",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-9",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-10",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-11",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-12",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-13",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-14",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int1",
+              "studentId": "student-class-nokoue-6b-15",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-1",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-2",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-3",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-4",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-5",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-6",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-7",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-8",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-9",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-10",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-11",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-12",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-13",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-14",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-int2",
+              "studentId": "student-class-nokoue-6b-15",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-1",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-2",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-3",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-4",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-5",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-6",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-8",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-9",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-10",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-11",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-12",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-13",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-14",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev1",
+              "studentId": "student-class-nokoue-6b-15",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-1",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-2",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-3",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-4",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-5",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-6",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-8",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-9",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-10",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-11",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-12",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-13",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-14",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-6b-dev2",
+              "studentId": "student-class-nokoue-6b-15",
+              "status": "renseignée",
+              "score": 10.0
+            }
+          ]
+        },
+        {
+          "id": "class-nokoue-4c",
+          "name": "4e C",
+          "level": "4ème",
+          "students": [
+            {
+              "id": "student-class-nokoue-4c-1",
+              "firstName": "Landry",
+              "lastName": "Badarou",
+              "gender": "M",
+              "dateOfBirth": "2011-08-18",
+              "registrationNumber": "4eC-001",
+              "orderNumber": 1
+            },
+            {
+              "id": "student-class-nokoue-4c-2",
+              "firstName": "Sènami",
+              "lastName": "Tossou",
+              "gender": "F",
+              "dateOfBirth": "2011-10-17",
+              "registrationNumber": "4eC-002",
+              "orderNumber": 2
+            },
+            {
+              "id": "student-class-nokoue-4c-3",
+              "firstName": "Femi",
+              "lastName": "Houngbédji",
+              "gender": "M",
+              "dateOfBirth": "2012-07-11",
+              "registrationNumber": "4eC-003",
+              "orderNumber": 3
+            },
+            {
+              "id": "student-class-nokoue-4c-4",
+              "firstName": "Béatrice",
+              "lastName": "Kérékou",
+              "gender": "F",
+              "dateOfBirth": "2010-05-24",
+              "registrationNumber": "4eC-004",
+              "orderNumber": 4
+            },
+            {
+              "id": "student-class-nokoue-4c-5",
+              "firstName": "Babou",
+              "lastName": "Dako",
+              "gender": "M",
+              "dateOfBirth": "2013-03-15",
+              "registrationNumber": "4eC-005",
+              "orderNumber": 5
+            },
+            {
+              "id": "student-class-nokoue-4c-6",
+              "firstName": "Hortense",
+              "lastName": "Badarou",
+              "gender": "F",
+              "dateOfBirth": "2012-06-18",
+              "registrationNumber": "4eC-006",
+              "orderNumber": 6
+            },
+            {
+              "id": "student-class-nokoue-4c-7",
+              "firstName": "Benoît",
+              "lastName": "Tossou",
+              "gender": "M",
+              "dateOfBirth": "2013-06-28",
+              "registrationNumber": "4eC-007",
+              "orderNumber": 7
+            },
+            {
+              "id": "student-class-nokoue-4c-8",
+              "firstName": "Yéyinou",
+              "lastName": "Gnonlonfoun",
+              "gender": "F",
+              "dateOfBirth": "2011-10-13",
+              "registrationNumber": "4eC-008",
+              "orderNumber": 8
+            },
+            {
+              "id": "student-class-nokoue-4c-9",
+              "firstName": "Sèwanou",
+              "lastName": "Ahouandjinou",
+              "gender": "M",
+              "dateOfBirth": "2010-06-24",
+              "registrationNumber": "4eC-009",
+              "orderNumber": 9
+            },
+            {
+              "id": "student-class-nokoue-4c-10",
+              "firstName": "Clarisse",
+              "lastName": "Gnonlonfoun",
+              "gender": "F",
+              "dateOfBirth": "2013-07-22",
+              "registrationNumber": "4eC-010",
+              "orderNumber": 10
+            },
+            {
+              "id": "student-class-nokoue-4c-11",
+              "firstName": "Femi",
+              "lastName": "Badarou",
+              "gender": "M",
+              "dateOfBirth": "2010-03-17",
+              "registrationNumber": "4eC-011",
+              "orderNumber": 11
+            },
+            {
+              "id": "student-class-nokoue-4c-12",
+              "firstName": "Prisca",
+              "lastName": "Gbaguidi",
+              "gender": "F",
+              "dateOfBirth": "2010-08-04",
+              "registrationNumber": "4eC-012",
+              "orderNumber": 12
+            },
+            {
+              "id": "student-class-nokoue-4c-13",
+              "firstName": "Ulrich",
+              "lastName": "Kodjo",
+              "gender": "M",
+              "dateOfBirth": "2010-12-05",
+              "registrationNumber": "4eC-013",
+              "orderNumber": 13
+            },
+            {
+              "id": "student-class-nokoue-4c-14",
+              "firstName": "Christelle",
+              "lastName": "Houndété",
+              "gender": "F",
+              "dateOfBirth": "2011-02-16",
+              "registrationNumber": "4eC-014",
+              "orderNumber": 14
+            },
+            {
+              "id": "student-class-nokoue-4c-15",
+              "firstName": "Yacoubou",
+              "lastName": "Gbaguidi",
+              "gender": "M",
+              "dateOfBirth": "2013-11-03",
+              "registrationNumber": "4eC-015",
+              "orderNumber": 15
+            }
+          ],
+          "evaluations": [
+            {
+              "id": "eval-class-nokoue-4c-int1",
+              "type": "interrogation",
+              "number": 1,
+              "title": "Interrogation n°1",
+              "date": "2026-10-15",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-nokoue-4c-int2",
+              "type": "interrogation",
+              "number": 2,
+              "title": "Interrogation n°2",
+              "date": "2026-11-20",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-nokoue-4c-dev1",
+              "type": "homework1",
+              "number": 1,
+              "title": "Devoir surveillé 1",
+              "date": "2026-11-28",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-nokoue-4c-dev2",
+              "type": "homework2",
+              "number": 2,
+              "title": "Devoir surveillé 2",
+              "date": "2027-01-10",
+              "maxScore": 20
+            }
+          ],
+          "grades": [
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-1",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-2",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-3",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-4",
+              "status": "renseignée",
+              "score": 7.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-5",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-6",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-8",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-9",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-10",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-11",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-12",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-13",
+              "status": "renseignée",
+              "score": 18.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-14",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int1",
+              "studentId": "student-class-nokoue-4c-15",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-1",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-2",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-3",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-4",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-5",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-6",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-8",
+              "status": "renseignée",
+              "score": 5.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-9",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-10",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-11",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-12",
+              "status": "renseignée",
+              "score": 6.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-13",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-14",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-int2",
+              "studentId": "student-class-nokoue-4c-15",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-1",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-2",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-3",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-4",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-5",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-6",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-7",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-8",
+              "status": "renseignée",
+              "score": 7.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-9",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-10",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-11",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-12",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-13",
+              "status": "renseignée",
+              "score": 18.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-14",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev1",
+              "studentId": "student-class-nokoue-4c-15",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-1",
+              "status": "renseignée",
+              "score": 16.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-2",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-3",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-4",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-5",
+              "status": "renseignée",
+              "score": 16.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-6",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-8",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-9",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-10",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-11",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-12",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-13",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-14",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-4c-dev2",
+              "studentId": "student-class-nokoue-4c-15",
+              "status": "renseignée",
+              "score": 12.0
+            }
+          ]
+        },
+        {
+          "id": "class-nokoue-3b",
+          "name": "3e B",
+          "level": "3ème",
+          "students": [
+            {
+              "id": "student-class-nokoue-3b-1",
+              "firstName": "Babou",
+              "lastName": "Dossou",
+              "gender": "M",
+              "dateOfBirth": "2013-05-01",
+              "registrationNumber": "3eB-001",
+              "orderNumber": 1
+            },
+            {
+              "id": "student-class-nokoue-3b-2",
+              "firstName": "Prisca",
+              "lastName": "Ogou",
+              "gender": "F",
+              "dateOfBirth": "2010-10-24",
+              "registrationNumber": "3eB-002",
+              "orderNumber": 2
+            },
+            {
+              "id": "student-class-nokoue-3b-3",
+              "firstName": "Landry",
+              "lastName": "Talon",
+              "gender": "M",
+              "dateOfBirth": "2011-10-26",
+              "registrationNumber": "3eB-003",
+              "orderNumber": 3
+            },
+            {
+              "id": "student-class-nokoue-3b-4",
+              "firstName": "Carine",
+              "lastName": "Soglo",
+              "gender": "F",
+              "dateOfBirth": "2011-10-09",
+              "registrationNumber": "3eB-004",
+              "orderNumber": 4
+            },
+            {
+              "id": "student-class-nokoue-3b-5",
+              "firstName": "Femi",
+              "lastName": "Houndété",
+              "gender": "M",
+              "dateOfBirth": "2010-11-21",
+              "registrationNumber": "3eB-005",
+              "orderNumber": 5
+            },
+            {
+              "id": "student-class-nokoue-3b-6",
+              "firstName": "Folakè",
+              "lastName": "Talon",
+              "gender": "F",
+              "dateOfBirth": "2013-01-19",
+              "registrationNumber": "3eB-006",
+              "orderNumber": 6
+            },
+            {
+              "id": "student-class-nokoue-3b-7",
+              "firstName": "Jean-Baptiste",
+              "lastName": "Zinsou",
+              "gender": "M",
+              "dateOfBirth": "2010-05-11",
+              "registrationNumber": "3eB-007",
+              "orderNumber": 7
+            },
+            {
+              "id": "student-class-nokoue-3b-8",
+              "firstName": "Christelle",
+              "lastName": "Agossa",
+              "gender": "F",
+              "dateOfBirth": "2011-03-26",
+              "registrationNumber": "3eB-008",
+              "orderNumber": 8
+            },
+            {
+              "id": "student-class-nokoue-3b-9",
+              "firstName": "Benoît",
+              "lastName": "Hounkpatin",
+              "gender": "M",
+              "dateOfBirth": "2012-03-09",
+              "registrationNumber": "3eB-009",
+              "orderNumber": 9
+            },
+            {
+              "id": "student-class-nokoue-3b-10",
+              "firstName": "Clarisse",
+              "lastName": "Talon",
+              "gender": "F",
+              "dateOfBirth": "2012-02-15",
+              "registrationNumber": "3eB-010",
+              "orderNumber": 10
+            },
+            {
+              "id": "student-class-nokoue-3b-11",
+              "firstName": "Sena",
+              "lastName": "Zinsou",
+              "gender": "M",
+              "dateOfBirth": "2011-11-24",
+              "registrationNumber": "3eB-011",
+              "orderNumber": 11
+            },
+            {
+              "id": "student-class-nokoue-3b-12",
+              "firstName": "Sandrine",
+              "lastName": "Chabi",
+              "gender": "F",
+              "dateOfBirth": "2012-02-26",
+              "registrationNumber": "3eB-012",
+              "orderNumber": 12
+            },
+            {
+              "id": "student-class-nokoue-3b-13",
+              "firstName": "Romaric",
+              "lastName": "Dossou",
+              "gender": "M",
+              "dateOfBirth": "2012-09-04",
+              "registrationNumber": "3eB-013",
+              "orderNumber": 13
+            },
+            {
+              "id": "student-class-nokoue-3b-14",
+              "firstName": "Estelle",
+              "lastName": "Hounkpatin",
+              "gender": "F",
+              "dateOfBirth": "2012-10-13",
+              "registrationNumber": "3eB-014",
+              "orderNumber": 14
+            },
+            {
+              "id": "student-class-nokoue-3b-15",
+              "firstName": "Jean-Baptiste",
+              "lastName": "Bio",
+              "gender": "M",
+              "dateOfBirth": "2011-08-01",
+              "registrationNumber": "3eB-015",
+              "orderNumber": 15
+            }
+          ],
+          "evaluations": [
+            {
+              "id": "eval-class-nokoue-3b-int1",
+              "type": "interrogation",
+              "number": 1,
+              "title": "Interrogation n°1",
+              "date": "2026-10-15",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-nokoue-3b-int2",
+              "type": "interrogation",
+              "number": 2,
+              "title": "Interrogation n°2",
+              "date": "2026-11-20",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-nokoue-3b-dev1",
+              "type": "homework1",
+              "number": 1,
+              "title": "Devoir surveillé 1",
+              "date": "2026-11-28",
+              "maxScore": 20
+            },
+            {
+              "id": "eval-class-nokoue-3b-dev2",
+              "type": "homework2",
+              "number": 2,
+              "title": "Devoir surveillé 2",
+              "date": "2027-01-10",
+              "maxScore": 20
+            }
+          ],
+          "grades": [
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-1",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-2",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-3",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-4",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-5",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-6",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-7",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-8",
+              "status": "renseignée",
+              "score": 8.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-9",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-10",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-11",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-12",
+              "status": "renseignée",
+              "score": 5.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-13",
+              "status": "renseignée",
+              "score": 18.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-14",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int1",
+              "studentId": "student-class-nokoue-3b-15",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-1",
+              "status": "renseignée",
+              "score": 16.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-2",
+              "status": "renseignée",
+              "score": 12.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-3",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-4",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-5",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-6",
+              "status": "renseignée",
+              "score": 13.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-7",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-8",
+              "status": "renseignée",
+              "score": 8.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-9",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-10",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-11",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-12",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-13",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-14",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-int2",
+              "studentId": "student-class-nokoue-3b-15",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-1",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-2",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-3",
+              "status": "renseignée",
+              "score": 10.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-4",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-5",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-6",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-7",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-8",
+              "status": "renseignée",
+              "score": 9.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-9",
+              "status": "renseignée",
+              "score": 17.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-10",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-11",
+              "status": "renseignée",
+              "score": 10.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-12",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-13",
+              "status": "renseignée",
+              "score": 18.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-14",
+              "status": "renseignée",
+              "score": 14.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev1",
+              "studentId": "student-class-nokoue-3b-15",
+              "status": "renseignée",
+              "score": 9.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-1",
+              "status": "renseignée",
+              "score": 15.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-2",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-3",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-4",
+              "status": "renseignée",
+              "score": 5.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-5",
+              "status": "renseignée",
+              "score": 15.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-6",
+              "status": "renseignée",
+              "score": 14.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-7",
+              "status": "renseignée",
+              "score": 11.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-8",
+              "status": "renseignée",
+              "score": 6.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-9",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-10",
+              "status": "renseignée",
+              "score": 13.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-11",
+              "status": "renseignée",
+              "score": 11.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-12",
+              "status": "absent",
+              "score": null
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-13",
+              "status": "renseignée",
+              "score": 17.5
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-14",
+              "status": "renseignée",
+              "score": 12.0
+            },
+            {
+              "evaluationId": "eval-class-nokoue-3b-dev2",
+              "studentId": "student-class-nokoue-3b-15",
+              "status": "renseignée",
+              "score": 11.5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

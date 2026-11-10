@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../app/theme/edu_note_theme.dart';
+import '../../../../core/database/app_database.dart' hide Teacher;
+import '../../../../core/services/sample_data_seeder.dart';
 import '../../../../core/widgets/edu_ui_components.dart';
 import '../../domain/entities/teacher.dart';
 import '../../domain/usecases/get_teacher_profile.dart';
@@ -37,6 +40,7 @@ class _TeacherProfilePageState extends State<TeacherProfilePage> {
   String? _errorMessage;
   bool _isLoading = true;
   bool _isSaving = false;
+  bool _isSeeding = false;
 
   @override
   void initState() {
@@ -104,6 +108,95 @@ class _TeacherProfilePageState extends State<TeacherProfilePage> {
         _errorMessage = error.toString().replaceFirst('Bad state: ', '');
         _isSaving = false;
       });
+    }
+  }
+
+  Future<void> _seedDemoData() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        title: const Row(
+          children: [
+            EduColorIcon(name: 'school', size: 28),
+            SizedBox(width: 10),
+            Text('Charger les données démo ?'),
+          ],
+        ),
+        content: const Text(
+          'Cette action va charger automatiquement 3 établissements (Lycée Béhanzin, CEG Anavié, CEG Le Nokoué), 9 classes, 135 élèves avec 2 devoirs et 2 interrogations par classe ainsi que toutes les notes.\n\nSouhaitez-vous continuer ?',
+          style: TextStyle(height: 1.45, fontSize: 13.5),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Annuler'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text('Charger'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !mounted) return;
+
+    setState(() => _isSeeding = true);
+    try {
+      final db = GetIt.I<AppDatabase>();
+      final seeder = SampleDataSeeder(db);
+      await seeder.seedFromAsset();
+      await _loadProfile();
+
+      if (!mounted) return;
+      await showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset('assets/lottie/success.json', height: 110, repeat: false),
+              const SizedBox(height: 12),
+              const Text(
+                'Données démo chargées !',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: EduNoteColors.primaryDark,
+                ),
+              ),
+              const SizedBox(height: 6),
+              const Text(
+                '3 établissements, 9 classes et 135 élèves avec leurs notes sont maintenant disponibles.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: EduNoteColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            FilledButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors du chargement des données : $e'),
+            backgroundColor: EduNoteColors.crimson,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSeeding = false);
     }
   }
 
@@ -361,45 +454,118 @@ class _TeacherProfilePageState extends State<TeacherProfilePage> {
             ),
             const SizedBox(height: 18),
 
+            // Demo Data Seeder Card
+            SoftCard(
+              padding: const EdgeInsets.all(18),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: EduNoteColors.accentLight,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const EduColorIcon(name: 'notes', size: 22),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Données de démonstration',
+                          style: TextStyle(
+                            fontSize: 14.5,
+                            fontWeight: FontWeight.w700,
+                            color: EduNoteColors.primaryDark,
+                          ),
+                        ),
+                        Text(
+                          '3 écoles, 9 classes, 135 élèves et notes',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: EduNoteColors.muted,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  BounceableTap(
+                    onTap: _isSeeding ? null : _seedDemoData,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            EduNoteColors.accentGradientStart,
+                            EduNoteColors.accentGradientEnd,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: EduNoteShadows.primaryGlow,
+                      ),
+                      child: _isSeeding
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              'Charger',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 18),
+
             // Security & Privacy Card
             SoftCard(
               padding: const EdgeInsets.all(18),
-              child: Column(
+              child: Row(
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: EduNoteColors.emeraldLight,
-                          borderRadius: BorderRadius.circular(10),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: EduNoteColors.emeraldLight,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const EduColorIcon(name: 'protect', size: 22),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Sécurité & Confidentialité',
+                          style: TextStyle(
+                            fontSize: 14.5,
+                            fontWeight: FontWeight.w700,
+                            color: EduNoteColors.primaryDark,
+                          ),
                         ),
-                        child: const EduColorIcon(name: 'protect', size: 22),
-                      ),
-                      const SizedBox(width: 12),
-                      const Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Sécurité & Confidentialité',
-                              style: TextStyle(
-                                fontSize: 14.5,
-                                fontWeight: FontWeight.w700,
-                                color: EduNoteColors.primaryDark,
-                              ),
-                            ),
-                            Text(
-                              'Données 100% hors-ligne et chiffrées sur cet appareil',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: EduNoteColors.muted,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          'Données 100% hors-ligne et chiffrées sur cet appareil',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: EduNoteColors.muted,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
