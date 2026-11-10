@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../app/theme/edu_note_theme.dart';
+import '../../../../core/widgets/edu_ui_components.dart';
 import '../../domain/entities/school.dart';
 import '../../domain/usecases/delete_school.dart';
 import '../../domain/usecases/get_schools.dart';
@@ -90,7 +91,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Row(
           children: [
-            Icon(Icons.warning_amber_rounded, color: EduNoteColors.red),
+            Icon(Icons.warning_amber_rounded, color: EduNoteColors.crimson),
             SizedBox(width: 10),
             Text('Supprimer l\'école ?'),
           ],
@@ -106,7 +107,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
           ),
           FilledButton(
             style: FilledButton.styleFrom(
-              backgroundColor: EduNoteColors.red,
+              backgroundColor: EduNoteColors.crimson,
             ),
             onPressed: () => Navigator.of(ctx).pop(true),
             child: const Text('Supprimer'),
@@ -123,7 +124,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('"${school.name}" a été supprimé.'),
-              backgroundColor: EduNoteColors.navy,
+              backgroundColor: EduNoteColors.primaryDark,
             ),
           );
           _loadSchools();
@@ -133,7 +134,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur : $e'),
-              backgroundColor: EduNoteColors.red,
+              backgroundColor: EduNoteColors.crimson,
             ),
           );
         }
@@ -152,24 +153,29 @@ class _SchoolsPageState extends State<SchoolsPage> {
     }).toList();
 
     return Scaffold(
+      backgroundColor: EduNoteColors.background,
       body: SafeArea(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
               child: Row(
                 children: [
                   Container(
                     width: 44,
                     height: 44,
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: EduNoteColors.paleBlue,
+                      gradient: const LinearGradient(
+                        colors: [
+                          EduNoteColors.accentGradientStart,
+                          EduNoteColors.accentGradientEnd,
+                        ],
+                      ),
                       borderRadius: BorderRadius.circular(14),
+                      boxShadow: EduNoteShadows.primaryGlow,
                     ),
-                    child: const Icon(
-                      Icons.apartment_rounded,
-                      color: EduNoteColors.navy,
-                    ),
+                    child: const EduColorIcon(name: 'school', size: 26),
                   ),
                   const SizedBox(width: 14),
                   const Expanded(
@@ -179,35 +185,54 @@ class _SchoolsPageState extends State<SchoolsPage> {
                         Text(
                           'Établissements',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 21,
                             fontWeight: FontWeight.w800,
-                            color: EduNoteColors.navy,
+                            color: EduNoteColors.primaryDark,
+                            letterSpacing: -0.4,
                           ),
                         ),
                         Text(
                           'Gérez vos écoles et collèges',
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.5,
                             color: EduNoteColors.muted,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  FilledButton.icon(
-                    onPressed: _createSchool,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: EduNoteColors.navy,
+                  BounceableTap(
+                    onTap: _createSchool,
+                    child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 14,
-                        vertical: 10,
+                        vertical: 9,
                       ),
-                      shape: RoundedRectangleBorder(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            EduNoteColors.accentGradientStart,
+                            EduNoteColors.accentGradientEnd,
+                          ],
+                        ),
                         borderRadius: BorderRadius.circular(12),
+                        boxShadow: EduNoteShadows.primaryGlow,
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.add_rounded, size: 18, color: Colors.white),
+                          SizedBox(width: 4),
+                          Text(
+                            'Ajouter',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13.5,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    icon: const Icon(Icons.add_rounded, size: 18),
-                    label: const Text('Ajouter'),
                   ),
                 ],
               ),
@@ -247,8 +272,11 @@ class _SchoolsPageState extends State<SchoolsPage> {
 
   Widget _buildBody(List<School> schools) {
     if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(color: EduNoteColors.blue),
+      return const EduLottieState(
+        lottieAsset: 'assets/lottie/loading.json',
+        title: 'Chargement des établissements...',
+        message: 'Accès sécurisé à vos espaces d\'écoles.',
+        height: 120,
       );
     }
 
@@ -271,59 +299,80 @@ class _SchoolsPageState extends State<SchoolsPage> {
     if (_allSchools.isEmpty) {
       return Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: EduNoteColors.paleBlue,
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: const Icon(
-                  Icons.apartment_rounded,
-                  size: 40,
-                  color: EduNoteColors.blue,
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Aucun établissement enregistré',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: EduNoteColors.ink,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Ajoutez vos établissements pour organiser vos classes, élèves et notes.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: EduNoteColors.muted,
-                  height: 1.4,
-                ),
-              ),
-              const SizedBox(height: 24),
-              FilledButton.icon(
-                onPressed: _createSchool,
-                style: FilledButton.styleFrom(
-                  backgroundColor: EduNoteColors.navy,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 14,
+          padding: const EdgeInsets.all(28),
+          child: SoftCard(
+            padding: const EdgeInsets.all(24),
+            shadows: EduNoteShadows.floating,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 72,
+                  height: 72,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: EduNoteColors.accentLight,
+                    borderRadius: BorderRadius.circular(22),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                  child: const EduColorIcon(name: 'school', size: 44),
+                ),
+                const SizedBox(height: 18),
+                const Text(
+                  'Aucun établissement enregistré',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.w800,
+                    color: EduNoteColors.primaryDark,
+                    letterSpacing: -0.3,
                   ),
                 ),
-                icon: const Icon(Icons.add_rounded),
-                label: const Text('Ajouter un établissement'),
-              ),
-            ],
+                const SizedBox(height: 8),
+                const Text(
+                  'Ajoutez vos établissements pour organiser vos classes, élèves et notes.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: EduNoteColors.textSecondary,
+                    height: 1.45,
+                  ),
+                ),
+                const SizedBox(height: 22),
+                BounceableTap(
+                  onTap: _createSchool,
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [
+                          EduNoteColors.accentGradientStart,
+                          EduNoteColors.accentGradientEnd,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(14),
+                      boxShadow: EduNoteShadows.primaryGlow,
+                    ),
+                    alignment: Alignment.center,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add_rounded, color: Colors.white, size: 20),
+                        SizedBox(width: 8),
+                        Text(
+                          'Ajouter un établissement',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -339,6 +388,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
     }
 
     return RefreshIndicator(
+      color: EduNoteColors.accent,
       onRefresh: _loadSchools,
       child: ListView.separated(
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 24),
@@ -382,145 +432,134 @@ class _SchoolCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE7EDF1)),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Column(
+    return SoftCard(
+      onTap: onTap,
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: EduNoteColors.paleBlue,
-                      borderRadius: BorderRadius.circular(14),
+              Container(
+                width: 46,
+                height: 46,
+                padding: const EdgeInsets.all(9),
+                decoration: BoxDecoration(
+                  color: EduNoteColors.accentLight,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const EduColorIcon(name: 'school', size: 28),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      school.name,
+                      style: const TextStyle(
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.w700,
+                        color: EduNoteColors.primaryDark,
+                        letterSpacing: -0.2,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.school_outlined,
-                      color: EduNoteColors.blue,
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    const SizedBox(height: 5),
+                    Row(
                       children: [
-                        Text(
-                          school.name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: EduNoteColors.ink,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: EduNoteColors.accent.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            school.type,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: EduNoteColors.accent,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE8F1F5),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                school.type,
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w700,
-                                  color: EduNoteColors.navy,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            const Icon(
-                              Icons.location_on_outlined,
-                              size: 14,
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.location_on_outlined,
+                          size: 14,
+                          color: EduNoteColors.muted,
+                        ),
+                        const SizedBox(width: 2),
+                        Expanded(
+                          child: Text(
+                            school.city,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 12.5,
                               color: EduNoteColors.muted,
                             ),
-                            const SizedBox(width: 2),
-                            Expanded(
-                              child: Text(
-                                school.city,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: EduNoteColors.muted,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              PopupMenuButton<String>(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                icon: const Icon(Icons.more_vert_rounded, color: EduNoteColors.muted),
+                onSelected: (val) {
+                  if (val == 'edit') onEdit();
+                  if (val == 'delete') onDelete();
+                },
+                itemBuilder: (_) => [
+                  const PopupMenuItem(
+                    value: 'edit',
+                    child: Row(
+                      children: [
+                        Icon(Icons.edit_outlined, size: 18),
+                        SizedBox(width: 10),
+                        Text('Modifier'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.delete_outline,
+                          size: 18,
+                          color: EduNoteColors.crimson,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Supprimer',
+                          style: TextStyle(color: EduNoteColors.crimson),
                         ),
                       ],
                     ),
                   ),
-                  PopupMenuButton<String>(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    icon: const Icon(Icons.more_vert_rounded),
-                    onSelected: (val) {
-                      if (val == 'edit') onEdit();
-                      if (val == 'delete') onDelete();
-                    },
-                    itemBuilder: (_) => [
-                      const PopupMenuItem(
-                        value: 'edit',
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit_outlined, size: 18),
-                            SizedBox(width: 10),
-                            Text('Modifier'),
-                          ],
-                        ),
-                      ),
-                      const PopupMenuItem(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.delete_outline,
-                              size: 18,
-                              color: EduNoteColors.red,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Supprimer',
-                              style: TextStyle(color: EduNoteColors.red),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
-              if (school.address != null && school.address!.isNotEmpty) ...[
-                const SizedBox(height: 10),
-                Text(
-                  school.address!,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: EduNoteColors.muted,
-                  ),
-                ),
-              ],
             ],
           ),
-        ),
+          if (school.address != null && school.address!.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Text(
+              school.address!,
+              style: const TextStyle(
+                fontSize: 12,
+                color: EduNoteColors.muted,
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }

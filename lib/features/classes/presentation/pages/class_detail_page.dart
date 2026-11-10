@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../app/theme/edu_note_theme.dart';
+import '../../../../core/widgets/edu_ui_components.dart';
 import '../../../academic_years/domain/entities/academic_period.dart';
 import '../../../academic_years/domain/usecases/get_academic_periods.dart';
 import '../../../students/domain/entities/student.dart';
@@ -135,7 +136,7 @@ class _ClassDetailPageState extends State<ClassDetailPage>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Row(
           children: [
-            Icon(Icons.warning_amber_rounded, color: EduNoteColors.red),
+            Icon(Icons.warning_amber_rounded, color: EduNoteColors.crimson),
             SizedBox(width: 10),
             Text('Supprimer la classe ?'),
           ],
@@ -150,7 +151,7 @@ class _ClassDetailPageState extends State<ClassDetailPage>
             child: const Text('Annuler'),
           ),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: EduNoteColors.red),
+            style: FilledButton.styleFrom(backgroundColor: EduNoteColors.crimson),
             onPressed: () => Navigator.of(ctx).pop(true),
             child: const Text('Supprimer'),
           ),
@@ -166,7 +167,7 @@ class _ClassDetailPageState extends State<ClassDetailPage>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Classe supprimée avec succès.'),
-              backgroundColor: EduNoteColors.navy,
+              backgroundColor: EduNoteColors.primaryDark,
             ),
           );
           Navigator.of(context).pop(true);
@@ -176,7 +177,7 @@ class _ClassDetailPageState extends State<ClassDetailPage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur : $e'),
-              backgroundColor: EduNoteColors.red,
+              backgroundColor: EduNoteColors.crimson,
             ),
           );
         }
@@ -188,8 +189,12 @@ class _ClassDetailPageState extends State<ClassDetailPage>
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(color: EduNoteColors.blue),
+        backgroundColor: EduNoteColors.background,
+        body: EduLottieState(
+          lottieAsset: 'assets/lottie/loading.json',
+          title: 'Chargement de la classe...',
+          message: 'Préparation des élèves et des notes.',
+          height: 120,
         ),
       );
     }
@@ -216,28 +221,31 @@ class _ClassDetailPageState extends State<ClassDetailPage>
     final c = _schoolClass!;
 
     return Scaffold(
+      backgroundColor: EduNoteColors.background,
       appBar: AppBar(
         title: Text(
           c.name,
-          style: const TextStyle(fontWeight: FontWeight.w800),
+          style: const TextStyle(fontWeight: FontWeight.w800, letterSpacing: -0.3),
         ),
         actions: [
           IconButton(
             tooltip: 'Modifier la classe',
-            icon: const Icon(Icons.edit_outlined),
+            icon: const Icon(Icons.edit_outlined, color: EduNoteColors.muted),
             onPressed: _editClass,
           ),
           IconButton(
             tooltip: 'Supprimer la classe',
-            icon: const Icon(Icons.delete_outline, color: EduNoteColors.red),
+            icon: const Icon(Icons.delete_outline, color: EduNoteColors.crimson),
             onPressed: _confirmDelete,
           ),
         ],
         bottom: TabBar(
           controller: _tabController,
-          labelColor: EduNoteColors.navy,
+          labelColor: EduNoteColors.accent,
           unselectedLabelColor: EduNoteColors.muted,
-          indicatorColor: EduNoteColors.blue,
+          indicatorColor: EduNoteColors.accent,
+          indicatorWeight: 3,
+          labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13.5),
           tabs: [
             Tab(text: 'Élèves (${_students.length})'),
             const Tab(text: 'Matière'),
@@ -272,9 +280,10 @@ class _ClassDetailPageState extends State<ClassDetailPage>
     }).toList();
 
     return RefreshIndicator(
+      color: EduNoteColors.accent,
       onRefresh: _loadData,
       child: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -284,19 +293,20 @@ class _ClassDetailPageState extends State<ClassDetailPage>
                   const Text(
                     'Effectif',
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 18,
                       fontWeight: FontWeight.w800,
-                      color: EduNoteColors.ink,
+                      color: EduNoteColors.primaryDark,
+                      letterSpacing: -0.3,
                     ),
                   ),
                   const SizedBox(width: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
-                      vertical: 2,
+                      vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: EduNoteColors.paleBlue,
+                      color: EduNoteColors.accentLight,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
@@ -304,26 +314,44 @@ class _ClassDetailPageState extends State<ClassDetailPage>
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w800,
-                        color: EduNoteColors.navy,
+                        color: EduNoteColors.accent,
                       ),
                     ),
                   ),
                 ],
               ),
-              FilledButton.icon(
-                onPressed: _addStudent,
-                style: FilledButton.styleFrom(
-                  backgroundColor: EduNoteColors.navy,
+              BounceableTap(
+                onTap: _addStudent,
+                child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 14,
-                    vertical: 10,
+                    vertical: 9,
                   ),
-                  shape: RoundedRectangleBorder(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        EduNoteColors.accentGradientStart,
+                        EduNoteColors.accentGradientEnd,
+                      ],
+                    ),
                     borderRadius: BorderRadius.circular(12),
+                    boxShadow: EduNoteShadows.primaryGlow,
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.person_add_rounded, size: 18, color: Colors.white),
+                      SizedBox(width: 5),
+                      Text(
+                        'Inscrire',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13.5,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                icon: const Icon(Icons.person_add_outlined, size: 18),
-                label: const Text('Inscrire'),
               ),
             ],
           ),
@@ -350,34 +378,38 @@ class _ClassDetailPageState extends State<ClassDetailPage>
           ],
           const SizedBox(height: 16),
           if (_students.isEmpty)
-            Container(
+            SoftCard(
               padding: const EdgeInsets.all(28),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xFFE7EDF1)),
-              ),
-              child: const Column(
+              child: Column(
                 children: [
-                  Icon(
-                    Icons.people_outline_rounded,
-                    size: 44,
-                    color: EduNoteColors.muted,
+                  Container(
+                    width: 58,
+                    height: 58,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: EduNoteColors.accentLight,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: const EduColorIcon(name: 'student', size: 34),
                   ),
-                  SizedBox(height: 12),
-                  Text(
+                  const SizedBox(height: 14),
+                  const Text(
                     'Aucun élève inscrit',
                     style: TextStyle(
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w800,
                       fontSize: 16,
-                      color: EduNoteColors.ink,
+                      color: EduNoteColors.primaryDark,
                     ),
                   ),
-                  SizedBox(height: 6),
-                  Text(
+                  const SizedBox(height: 6),
+                  const Text(
                     'Inscrivez vos élèves pour enregistrer leurs notes et suivre leurs moyennes.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 13, color: EduNoteColors.muted),
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      color: EduNoteColors.muted,
+                      height: 1.45,
+                    ),
                   ),
                 ],
               ),
@@ -393,90 +425,93 @@ class _ClassDetailPageState extends State<ClassDetailPage>
               ),
             )
           else
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: filtered.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 10),
-              itemBuilder: (context, index) {
-                final student = filtered[index];
-                final initials =
-                    (student.lastName.isNotEmpty ? student.lastName[0] : '') +
-                    (student.firstName.isNotEmpty ? student.firstName[0] : '');
-
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: const Color(0xFFE7EDF1)),
-                  ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 6,
-                    ),
-                    leading: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: student.gender == 'F'
-                          ? const Color(0xFFFDE8F1)
-                          : EduNoteColors.paleBlue,
-                      child: Text(
-                        initials.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800,
-                          color: student.gender == 'F'
-                              ? const Color(0xFFD63384)
-                              : EduNoteColors.blue,
-                        ),
+            StaggeredFadeSlideList(
+              children: [
+                for (final student in filtered)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: SoftCard(
+                      onTap: () async {
+                        final changed = await Navigator.of(context).push<bool>(
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                StudentProfilePage(studentId: student.id),
+                          ),
+                        );
+                        if (changed == true) {
+                          _loadData();
+                        }
+                      },
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
                       ),
-                    ),
-                    title: Text(
-                      student.fullName,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15,
-                        color: EduNoteColors.ink,
-                      ),
-                    ),
-                    subtitle: Row(
-                      children: [
-                        if (student.orderNumber != null) ...[
-                          Text(
-                            'N° ${student.orderNumber} • ',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: EduNoteColors.muted,
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 22,
+                            backgroundColor: student.gender == 'F'
+                                ? const Color(0xFFFDE8F1)
+                                : EduNoteColors.accentLight,
+                            child: Text(
+                              (student.lastName.isNotEmpty ? student.lastName[0] : '') +
+                                  (student.firstName.isNotEmpty ? student.firstName[0] : ''),
+                              style: TextStyle(
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w800,
+                                color: student.gender == 'F'
+                                    ? const Color(0xFFD63384)
+                                    : EduNoteColors.accent,
+                              ),
                             ),
                           ),
-                        ],
-                        Text(
-                          student.registrationNumber ?? 'Sans matricule',
-                          style: const TextStyle(
-                            fontSize: 12,
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  student.fullName,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 15,
+                                    color: EduNoteColors.primaryDark,
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                Row(
+                                  children: [
+                                    if (student.orderNumber != null) ...[
+                                      Text(
+                                        'N° ${student.orderNumber} • ',
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: EduNoteColors.accent,
+                                        ),
+                                      ),
+                                    ],
+                                    Text(
+                                      student.registrationNumber ?? 'Sans matricule',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: EduNoteColors.muted,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Icon(
+                            Icons.chevron_right_rounded,
                             color: EduNoteColors.muted,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    trailing: const Icon(
-                      Icons.chevron_right_rounded,
-                      color: EduNoteColors.muted,
-                    ),
-                    onTap: () async {
-                      final changed = await Navigator.of(context).push<bool>(
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              StudentProfilePage(studentId: student.id),
-                        ),
-                      );
-                      if (changed == true) {
-                        _loadData();
-                      }
-                    },
                   ),
-                );
-              },
+              ],
             ),
         ],
       ),

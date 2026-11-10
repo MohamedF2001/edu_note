@@ -93,9 +93,7 @@ void main() {
     await tester.tap(find.text('Évaluations'));
     await tester.pumpAndSettle();
     expect(
-      find.text(
-        'Créez des interrogations et des devoirs pour saisir les notes.',
-      ),
+      find.text('Aucune classe pour le moment'),
       findsOneWidget,
     );
   });

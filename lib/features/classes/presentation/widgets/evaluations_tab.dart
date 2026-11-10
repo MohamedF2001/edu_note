@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../app/theme/edu_note_theme.dart';
+import '../../../../core/widgets/edu_ui_components.dart';
+import '../../../academic_years/domain/entities/academic_period.dart';
 import '../../../evaluations/domain/entities/evaluation.dart';
+import '../../../evaluations/domain/entities/grade.dart';
 import '../../../evaluations/domain/usecases/create_evaluation.dart';
 import '../../../evaluations/domain/usecases/delete_evaluation.dart';
 import '../../../evaluations/domain/usecases/get_evaluations_by_class_subject.dart';
 import '../../../evaluations/domain/usecases/get_grades_by_evaluation.dart';
 import '../../../evaluations/domain/usecases/save_grades_batch.dart';
-import '../../../evaluations/domain/entities/grade.dart';
-import '../../../academic_years/domain/entities/academic_period.dart';
 import '../../../students/domain/entities/student.dart';
 import '../../../students/domain/usecases/get_students_by_class.dart';
 import '../../../subjects/domain/entities/class_subject.dart';
@@ -97,7 +99,7 @@ class _EvaluationsTabState extends State<EvaluationsTab> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur : $e'),
-            backgroundColor: EduNoteColors.red,
+            backgroundColor: EduNoteColors.crimson,
           ),
         );
       }
@@ -132,7 +134,7 @@ class _EvaluationsTabState extends State<EvaluationsTab> {
             child: const Text('Annuler'),
           ),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: EduNoteColors.red),
+            style: FilledButton.styleFrom(backgroundColor: EduNoteColors.crimson),
             onPressed: () => Navigator.of(ctx).pop(true),
             child: const Text('Supprimer'),
           ),
@@ -149,51 +151,52 @@ class _EvaluationsTabState extends State<EvaluationsTab> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       children: [
-        // Subject selector
         if (widget.classSubjects.isEmpty)
           _emptyCard(
-            Icons.menu_book_outlined,
+            'book',
             'Aucune matière associée',
-            'Associez d\'abord des matières à cette classe dans l\'onglet "Matières".',
+            'Associez d\'abord des matières à cette classe dans l\'onglet "Matière".',
           )
         else ...[
-          // Subject chip selector
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: widget.classSubjects.map((cs) {
-                final selected = _selectedSubject?.id == cs.id;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: FilterChip(
-                    label: Text(cs.subjectName),
-                    selected: selected,
-                    onSelected: (_) {
-                      setState(() => _selectedSubject = cs);
-                      _loadData();
-                    },
-                    selectedColor: EduNoteColors.paleBlue,
-                    checkmarkColor: EduNoteColors.navy,
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: selected
-                          ? EduNoteColors.navy
-                          : EduNoteColors.muted,
-                    ),
+          // Subject pill indicator (Unique subject)
+          Row(
+            children: widget.classSubjects.map((cs) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                decoration: BoxDecoration(
+                  color: EduNoteColors.accent.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: EduNoteColors.accent.withValues(alpha: 0.3),
                   ),
-                );
-              }).toList(),
-            ),
+                ),
+                child: Row(
+                  children: [
+                    const EduColorIcon(name: 'award', size: 18),
+                    const SizedBox(width: 8),
+                    Text(
+                      cs.subjectName,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: EduNoteColors.accent,
+                        fontSize: 13.5,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
+
           // Period selector
           if (widget.periods.isNotEmpty)
             DropdownButtonFormField<AcademicPeriod>(
               initialValue: _selectedPeriod,
               decoration: const InputDecoration(
-                labelText: 'Période',
+                labelText: 'Période scolaire',
                 prefixIcon: Icon(Icons.calendar_today_outlined),
                 isDense: true,
               ),
@@ -207,18 +210,13 @@ class _EvaluationsTabState extends State<EvaluationsTab> {
               },
             ),
           const SizedBox(height: 16),
-          // Action buttons
-          if (widget.periods.isEmpty)
-            _emptyCard(
-              Icons.calendar_month_outlined,
-              'Aucune période scolaire',
-              'Ajoutez une période à l’année scolaire de cette classe avant de créer une évaluation.',
-            ),
+
+          // Action buttons for evaluations
           Row(
             children: [
               Expanded(
                 child: _ActionButton(
-                  icon: Icons.quiz_outlined,
+                  iconName: 'notes',
                   label: 'Interro.',
                   color: const Color(0xFF3B82F6),
                   onTap: _selectedPeriod == null
@@ -229,7 +227,7 @@ class _EvaluationsTabState extends State<EvaluationsTab> {
               const SizedBox(width: 10),
               Expanded(
                 child: _ActionButton(
-                  icon: Icons.assignment_outlined,
+                  iconName: 'survey',
                   label: 'Devoir 1',
                   color: const Color(0xFF8B5CF6),
                   onTap: _selectedPeriod == null
@@ -240,7 +238,7 @@ class _EvaluationsTabState extends State<EvaluationsTab> {
               const SizedBox(width: 10),
               Expanded(
                 child: _ActionButton(
-                  icon: Icons.assignment_outlined,
+                  iconName: 'survey',
                   label: 'Devoir 2',
                   color: const Color(0xFFEC4899),
                   onTap: _selectedPeriod == null
@@ -250,69 +248,80 @@ class _EvaluationsTabState extends State<EvaluationsTab> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
+
           if (_isLoading)
             const Center(
-              child: CircularProgressIndicator(color: EduNoteColors.blue),
+              child: Padding(
+                padding: EdgeInsets.all(28.0),
+                child: CircularProgressIndicator(color: EduNoteColors.accent),
+              ),
             )
           else if (_errorMessage != null)
             _emptyCard(
-              Icons.cloud_off_outlined,
+              'empty_box',
               _errorMessage!,
               'Actualisez pour réessayer.',
             )
           else if (_evaluations.isEmpty)
             _emptyCard(
-              Icons.assignment_outlined,
-              'Aucune évaluation',
-              'Créez une interrogation ou un devoir pour commencer à saisir des notes.',
+              'notes',
+              'Aucune évaluation créée',
+              'Créez une interrogation ou un devoir ci-dessus pour commencer à saisir vos notes.',
             )
           else
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _evaluations.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 10),
-              itemBuilder: (_, i) {
-                final eval = _evaluations[i];
-                return _EvaluationCard(
-                  evaluation: eval,
-                  studentCount: _students.length,
-                  onTap: () => _openGradeEntry(eval),
-                  onDelete: () => _deleteEvaluation(eval),
-                );
-              },
+            StaggeredFadeSlideList(
+              children: [
+                for (final eval in _evaluations)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: _EvaluationCard(
+                      evaluation: eval,
+                      studentCount: _students.length,
+                      onTap: () => _openGradeEntry(eval),
+                      onDelete: () => _deleteEvaluation(eval),
+                    ),
+                  ),
+              ],
             ),
         ],
       ],
     );
   }
 
-  Widget _emptyCard(IconData icon, String title, String subtitle) {
-    return Container(
-      padding: const EdgeInsets.all(28),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE7EDF1)),
-      ),
+  Widget _emptyCard(String iconName, String title, String subtitle) {
+    return SoftCard(
+      padding: const EdgeInsets.all(26),
       child: Column(
         children: [
-          Icon(icon, size: 44, color: EduNoteColors.muted),
-          const SizedBox(height: 12),
+          Container(
+            width: 58,
+            height: 58,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: EduNoteColors.accentLight,
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: EduColorIcon(name: iconName, size: 34),
+          ),
+          const SizedBox(height: 14),
           Text(
             title,
             style: const TextStyle(
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w800,
               fontSize: 16,
-              color: EduNoteColors.ink,
+              color: EduNoteColors.primaryDark,
             ),
           ),
           const SizedBox(height: 6),
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 13, color: EduNoteColors.muted),
+            style: const TextStyle(
+              fontSize: 13.5,
+              color: EduNoteColors.muted,
+              height: 1.45,
+            ),
           ),
         ],
       ),
@@ -322,13 +331,13 @@ class _EvaluationsTabState extends State<EvaluationsTab> {
 
 class _ActionButton extends StatelessWidget {
   const _ActionButton({
-    required this.icon,
+    required this.iconName,
     required this.label,
     required this.color,
     required this.onTap,
   });
 
-  final IconData icon;
+  final String iconName;
   final String label;
   final Color color;
   final VoidCallback? onTap;
@@ -336,32 +345,31 @@ class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isEnabled = onTap != null;
-    return Material(
-      color: color.withValues(alpha: isEnabled ? 0.08 : 0.04),
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          child: Column(
-            children: [
-              Icon(
-                icon,
-                color: isEnabled ? color : EduNoteColors.muted,
-                size: 22,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: TextStyle(
-                  color: isEnabled ? color : EduNoteColors.muted,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12,
-                ),
-              ),
-            ],
+    return BounceableTap(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: isEnabled ? 0.08 : 0.04),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: color.withValues(alpha: isEnabled ? 0.25 : 0.1),
+            width: 1,
           ),
+        ),
+        child: Column(
+          children: [
+            EduColorIcon(name: iconName, size: 24),
+            const SizedBox(height: 5),
+            Text(
+              label,
+              style: TextStyle(
+                color: isEnabled ? color : EduNoteColors.muted,
+                fontWeight: FontWeight.w700,
+                fontSize: 12.5,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -394,57 +402,80 @@ class _EvaluationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE7EDF1)),
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
-        leading: Container(
-          width: 42,
-          height: 42,
-          decoration: BoxDecoration(
-            color: _typeColor.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
+    return SoftCard(
+      onTap: onTap,
+      padding: const EdgeInsets.fromLTRB(16, 12, 10, 12),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            padding: const EdgeInsets.all(9),
+            decoration: BoxDecoration(
+              color: _typeColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: EduColorIcon(name: 'survey', size: 26),
           ),
-          child: Icon(Icons.assignment_outlined, color: _typeColor, size: 20),
-        ),
-        title: Text(
-          evaluation.displayTitle,
-          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-        ),
-        subtitle: Text(
-          '/${evaluation.maxScore.toStringAsFixed(evaluation.maxScore == evaluation.maxScore.truncate() ? 0 : 1)}  •  $studentCount élève${studentCount > 1 ? "s" : ""}',
-          style: const TextStyle(fontSize: 12, color: EduNoteColors.muted),
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(
-                Icons.delete_outline,
-                color: EduNoteColors.red,
-                size: 20,
-              ),
-              onPressed: onDelete,
-            ),
-            FilledButton.tonal(
-              onPressed: onTap,
-              style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  evaluation.displayTitle,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: EduNoteColors.primaryDark,
+                  ),
                 ),
-                minimumSize: Size.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: const Text('Notes', style: TextStyle(fontSize: 12)),
+                const SizedBox(height: 2),
+                Text(
+                  '/${evaluation.maxScore.toStringAsFixed(evaluation.maxScore == evaluation.maxScore.truncate() ? 0 : 1)}  •  $studentCount élève${studentCount > 1 ? "s" : ""}',
+                  style: const TextStyle(
+                    fontSize: 12.5,
+                    color: EduNoteColors.muted,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 4),
-          ],
-        ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: EduNoteColors.crimson,
+                  size: 20,
+                ),
+                onPressed: onDelete,
+              ),
+              BounceableTap(
+                onTap: onTap,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 7,
+                  ),
+                  decoration: BoxDecoration(
+                    color: EduNoteColors.accentLight,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text(
+                    'Notes',
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                      color: EduNoteColors.accent,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -536,7 +567,7 @@ class _GradeEntryPageState extends State<GradeEntryPage> {
                   content: Text(
                     'Note invalide pour ${student.fullName} : doit être entre 0 et ${widget.evaluation.maxScore}.',
                   ),
-                  backgroundColor: EduNoteColors.red,
+                  backgroundColor: EduNoteColors.crimson,
                 ),
               );
             }
@@ -561,20 +592,62 @@ class _GradeEntryPageState extends State<GradeEntryPage> {
       await saveBatch(schoolId: widget.schoolId, grades: grades);
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Notes enregistrées avec succès.'),
-            backgroundColor: EduNoteColors.navy,
+        // Show success dialog with Lottie animation
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Lottie.asset(
+                  'assets/lottie/success.json',
+                  height: 120,
+                  repeat: false,
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Notes enregistrées !',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: EduNoteColors.primaryDark,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Les moyennes ont été automatiquement recalculées.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: EduNoteColors.muted,
+                    fontSize: 13.5,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
           ),
         );
-        Navigator.of(context).pop(true);
+        if (mounted) {
+          Navigator.of(context).pop(true);
+        }
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur : $e'),
-            backgroundColor: EduNoteColors.red,
+            backgroundColor: EduNoteColors.crimson,
           ),
         );
         setState(() => _isSaving = false);
@@ -585,30 +658,60 @@ class _GradeEntryPageState extends State<GradeEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: EduNoteColors.background,
       appBar: AppBar(
-        title: Text(widget.evaluation.displayTitle),
+        title: Text(
+          widget.evaluation.displayTitle,
+          style: const TextStyle(fontWeight: FontWeight.w800),
+        ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: FilledButton(
-              onPressed: _isSaving ? null : _save,
-              child: _isSaving
-                  ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
+            padding: const EdgeInsets.only(right: 14),
+            child: BounceableTap(
+              onTap: _isSaving ? null : _save,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      EduNoteColors.accentGradientStart,
+                      EduNoteColors.accentGradientEnd,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: EduNoteShadows.primaryGlow,
+                ),
+                child: _isSaving
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Row(
+                        children: [
+                          Icon(Icons.save_rounded, size: 18, color: Colors.white),
+                          SizedBox(width: 6),
+                          Text(
+                            'Enregistrer',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13.5,
+                            ),
+                          ),
+                        ],
                       ),
-                    )
-                  : const Text('Enregistrer'),
+              ),
             ),
           ),
         ],
       ),
       body: _isLoading
           ? const Center(
-              child: CircularProgressIndicator(color: EduNoteColors.blue),
+              child: CircularProgressIndicator(color: EduNoteColors.accent),
             )
           : widget.students.isEmpty
           ? const Center(
@@ -618,7 +721,7 @@ class _GradeEntryPageState extends State<GradeEntryPage> {
               ),
             )
           : ListView.separated(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               itemCount: widget.students.length,
               separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (_, i) {
@@ -629,32 +732,26 @@ class _GradeEntryPageState extends State<GradeEntryPage> {
                     (student.lastName.isNotEmpty ? student.lastName[0] : '') +
                     (student.firstName.isNotEmpty ? student.firstName[0] : '');
 
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: isAbsent
-                          ? EduNoteColors.red.withValues(alpha: 0.3)
-                          : const Color(0xFFE7EDF1),
-                    ),
-                  ),
+                return SoftCard(
                   padding: const EdgeInsets.all(14),
+                  borderColor: isAbsent
+                      ? EduNoteColors.crimson.withValues(alpha: 0.3)
+                      : EduNoteColors.cardBorder,
                   child: Row(
                     children: [
                       CircleAvatar(
-                        radius: 18,
+                        radius: 20,
                         backgroundColor: student.gender == 'F'
                             ? const Color(0xFFFDE8F1)
-                            : EduNoteColors.paleBlue,
+                            : EduNoteColors.accentLight,
                         child: Text(
                           initials.toUpperCase(),
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.5,
                             fontWeight: FontWeight.w800,
                             color: student.gender == 'F'
                                 ? const Color(0xFFD63384)
-                                : EduNoteColors.blue,
+                                : EduNoteColors.accent,
                           ),
                         ),
                       ),
@@ -667,14 +764,15 @@ class _GradeEntryPageState extends State<GradeEntryPage> {
                               student.fullName,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w700,
-                                fontSize: 14,
+                                fontSize: 14.5,
+                                color: EduNoteColors.primaryDark,
                               ),
                             ),
                             if (student.registrationNumber != null)
                               Text(
                                 student.registrationNumber!,
                                 style: const TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 11.5,
                                   color: EduNoteColors.muted,
                                 ),
                               ),
@@ -684,9 +782,9 @@ class _GradeEntryPageState extends State<GradeEntryPage> {
                       const SizedBox(width: 8),
                       // Status toggles
                       _StatusToggle(
-                        label: 'AB',
+                        label: 'ABS',
                         active: isAbsent,
-                        activeColor: EduNoteColors.red,
+                        activeColor: EduNoteColors.crimson,
                         onTap: () => setState(() {
                           _statuses[student.id] = isAbsent
                               ? GradeStatus.notRecorded
@@ -694,10 +792,10 @@ class _GradeEntryPageState extends State<GradeEntryPage> {
                           _controllers[student.id]!.clear();
                         }),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 10),
                       // Score input
                       SizedBox(
-                        width: 70,
+                        width: 76,
                         child: TextField(
                           controller: _controllers[student.id],
                           enabled: !isAbsent,
@@ -705,17 +803,23 @@ class _GradeEntryPageState extends State<GradeEntryPage> {
                             decimal: true,
                           ),
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontWeight: FontWeight.w700),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 15,
+                            color: EduNoteColors.primaryDark,
+                          ),
                           decoration: InputDecoration(
                             hintText: isAbsent ? 'Abs.' : '–',
                             isDense: true,
                             filled: true,
                             fillColor: isAbsent
-                                ? EduNoteColors.red.withValues(alpha: 0.05)
-                                : EduNoteColors.paleBlue.withValues(alpha: 0.4),
+                                ? EduNoteColors.crimson.withValues(alpha: 0.06)
+                                : EduNoteColors.accentLight.withValues(alpha: 0.4),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: EduNoteColors.cardBorder,
+                              ),
                             ),
                             contentPadding: const EdgeInsets.symmetric(
                               vertical: 10,
@@ -725,6 +829,7 @@ class _GradeEntryPageState extends State<GradeEntryPage> {
                               '/${widget.evaluation.maxScore.toInt()}',
                               style: const TextStyle(
                                 fontSize: 10,
+                                fontWeight: FontWeight.w600,
                                 color: EduNoteColors.muted,
                               ),
                             ),
@@ -768,13 +873,13 @@ class _StatusToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return BounceableTap(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         decoration: BoxDecoration(
-          color: active ? activeColor : const Color(0xFFF0F4F8),
+          color: active ? activeColor : EduNoteColors.surfaceVariant,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
@@ -782,7 +887,7 @@ class _StatusToggle extends StatelessWidget {
           style: TextStyle(
             color: active ? Colors.white : EduNoteColors.muted,
             fontWeight: FontWeight.w700,
-            fontSize: 11,
+            fontSize: 11.5,
           ),
         ),
       ),
