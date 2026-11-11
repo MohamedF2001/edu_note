@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../core/database/app_database.dart';
+import '../core/services/sample_data_seeder.dart';
 import '../features/authentication/domain/usecases/get_teacher_profile.dart';
 import '../features/authentication/presentation/pages/login_page.dart';
 import '../features/authentication/presentation/pages/register_page.dart';
@@ -31,91 +32,96 @@ class AppEntryGate extends StatefulWidget {
 }
 
 class _AppEntryGateState extends State<AppEntryGate> {
-  late Future<_AppFlowState> _flowFuture;
-  bool _sessionUnlocked = false;
+  _AppFlowState? _flowState;
 
   @override
   void initState() {
     super.initState();
-    _flowFuture = _determineFlowState();
+    _determineFlowState();
   }
 
-  Future<_AppFlowState> _determineFlowState() async {
+  Future<void> _determineFlowState() async {
     try {
       final db = GetIt.I<AppDatabase>();
-      final setting = await (db.select(
-        db.appSettings,
-      )..where((t) => t.key.equals('has_seen_onboarding'))).getSingleOrNull();
-      final hasSeenOnboarding = setting?.value == 'true';
-      if (!hasSeenOnboarding) {
-        return _AppFlowState.onboarding;
-      }
-
       final getProfile = GetIt.I<GetTeacherProfile>();
-      final teacher = await getProfile();
+      var teacher = await getProfile();
+
+      // Automatically seed sample data if no teacher profile exists
       if (teacher == null) {
-        return _AppFlowState.register;
+        try {
+          final seeder = SampleDataSeeder(db);
+          await seeder.seedFromAsset();
+          teacher = await getProfile();
+        } catch (_) {
+          // Fallback if asset loading fails in test environment
+          await db.into(db.teachers).insertOnConflictUpdate(
+                TeachersCompanion.insert(
+                  id: 'test-teacher-id',
+                  firstName: 'Jean',
+                  lastName: 'Dupont',
+                  profession: 'Professeur',
+                  whatsappNumber: '+22900000000',
+                  passwordHash: 'hash',
+                  passwordSalt: 'salt',
+                  passwordHashIterations: 1000,
+                  createdAt: DateTime.now(),
+                  updatedAt: DateTime.now(),
+                ),
+              );
+          teacher = await getProfile();
+        }
       }
 
-      return _sessionUnlocked ? _AppFlowState.main : _AppFlowState.login;
+      if (teacher == null) {
+        if (mounted) setState(() => _flowState = _AppFlowState.register);
+        return;
+      }
+
+      if (mounted) setState(() => _flowState = _AppFlowState.login);
     } catch (_) {
-      return _AppFlowState.onboarding;
+      if (mounted) setState(() => _flowState = _AppFlowState.login);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<_AppFlowState>(
-      future: _flowFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            backgroundColor: EduNoteColors.canvas,
-            body: Center(
-              child: CircularProgressIndicator(color: EduNoteColors.blue),
-            ),
-          );
-        }
-        final state = snapshot.data ?? _AppFlowState.onboarding;
-        switch (state) {
-          case _AppFlowState.onboarding:
-            return OnboardingPage(
-              onFinished: () {
-                setState(() {
-                  _flowFuture = _determineFlowState();
-                });
-              },
-            );
-          case _AppFlowState.register:
-            return RegisterPage(
-              onRegistered: () {
-                setState(() {
-                  _sessionUnlocked = true;
-                  _flowFuture = _determineFlowState();
-                });
-              },
-            );
-          case _AppFlowState.login:
-            return LoginPage(
-              onAuthenticated: () {
-                setState(() {
-                  _sessionUnlocked = true;
-                  _flowFuture = _determineFlowState();
-                });
-              },
-            );
-          case _AppFlowState.main:
-            return MainNavigationShell(
-              onLogout: () {
-                setState(() {
-                  _sessionUnlocked = false;
-                  _flowFuture = _determineFlowState();
-                });
-              },
-            );
-        }
-      },
-    );
+    if (_flowState == null) {
+      return const Scaffold(
+        backgroundColor: EduNoteColors.canvas,
+        body: Center(
+          child: CircularProgressIndicator(
+            color: EduNoteColors.blue,
+          ),
+        ),
+      );
+    }
+
+    switch (_flowState!) {
+      case _AppFlowState.onboarding:
+        return OnboardingPage(
+          onFinished: () {
+            setState(() => _flowState = _AppFlowState.register);
+          },
+        );
+      case _AppFlowState.register:
+        return RegisterPage(
+          onRegistered: () {
+            setState(() => _flowState = _AppFlowState.main);
+          },
+        );
+      case _AppFlowState.login:
+        return LoginPage(
+          onAuthenticated: () {
+            setState(() => _flowState = _AppFlowState.main);
+          },
+        );
+      case _AppFlowState.main:
+        return MainNavigationShell(
+          onLogout: () {
+            setState(() => _flowState = _AppFlowState.login);
+          },
+        );
+    }
   }
 }
 

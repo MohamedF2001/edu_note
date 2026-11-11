@@ -124,14 +124,27 @@ class TeacherRepositoryImpl implements TeacherRepository {
   Future<bool> authenticateTeacher(String password) async {
     final teacher = await getTeacherProfile();
     if (teacher == null) return false;
-    final valid = PasswordHasher.verifyPassword(
+    final verifiedIterations = teacher.passwordHashIterations;
+    var needsRehash =
+        verifiedIterations != PasswordHasher.currentIterations;
+    var valid = PasswordHasher.verifyPassword(
       password,
       teacher.passwordSalt,
       teacher.passwordHash,
-      iterations: teacher.passwordHashIterations,
+      iterations: verifiedIterations,
     );
-    if (valid &&
-        teacher.passwordHashIterations == PasswordHasher.legacyIterations) {
+    // Older sample data imports stored the current hash with incorrect
+    // iteration metadata. Accept that demo-only format and repair it below.
+    if (!valid && teacher.id == 'teacher-demo') {
+      valid = PasswordHasher.verifyPassword(
+        password,
+        teacher.passwordSalt,
+        teacher.passwordHash,
+        iterations: PasswordHasher.currentIterations,
+      );
+      if (valid) needsRehash = true;
+    }
+    if (valid && needsRehash) {
       final salt = PasswordHasher.generateSalt();
       await (_database.update(
         _database.teachers,

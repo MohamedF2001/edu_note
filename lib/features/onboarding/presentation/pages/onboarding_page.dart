@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:lottie/lottie.dart';
 
-import '../../../../core/database/app_database.dart';
 import '../../../../app/theme/edu_note_theme.dart';
+import '../../../../core/database/app_database.dart';
+import '../../../../core/widgets/edu_ui_components.dart';
 
 class OnboardingItem {
   const OnboardingItem({
     required this.title,
     required this.description,
-    required this.icon,
-    required this.color,
+    required this.iconName,
+    required this.accentColor,
+    required this.tag,
   });
 
   final String title;
   final String description;
-  final IconData icon;
-  final Color color;
+  final String iconName;
+  final Color accentColor;
+  final String tag;
 }
 
 class OnboardingPage extends StatefulWidget {
@@ -36,22 +40,25 @@ class _OnboardingPageState extends State<OnboardingPage> {
       title: 'Établissements et Classes',
       description:
           'Organisez vos établissements scolaires, vos années académiques et vos classes en toute simplicité pour un suivi rigoureux.',
-      icon: Icons.apartment_rounded,
-      color: EduNoteColors.blue,
+      iconName: 'school',
+      accentColor: EduNoteColors.accent,
+      tag: 'ESPACES INDÉPENDANTS',
     ),
     OnboardingItem(
       title: 'Évaluations et Notes',
       description:
           'Créez des interrogations et devoirs, saisissez vos notes en lot et gérez les statuts d’absence en toute fluidité.',
-      icon: Icons.assignment_rounded,
-      color: EduNoteColors.green,
+      iconName: 'notes',
+      accentColor: EduNoteColors.emerald,
+      tag: 'CALCUL AUTOMATIQUE',
     ),
     OnboardingItem(
       title: 'Résultats et Exports',
       description:
           'Bénéficiez de calculs de moyennes automatiques et exportez vos relevés en PDF ou XLSX, 100% hors-ligne et sécurisé.',
-      icon: Icons.bar_chart_rounded,
-      color: EduNoteColors.navy,
+      iconName: 'trophy',
+      accentColor: EduNoteColors.amber,
+      tag: '100% CONFIDENTIEL & OFFLINE',
     ),
   ];
 
@@ -79,55 +86,102 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: EduNoteColors.background,
       body: SafeArea(
         child: Column(
           children: [
-            // Top bar with Skip button
+            // Top bar with branding and Skip button
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
                       Container(
-                        width: 32,
-                        height: 32,
+                        width: 38,
+                        height: 38,
+                        padding: const EdgeInsets.all(7),
                         decoration: BoxDecoration(
-                          color: EduNoteColors.blue.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          gradient: const LinearGradient(
+                            colors: [
+                              EduNoteColors.accentGradientStart,
+                              EduNoteColors.accentGradientEnd,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: EduNoteShadows.primaryGlow,
                         ),
-                        child: const Icon(
-                          Icons.school_rounded,
-                          color: EduNoteColors.blue,
-                          size: 18,
-                        ),
+                        child: const EduColorIcon(name: 'graduation', size: 24),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 12),
                       const Text(
                         'EduNote',
                         style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: EduNoteColors.navy,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                          color: EduNoteColors.primaryDark,
+                          letterSpacing: -0.5,
                         ),
                       ),
                     ],
                   ),
                   if (_currentPage < _items.length - 1)
-                    TextButton(
-                      onPressed: _completeOnboarding,
-                      child: const Text(
-                        'Passer',
-                        style: TextStyle(
-                          color: EduNoteColors.muted,
-                          fontWeight: FontWeight.w600,
+                    BounceableTap(
+                      onTap: _completeOnboarding,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: EduNoteColors.surface,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: EduNoteColors.cardBorder,
+                            width: 1,
+                          ),
+                        ),
+                        child: const Text(
+                          'Passer',
+                          style: TextStyle(
+                            color: EduNoteColors.muted,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     )
                   else
-                    const SizedBox.shrink(),
+                    const SizedBox(height: 32),
                 ],
+              ),
+            ),
+
+            // Lottie Animation banner
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Container(
+                height: 180,
+                alignment: Alignment.center,
+                child: Lottie.asset(
+                  'assets/lottie/onboarding.json',
+                  height: 180,
+                  repeat: true,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: EduNoteColors.accentLight,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.school_rounded,
+                      size: 60,
+                      color: EduNoteColors.accent,
+                    ),
+                  ),
+                ),
               ),
             ),
 
@@ -136,49 +190,57 @@ class _OnboardingPageState extends State<OnboardingPage> {
               child: PageView.builder(
                 controller: _pageController,
                 itemCount: _items.length,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
+                onPageChanged: (index) => setState(() => _currentPage = index),
                 itemBuilder: (context, index) {
                   final item = _items[index];
                   return Padding(
-                    padding: const EdgeInsets.all(32.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // Tag pill
                         Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: item.color.withValues(alpha: 0.1),
-                            shape: BoxShape.circle,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 5,
                           ),
-                          child: Icon(
-                            item.icon,
-                            size: 60,
-                            color: item.color,
+                          decoration: BoxDecoration(
+                            color: item.accentColor.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: item.accentColor.withValues(alpha: 0.25),
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            item.tag,
+                            style: TextStyle(
+                              color: item.accentColor,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.5,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 48),
+                        const SizedBox(height: 18),
                         Text(
                           item.title,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: EduNoteColors.navy,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w800,
+                            color: EduNoteColors.primaryDark,
+                            letterSpacing: -0.5,
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 14),
                         Text(
                           item.description,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 15,
-                            color: EduNoteColors.muted,
-                            height: 1.5,
+                            color: EduNoteColors.textSecondary,
+                            height: 1.55,
                           ),
                         ),
                       ],
@@ -190,7 +252,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
             // Bottom indicators and action button
             Padding(
-              padding: const EdgeInsets.all(32.0),
+              padding: const EdgeInsets.fromLTRB(28, 8, 28, 28),
               child: Column(
                 children: [
                   // Indicators
@@ -200,48 +262,68 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       _items.length,
                       (index) => AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOutCubic,
                         margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: _currentPage == index ? 24 : 8,
+                        width: _currentPage == index ? 28 : 8,
                         height: 8,
                         decoration: BoxDecoration(
                           color: _currentPage == index
-                              ? EduNoteColors.blue
-                              : EduNoteColors.muted.withValues(alpha: 0.3),
+                              ? EduNoteColors.accent
+                              : EduNoteColors.cardBorder,
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 52,
-                    child: FilledButton(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: EduNoteColors.navy,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                  const SizedBox(height: 28),
+                  BounceableTap(
+                    onTap: () {
+                      if (_currentPage < _items.length - 1) {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 350),
+                          curve: Curves.easeOutCubic,
+                        );
+                      } else {
+                        _completeOnboarding();
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 54,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            EduNoteColors.accentGradientStart,
+                            EduNoteColors.accentGradientEnd,
+                          ],
                         ),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: EduNoteShadows.primaryGlow,
                       ),
-                      onPressed: () {
-                        if (_currentPage < _items.length - 1) {
-                          _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                        } else {
-                          _completeOnboarding();
-                        }
-                      },
-                      child: Text(
-                        _currentPage < _items.length - 1
-                            ? 'Suivant'
-                            : 'Commencer',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            _currentPage < _items.length - 1
+                                ? 'Suivant'
+                                : 'Commencer',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                              letterSpacing: 0.2,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(
+                            _currentPage < _items.length - 1
+                                ? Icons.arrow_forward_rounded
+                                : Icons.check_circle_rounded,
+                            size: 19,
+                            color: Colors.white,
+                          ),
+                        ],
                       ),
                     ),
                   ),

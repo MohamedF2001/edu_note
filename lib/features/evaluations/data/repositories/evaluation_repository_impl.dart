@@ -57,6 +57,7 @@ class EvaluationRepositoryImpl implements EvaluationRepository {
       case 'absent':
         return domain.GradeStatus.absent;
       case 'recorded':
+      case 'renseignée':
         return domain.GradeStatus.recorded;
       default:
         return domain.GradeStatus.notRecorded;

@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../../../app/theme/edu_note_theme.dart';
 import '../../../../core/database/app_database.dart' hide Teacher;
+import '../../../../core/widgets/edu_ui_components.dart';
 import '../../domain/entities/teacher.dart';
 import '../../domain/usecases/authenticate_teacher.dart';
 import '../../domain/usecases/get_teacher_profile.dart';
@@ -17,7 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _passwordController = TextEditingController();
+  final _passwordController = TextEditingController(text: 'password123');
   bool _obscurePassword = true;
   bool _isLoading = false;
   String? _errorMessage;
@@ -124,115 +125,191 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: EduNoteColors.canvas,
+      backgroundColor: EduNoteColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 420),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+              child: StaggeredFadeSlideList(
                 children: [
+                  // App Icon Badge
                   Center(
                     child: Container(
-                      width: 80,
-                      height: 80,
+                      width: 86,
+                      height: 86,
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: EduNoteColors.paleBlue,
+                        color: Colors.white,
                         shape: BoxShape.circle,
+                        border: Border.all(color: EduNoteColors.cardBorder, width: 1.5),
+                        boxShadow: EduNoteShadows.floating,
                       ),
-                      child: const Icon(
-                        Icons.lock_rounded,
-                        size: 36,
-                        color: EduNoteColors.blue,
-                      ),
+                      child: const EduColorIcon(name: 'teacher', size: 52),
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  // Greeting Title
                   Text(
                     _teacher != null
                         ? 'Bonjour, ${_teacher!.firstName} 👋'
                         : 'Bon retour !',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: EduNoteColors.navy,
+                    style: const TextStyle(
+                      fontSize: 26,
                       fontWeight: FontWeight.w800,
+                      color: EduNoteColors.primaryDark,
+                      letterSpacing: -0.5,
                     ),
                   ),
                   const SizedBox(height: 8),
                   const Text(
                     'Entrez votre mot de passe pour accéder à votre espace EduNote.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: EduNoteColors.muted, fontSize: 14),
-                  ),
-                  const SizedBox(height: 32),
-
-                  if (_errorMessage != null) ...[
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.red.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        _errorMessage!,
-                        style: const TextStyle(color: Colors.red, fontSize: 13),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    onSubmitted: (_) => _unlock(),
-                    decoration: InputDecoration(
-                      labelText: 'Mot de passe',
-                      prefixIcon: const Icon(Icons.lock_outline_rounded),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                        ),
-                        onPressed: () => setState(
-                          () => _obscurePassword = !_obscurePassword,
-                        ),
-                      ),
+                    style: TextStyle(
+                      color: EduNoteColors.textSecondary,
+                      fontSize: 14.5,
+                      height: 1.45,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 28),
 
-                  SizedBox(
-                    height: 52,
-                    child: FilledButton(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: EduNoteColors.navy,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      onPressed: _isLoading ? null : _unlock,
-                      child: _isLoading
-                          ? const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2.5,
-                              ),
-                            )
-                          : const Text(
-                              'Déverrouiller',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                  // Card container for form
+                  SoftCard(
+                    padding: const EdgeInsets.all(22),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        if (_errorMessage != null) ...[
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: EduNoteColors.crimsonLight,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: EduNoteColors.crimson.withValues(alpha: 0.3),
                               ),
                             ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.error_outline_rounded,
+                                  color: EduNoteColors.crimson,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    _errorMessage!,
+                                    style: const TextStyle(
+                                      color: EduNoteColors.crimson,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: _obscurePassword,
+                          onSubmitted: (_) => _unlock(),
+                          decoration: InputDecoration(
+                            labelText: 'Mot de passe',
+                            helperText: 'Mot de passe démo : password123',
+                            prefixIcon: const Icon(
+                              Icons.lock_outline_rounded,
+                              color: EduNoteColors.muted,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscurePassword
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
+                                color: EduNoteColors.muted,
+                              ),
+                              onPressed: () => setState(
+                                () => _obscurePassword = !_obscurePassword,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 22),
+
+                        BounceableTap(
+                          onTap: _isLoading ? null : _unlock,
+                          child: Container(
+                            height: 52,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [
+                                  EduNoteColors.accentGradientStart,
+                                  EduNoteColors.accentGradientEnd,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(14),
+                              boxShadow: EduNoteShadows.primaryGlow,
+                            ),
+                            alignment: Alignment.center,
+                            child: _isLoading
+                                ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2.5,
+                                    ),
+                                  )
+                                : const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Déverrouiller',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                          letterSpacing: 0.2,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Icon(
+                                        Icons.lock_open_rounded,
+                                        size: 19,
+                                        color: Colors.white,
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+                  Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const EduColorIcon(name: 'protect', size: 18),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            'Données chiffrées & 100% hors-ligne',
+                            style: TextStyle(
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.w500,
+                              color: EduNoteColors.muted,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

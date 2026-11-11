@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../../../app/theme/edu_note_theme.dart';
 import '../../../../core/database/app_database.dart' hide Teacher;
+import '../../../../core/widgets/edu_ui_components.dart';
 import '../../../authentication/domain/entities/teacher.dart';
 import '../../../authentication/domain/usecases/get_teacher_profile.dart';
 import '../../../schools/presentation/widgets/school_form_dialog.dart';
@@ -69,8 +70,11 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(color: EduNoteColors.blue),
+      return const EduLottieState(
+        lottieAsset: 'assets/lottie/loading.json',
+        title: 'Chargement de votre espace...',
+        message: 'Préparation de vos données scolaires sécurisées.',
+        height: 120,
       );
     }
 
@@ -79,24 +83,25 @@ class _DashboardPageState extends State<DashboardPage> {
         : '';
 
     return RefreshIndicator(
+      color: EduNoteColors.accent,
       onRefresh: _loadDashboardData,
       child: CustomScrollView(
         slivers: [
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
             sliver: SliverList.list(
               children: [
                 _buildHeader(teacherName),
-                const SizedBox(height: 28),
+                const SizedBox(height: 24),
                 if (_schoolsCount == 0) ...[
                   _buildEmptyState(),
                   const SizedBox(height: 20),
                   const _PrivacyNote(),
                 ] else ...[
                   _buildKpiGrid(),
-                  const SizedBox(height: 28),
-                  _buildQuickActions(),
                   const SizedBox(height: 24),
+                  _buildQuickActions(),
+                  const SizedBox(height: 22),
                   const _PrivacyNote(),
                 ],
               ],
@@ -116,126 +121,165 @@ class _DashboardPageState extends State<DashboardPage> {
             Container(
               width: 44,
               height: 44,
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: EduNoteColors.paleBlue,
+                gradient: const LinearGradient(
+                  colors: [
+                    EduNoteColors.accentGradientStart,
+                    EduNoteColors.accentGradientEnd,
+                  ],
+                ),
                 borderRadius: BorderRadius.circular(14),
+                boxShadow: EduNoteShadows.primaryGlow,
               ),
-              child: const Icon(
-                Icons.school_rounded,
-                color: EduNoteColors.navy,
-              ),
+              child: const EduColorIcon(name: 'graduation', size: 26),
             ),
             const SizedBox(width: 12),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'EduNote',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 21,
                     fontWeight: FontWeight.w800,
-                    color: EduNoteColors.navy,
+                    color: EduNoteColors.primaryDark,
+                    letterSpacing: -0.4,
                   ),
                 ),
                 Text(
-                  'Gestion scolaire, simplement',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: EduNoteColors.muted,
+                  _teacher?.profession != null && _teacher!.profession.isNotEmpty
+                      ? _teacher!.profession
+                      : 'Espace Enseignant',
+                  style: const TextStyle(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w600,
+                    color: EduNoteColors.accent,
                   ),
                 ),
               ],
             ),
             const Spacer(),
-            IconButton(
-              onPressed: () {
+            BounceableTap(
+              onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Aucune nouvelle notification locale.'),
                   ),
                 );
               },
-              tooltip: 'Notifications',
-              icon: const Icon(Icons.notifications_none_rounded),
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: EduNoteColors.surface,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: EduNoteColors.cardBorder),
+                  boxShadow: EduNoteShadows.soft,
+                ),
+                child: const Icon(
+                  Icons.notifications_none_rounded,
+                  size: 21,
+                  color: EduNoteColors.textSecondary,
+                ),
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 28),
+        const SizedBox(height: 24),
         Text(
           teacherName.isNotEmpty ? 'Bonjour, $teacherName 👋' : 'Bonjour 👋',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: EduNoteColors.ink,
+          style: const TextStyle(
+            fontSize: 24,
             fontWeight: FontWeight.w800,
+            color: EduNoteColors.primaryDark,
+            letterSpacing: -0.5,
           ),
         ),
         const SizedBox(height: 6),
         Text(
           _schoolsCount == 0
               ? 'Votre espace de suivi scolaire est prêt.'
-              : 'Voici le récapitulatif de votre activité.',
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge
-              ?.copyWith(color: EduNoteColors.muted),
+              : 'Voici le récapitulatif de votre activité pédagogique.',
+          style: const TextStyle(
+            color: EduNoteColors.textSecondary,
+            fontSize: 14.5,
+          ),
         ),
       ],
     );
   }
 
   Widget _buildEmptyState() {
-    return Container(
+    return SoftCard(
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFFE7EDF1)),
-      ),
+      shadows: EduNoteShadows.floating,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 58,
-            height: 58,
+            width: 64,
+            height: 64,
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: EduNoteColors.paleBlue,
-              borderRadius: BorderRadius.circular(18),
+              color: EduNoteColors.accentLight,
+              borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(
-              Icons.menu_book_rounded,
-              size: 30,
-              color: EduNoteColors.blue,
-            ),
+            child: const EduColorIcon(name: 'school', size: 40),
           ),
           const SizedBox(height: 20),
-          Text(
+          const Text(
             'Bienvenue sur EduNote !',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: EduNoteColors.ink,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
               fontWeight: FontWeight.w800,
+              color: EduNoteColors.primaryDark,
+              letterSpacing: -0.3,
             ),
           ),
           const SizedBox(height: 10),
-          Text(
+          const Text(
             'Ajoutez votre premier établissement scolaire pour commencer à organiser vos classes et suivre les résultats de vos élèves.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14.5,
               height: 1.5,
               color: EduNoteColors.muted,
             ),
           ),
-          const SizedBox(height: 22),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton.icon(
-              onPressed: _addSchool,
-              style: FilledButton.styleFrom(
-                backgroundColor: EduNoteColors.navy,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+          const SizedBox(height: 24),
+          BounceableTap(
+            onTap: _addSchool,
+            child: Container(
+              width: double.infinity,
+              height: 52,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    EduNoteColors.accentGradientStart,
+                    EduNoteColors.accentGradientEnd,
+                  ],
                 ),
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: EduNoteShadows.primaryGlow,
               ),
-              icon: const Icon(Icons.add_rounded),
-              label: const Text('Ajouter une école'),
+              alignment: Alignment.center,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add_rounded, color: Colors.white, size: 20),
+                  SizedBox(width: 8),
+                  Text(
+                    'Ajouter une école',
+                    style: TextStyle(
+                      fontSize: 15.5,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -250,9 +294,10 @@ class _DashboardPageState extends State<DashboardPage> {
         const Text(
           'Vue d\'ensemble',
           style: TextStyle(
-            fontSize: 17,
+            fontSize: 18,
             fontWeight: FontWeight.w800,
-            color: EduNoteColors.ink,
+            color: EduNoteColors.primaryDark,
+            letterSpacing: -0.3,
           ),
         ),
         const SizedBox(height: 14),
@@ -260,44 +305,44 @@ class _DashboardPageState extends State<DashboardPage> {
           children: [
             Expanded(
               child: _KpiCard(
-                title: 'Écoles',
+                title: 'Établissements',
                 count: '$_schoolsCount',
-                icon: Icons.apartment_rounded,
-                color: EduNoteColors.blue,
+                iconName: 'school',
+                accentColor: EduNoteColors.accent,
                 onTap: () => widget.onSelectTab?.call(1),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 14),
             Expanded(
               child: _KpiCard(
                 title: 'Classes',
                 count: '$_classesCount',
-                icon: Icons.class_outlined,
-                color: const Color(0xFF6C5CE7),
+                iconName: 'book',
+                accentColor: const Color(0xFF6366F1),
                 onTap: () => widget.onSelectTab?.call(1),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 14),
         Row(
           children: [
             Expanded(
               child: _KpiCard(
-                title: 'Élèves',
+                title: 'Élèves suivis',
                 count: '$_studentsCount',
-                icon: Icons.people_outline_rounded,
-                color: EduNoteColors.green,
+                iconName: 'student',
+                accentColor: EduNoteColors.emerald,
                 onTap: () => widget.onSelectTab?.call(1),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 14),
             Expanded(
               child: _KpiCard(
                 title: 'Évaluations',
                 count: '$_evaluationsCount',
-                icon: Icons.assignment_outlined,
-                color: const Color(0xFFE17055),
+                iconName: 'survey',
+                accentColor: EduNoteColors.amber,
                 onTap: () => widget.onSelectTab?.call(2),
               ),
             ),
@@ -314,9 +359,10 @@ class _DashboardPageState extends State<DashboardPage> {
         const Text(
           'Actions rapides',
           style: TextStyle(
-            fontSize: 17,
+            fontSize: 18,
             fontWeight: FontWeight.w800,
-            color: EduNoteColors.ink,
+            color: EduNoteColors.primaryDark,
+            letterSpacing: -0.3,
           ),
         ),
         const SizedBox(height: 14),
@@ -326,26 +372,26 @@ class _DashboardPageState extends State<DashboardPage> {
           physics: const NeverScrollableScrollPhysics(),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          childAspectRatio: 2.2,
+          childAspectRatio: 2.1,
           children: [
             _ActionTile(
               label: 'Ajouter une école',
-              icon: Icons.apartment_rounded,
+              iconName: 'school',
               onTap: _addSchool,
             ),
             _ActionTile(
               label: 'Gérer les classes',
-              icon: Icons.class_outlined,
+              iconName: 'book',
               onTap: () => widget.onSelectTab?.call(1),
             ),
             _ActionTile(
               label: 'Évaluations',
-              icon: Icons.assignment_add,
+              iconName: 'notes',
               onTap: () => widget.onSelectTab?.call(2),
             ),
             _ActionTile(
               label: 'Voir les résultats',
-              icon: Icons.bar_chart_rounded,
+              iconName: 'chart',
               onTap: () => widget.onSelectTab?.call(3),
             ),
           ],
@@ -359,63 +405,59 @@ class _KpiCard extends StatelessWidget {
   const _KpiCard({
     required this.title,
     required this.count,
-    required this.icon,
-    required this.color,
+    required this.iconName,
+    required this.accentColor,
     this.onTap,
   });
 
   final String title;
   final String count;
-  final IconData icon;
-  final Color color;
+  final String iconName;
+  final Color accentColor;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFFE7EDF1)),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return SoftCard(
+      onTap: onTap,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              EduColorIcon(name: iconName, size: 28),
               Container(
-                width: 36,
-                height: 36,
+                width: 8,
+                height: 8,
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(icon, size: 20, color: color),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                count,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: EduNoteColors.ink,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: EduNoteColors.muted,
-                  fontWeight: FontWeight.w600,
+                  color: accentColor,
+                  shape: BoxShape.circle,
                 ),
               ),
             ],
           ),
-        ),
+          const SizedBox(height: 14),
+          Text(
+            count,
+            style: const TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.w800,
+              color: EduNoteColors.primaryDark,
+              letterSpacing: -0.5,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 12.5,
+              color: EduNoteColors.muted,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -424,46 +466,36 @@ class _KpiCard extends StatelessWidget {
 class _ActionTile extends StatelessWidget {
   const _ActionTile({
     required this.label,
-    required this.icon,
+    required this.iconName,
     required this.onTap,
   });
 
   final String label;
-  final IconData icon;
+  final String iconName;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE7EDF1)),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          child: Row(
-            children: [
-              Icon(icon, size: 20, color: EduNoteColors.blue),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  label,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: EduNoteColors.ink,
-                  ),
-                ),
+    return SoftCard(
+      onTap: onTap,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      child: Row(
+        children: [
+          EduColorIcon(name: iconName, size: 24),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              label,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: EduNoteColors.primaryDark,
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -477,21 +509,26 @@ class _PrivacyNote extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFEFF7F2),
-        borderRadius: BorderRadius.circular(18),
+        color: EduNoteColors.emeraldLight.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: EduNoteColors.emerald.withValues(alpha: 0.2),
+          width: 1,
+        ),
       ),
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.lock_outline_rounded, color: EduNoteColors.green),
+          EduColorIcon(name: 'protect', size: 22),
           SizedBox(width: 12),
           Expanded(
             child: Text(
               'Vos données restent sur cet appareil. EduNote fonctionne sans connexion Internet.',
               style: TextStyle(
-                color: EduNoteColors.ink,
+                color: EduNoteColors.primaryDark,
                 height: 1.4,
                 fontSize: 13,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
