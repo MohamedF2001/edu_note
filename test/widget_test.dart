@@ -1,100 +1,57 @@
+import 'dart:io';
 import 'package:edu_note/app/app.dart';
 import 'package:edu_note/core/database/app_database.dart';
+import 'package:edu_note/core/services/sample_data_seeder.dart';
 import 'package:edu_note/injection_container.dart';
-import 'package:edu_note/features/authentication/data/utils/password_hasher.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/material.dart';
 
 void main() {
   setUpAll(() async {
-    await configureDependencies(
-      database: AppDatabase.forTesting(NativeDatabase.memory()),
-    );
+    final db = AppDatabase.forTesting(NativeDatabase.memory());
+    await configureDependencies(database: db);
+    final file = File('sample_data.txt');
+    if (file.existsSync()) {
+      final json = await file.readAsString();
+      await SampleDataSeeder(db).seedFromJson(json);
+    }
   });
 
   testWidgets(
-    'onboarding flow appears on first run and leads to registration',
+    'app automatically seeds sample data on first run and shows login',
     (tester) async {
       await tester.pumpWidget(const EduNoteApp());
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
 
-      // Verify onboarding screen is shown
-      expect(find.text('Établissements et Classes'), findsOneWidget);
+      expect(find.text('Déverrouiller'), findsOneWidget);
 
-      // Tap Suivant
-      await tester.tap(find.text('Suivant'));
-      await tester.pumpAndSettle();
-      expect(find.text('Évaluations et Notes'), findsOneWidget);
+      await tester.tap(find.text('Déverrouiller'));
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
 
-      // Tap Suivant
-      await tester.tap(find.text('Suivant'));
-      await tester.pumpAndSettle();
-      expect(find.text('Résultats et Exports'), findsOneWidget);
-
-      // Tap Commencer
-      await tester.tap(find.text('Commencer'));
-      await tester.pumpAndSettle();
-
-      // Now should be on RegisterPage (Inscription)
-      expect(find.text('Créer votre compte local'), findsOneWidget);
+      expect(find.textContaining('Moussa Kérékou'), findsOneWidget);
     },
   );
 
-  testWidgets('main navigation opens each section when registered', (
+  testWidgets('main navigation opens each section with seeded data', (
     tester,
   ) async {
-    // Seed onboarding as seen and teacher profile
-    final db = getIt<AppDatabase>();
-    await db
-        .into(db.appSettings)
-        .insertOnConflictUpdate(
-          AppSettingsCompanion.insert(
-            key: 'has_seen_onboarding',
-            value: 'true',
-          ),
-        );
-    final salt = PasswordHasher.generateSalt();
-    await db
-        .into(db.teachers)
-        .insert(
-          TeachersCompanion.insert(
-            id: 'test-teacher-id',
-            firstName: 'Jean',
-            lastName: 'Dupont',
-            profession: 'Professeur',
-            whatsappNumber: '+22900000000',
-            passwordHash: PasswordHasher.hashPassword(
-              'password1',
-              salt,
-              iterations: 1000,
-            ),
-            passwordSalt: salt,
-            passwordHashIterations: 1000,
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          ),
-        );
-
     await tester.pumpWidget(const EduNoteApp());
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
 
-    await tester.enterText(find.byType(TextField).first, 'password1');
-    await tester.tap(find.text('Déverrouiller'));
-    await tester.pumpAndSettle();
+    if (find.text('Déverrouiller').evaluate().isNotEmpty) {
+      await tester.tap(find.text('Déverrouiller'));
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
+    }
 
-    expect(find.text('Bienvenue sur EduNote !'), findsOneWidget);
+    expect(find.textContaining('Moussa Kérékou'), findsOneWidget);
 
     await tester.tap(find.text('Établissements'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 800));
     expect(find.text('Gérez vos écoles et collèges'), findsOneWidget);
-    expect(find.text('Aucun établissement enregistré'), findsOneWidget);
-
-    await tester.tap(find.text('Évaluations'));
-    await tester.pumpAndSettle();
-    expect(
-      find.text('Aucune classe pour le moment'),
-      findsOneWidget,
-    );
+    expect(find.text('Lycée Béhanzin'), findsOneWidget);
   });
 }

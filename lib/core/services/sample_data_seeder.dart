@@ -27,9 +27,11 @@ class SampleDataSeeder {
       final normalizedSubject = subjectName.trim().toLowerCase();
 
       final salt = PasswordHasher.generateSalt();
+      const passwordIterations = PasswordHasher.currentIterations;
       final hash = PasswordHasher.hashPassword(
         teacherData['password'] as String,
         salt,
+        iterations: passwordIterations,
       );
 
       await _db.into(_db.teachers).insertOnConflictUpdate(
@@ -42,7 +44,7 @@ class SampleDataSeeder {
               subjectId: const Value.absent(),
               passwordHash: hash,
               passwordSalt: salt,
-              passwordHashIterations: 100000,
+              passwordHashIterations: passwordIterations,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
             ),

@@ -66,8 +66,8 @@ void main() {
 
     final recordedGrades = grades.where((g) => g.status == 'renseignée').toList();
     final absentGrades = grades.where((g) => g.status == 'absent').toList();
-    expect(recordedGrades.isNotEmpty, isTrue);
-    expect(absentGrades.isNotEmpty, isTrue);
+    expect(recordedGrades.length, equals(540));
+    expect(absentGrades.isEmpty, isTrue);
 
     for (final rg in recordedGrades) {
       expect(rg.score, isNotNull);

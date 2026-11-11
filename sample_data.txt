@@ -329,8 +329,8 @@
             {
               "evaluationId": "eval-class-behanzin-3a-int2",
               "studentId": "student-class-behanzin-3a-5",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-behanzin-3a-int2",
@@ -551,8 +551,8 @@
             {
               "evaluationId": "eval-class-behanzin-3a-dev2",
               "studentId": "student-class-behanzin-3a-12",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-behanzin-3a-dev2",
@@ -867,8 +867,8 @@
             {
               "evaluationId": "eval-class-behanzin-1c-int2",
               "studentId": "student-class-behanzin-1c-5",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-behanzin-1c-int2",
@@ -1089,8 +1089,8 @@
             {
               "evaluationId": "eval-class-behanzin-1c-dev2",
               "studentId": "student-class-behanzin-1c-12",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-behanzin-1c-dev2",
@@ -1405,8 +1405,8 @@
             {
               "evaluationId": "eval-class-behanzin-td-int2",
               "studentId": "student-class-behanzin-td-5",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-behanzin-td-int2",
@@ -1627,8 +1627,8 @@
             {
               "evaluationId": "eval-class-behanzin-td-dev2",
               "studentId": "student-class-behanzin-td-12",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-behanzin-td-dev2",
@@ -1952,8 +1952,8 @@
             {
               "evaluationId": "eval-class-anavie-6a-int2",
               "studentId": "student-class-anavie-6a-5",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-anavie-6a-int2",
@@ -2174,8 +2174,8 @@
             {
               "evaluationId": "eval-class-anavie-6a-dev2",
               "studentId": "student-class-anavie-6a-12",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-anavie-6a-dev2",
@@ -2490,8 +2490,8 @@
             {
               "evaluationId": "eval-class-anavie-5b-int2",
               "studentId": "student-class-anavie-5b-5",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-anavie-5b-int2",
@@ -2712,8 +2712,8 @@
             {
               "evaluationId": "eval-class-anavie-5b-dev2",
               "studentId": "student-class-anavie-5b-12",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-anavie-5b-dev2",
@@ -3028,8 +3028,8 @@
             {
               "evaluationId": "eval-class-anavie-4a-int2",
               "studentId": "student-class-anavie-4a-5",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-anavie-4a-int2",
@@ -3250,8 +3250,8 @@
             {
               "evaluationId": "eval-class-anavie-4a-dev2",
               "studentId": "student-class-anavie-4a-12",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-anavie-4a-dev2",
@@ -3575,8 +3575,8 @@
             {
               "evaluationId": "eval-class-nokoue-6b-int2",
               "studentId": "student-class-nokoue-6b-5",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-nokoue-6b-int2",
@@ -3797,8 +3797,8 @@
             {
               "evaluationId": "eval-class-nokoue-6b-dev2",
               "studentId": "student-class-nokoue-6b-12",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-nokoue-6b-dev2",
@@ -4113,8 +4113,8 @@
             {
               "evaluationId": "eval-class-nokoue-4c-int2",
               "studentId": "student-class-nokoue-4c-5",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-nokoue-4c-int2",
@@ -4335,8 +4335,8 @@
             {
               "evaluationId": "eval-class-nokoue-4c-dev2",
               "studentId": "student-class-nokoue-4c-12",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-nokoue-4c-dev2",
@@ -4651,8 +4651,8 @@
             {
               "evaluationId": "eval-class-nokoue-3b-int2",
               "studentId": "student-class-nokoue-3b-5",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-nokoue-3b-int2",
@@ -4873,8 +4873,8 @@
             {
               "evaluationId": "eval-class-nokoue-3b-dev2",
               "studentId": "student-class-nokoue-3b-12",
-              "status": "absent",
-              "score": null
+              "status": "renseignée",
+              "score": 12.0
             },
             {
               "evaluationId": "eval-class-nokoue-3b-dev2",

@@ -265,7 +265,11 @@ class _ClassDetailPageState extends State<ClassDetailPage>
             classSubjects: _classSubjects,
             periods: _periods,
           ),
-          ResultsTab(classId: widget.classId, classSubjects: _classSubjects),
+          ResultsTab(
+            classId: widget.classId,
+            classSubjects: _classSubjects,
+            periods: _periods,
+          ),
         ],
       ),
     );

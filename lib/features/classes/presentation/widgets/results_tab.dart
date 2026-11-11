@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 
 import '../../../../app/theme/edu_note_theme.dart';
 import '../../../../core/widgets/edu_ui_components.dart';
+import '../../../academic_years/domain/entities/academic_period.dart';
 import '../../../evaluations/domain/entities/evaluation.dart';
 import '../../../evaluations/domain/entities/grade.dart';
 import '../../../evaluations/domain/usecases/get_evaluations_by_class_subject.dart';
@@ -20,10 +21,12 @@ class ResultsTab extends StatefulWidget {
     super.key,
     required this.classId,
     required this.classSubjects,
+    required this.periods,
   });
 
   final String classId;
   final List<ClassSubject> classSubjects;
+  final List<AcademicPeriod> periods;
 
   @override
   State<ResultsTab> createState() => _ResultsTabState();
@@ -31,6 +34,7 @@ class ResultsTab extends StatefulWidget {
 
 class _ResultsTabState extends State<ResultsTab> {
   ClassSubject? _selectedSubject;
+  AcademicPeriod? _selectedPeriod;
   List<Student> _students = [];
   Map<String, StudentSubjectResult> _results = {};
   bool _isLoading = false;
@@ -42,6 +46,9 @@ class _ResultsTabState extends State<ResultsTab> {
     super.initState();
     if (widget.classSubjects.isNotEmpty) {
       _selectedSubject = widget.classSubjects.first;
+    }
+    if (widget.periods.isNotEmpty) {
+      _selectedPeriod = widget.periods.first;
     }
     _loadResults();
   }
@@ -60,7 +67,12 @@ class _ResultsTabState extends State<ResultsTab> {
       const calculator = CalculateStudentSubjectResult();
 
       final students = await getStudents(widget.classId);
-      final evaluations = await getEvals(_selectedSubject!.id);
+      final allEvals = await getEvals(_selectedSubject!.id);
+      final evaluations = widget.periods.isEmpty || _selectedPeriod == null
+          ? allEvals
+          : allEvals
+              .where((e) => e.academicPeriodId == _selectedPeriod!.id)
+              .toList();
 
       // Build a map: studentId -> grades per evaluation
       final Map<String, List<(Evaluation, Grade?)>> studentGradeMap = {};
@@ -187,6 +199,247 @@ class _ResultsTabState extends State<ResultsTab> {
     );
   }
 
+  void _showStudentDetails(Student student, StudentSubjectResult? result) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(ctx).size.height * 0.75,
+        ),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          boxShadow: EduNoteShadows.floating,
+        ),
+        padding: const EdgeInsets.fromLTRB(24, 12, 24, 28),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Drag handle pill
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: EduNoteColors.muted.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Student Header
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 26,
+                  backgroundColor: student.gender == 'F'
+                      ? const Color(0xFFFDE8F1)
+                      : EduNoteColors.accentLight,
+                  child: Text(
+                    '${student.lastName.isNotEmpty ? student.lastName[0] : ''}${student.firstName.isNotEmpty ? student.firstName[0] : ''}'
+                        .toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      color: student.gender == 'F'
+                          ? const Color(0xFFD63384)
+                          : EduNoteColors.accent,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        student.fullName,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: EduNoteColors.primaryDark,
+                          letterSpacing: -0.3,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        student.registrationNumber != null &&
+                                student.registrationNumber!.isNotEmpty
+                            ? 'Matricule : ${student.registrationNumber}'
+                            : 'Élève de la classe',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: EduNoteColors.muted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (result?.finalMean != null)
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: (result!.finalMean! >= 10
+                              ? EduNoteColors.emerald
+                              : EduNoteColors.crimson)
+                          .withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      result.finalMean! >= 10 ? 'Admis' : 'Non Admis',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
+                        color: result.finalMean! >= 10
+                            ? EduNoteColors.emerald
+                            : EduNoteColors.crimson,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // Final Mean Hero Card
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    EduNoteColors.accentGradientStart.withValues(alpha: 0.08),
+                    EduNoteColors.accentGradientEnd.withValues(alpha: 0.15),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: EduNoteColors.accent.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Moyenne Finale',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: EduNoteColors.primaryDark,
+                        ),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        'Évaluation semestrielle',
+                        style: TextStyle(
+                          fontSize: 11.5,
+                          color: EduNoteColors.muted,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    result?.finalMean != null
+                        ? '${result!.finalMean!.toStringAsFixed(2)} / 20'
+                        : '—',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: result?.finalMean != null
+                          ? (result!.finalMean! >= 10
+                              ? EduNoteColors.emerald
+                              : EduNoteColors.crimson)
+                          : EduNoteColors.muted,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Breakdown Section Title
+            const Text(
+              'Détail des notes',
+              style: TextStyle(
+                fontSize: 14.5,
+                fontWeight: FontWeight.w800,
+                color: EduNoteColors.primaryDark,
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            // Breakdown Items
+            Flexible(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  _DetailCard(
+                    title: 'Moyenne des Interrogations',
+                    subtitle: 'Évaluations orales et écrites',
+                    value: result?.interrogationMean != null
+                        ? '${result!.interrogationMean!.toStringAsFixed(2)} / 20'
+                        : '—',
+                    iconName: 'notes',
+                    color: EduNoteColors.accent,
+                  ),
+                  const SizedBox(height: 10),
+                  _DetailCard(
+                    title: 'Devoir 1 (DEV. 1)',
+                    subtitle: 'Premier devoir surveillé',
+                    value: result?.homework1 != null
+                        ? '${result!.homework1!.toStringAsFixed(2)} / 20'
+                        : '—',
+                    iconName: 'survey',
+                    color: EduNoteColors.blue,
+                  ),
+                  const SizedBox(height: 10),
+                  _DetailCard(
+                    title: 'Devoir 2 (DEV. 2)',
+                    subtitle: 'Second devoir surveillé',
+                    value: result?.homework2 != null
+                        ? '${result!.homework2!.toStringAsFixed(2)} / 20'
+                        : '—',
+                    iconName: 'survey',
+                    color: EduNoteColors.amber,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Close button
+            SizedBox(
+              height: 50,
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: EduNoteColors.navy,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: const Text(
+                  'Fermer',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final completedResults = _results.values
@@ -215,7 +468,8 @@ class _ResultsTabState extends State<ResultsTab> {
               Row(
                 children: widget.classSubjects.map((cs) {
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
                       color: EduNoteColors.accent.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
@@ -244,7 +498,8 @@ class _ResultsTabState extends State<ResultsTab> {
                 BounceableTap(
                   onTap: () => _showCelebrationDialog(avg, above10),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: EduNoteColors.amberLight,
                       borderRadius: BorderRadius.circular(12),
@@ -270,6 +525,44 @@ class _ResultsTabState extends State<ResultsTab> {
                 ),
             ],
           ),
+
+          // Period selection chips (Semester distinction)
+          if (widget.periods.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: widget.periods.map((period) {
+                  final isSelected = _selectedPeriod?.id == period.id;
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: ChoiceChip(
+                      label: Text(period.name),
+                      selected: isSelected,
+                      onSelected: (selected) {
+                        if (selected) {
+                          setState(() {
+                            _selectedPeriod = period;
+                          });
+                          _loadResults();
+                        }
+                      },
+                      selectedColor: EduNoteColors.accent,
+                      backgroundColor: Colors.white,
+                      labelStyle: TextStyle(
+                        color: isSelected
+                            ? Colors.white
+                            : EduNoteColors.primaryDark,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12.5,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+
           const SizedBox(height: 16),
 
           if (_isLoading)
@@ -295,7 +588,7 @@ class _ResultsTabState extends State<ResultsTab> {
             if (!_hasEvaluations) ...[
               _emptyCard(
                 'notes',
-                'Aucune évaluation enregistrée',
+                'Aucune évaluation enregistrée pour cette période',
                 'Les moyennes apparaîtront ici après la création des évaluations et la saisie des notes.',
               ),
               const SizedBox(height: 16),
@@ -368,53 +661,57 @@ class _ResultsTabState extends State<ResultsTab> {
                           (student.firstName.isNotEmpty
                               ? student.firstName[0]
                               : '');
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 11,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 14,
-                                    backgroundColor: student.gender == 'F'
-                                        ? const Color(0xFFFDE8F1)
-                                        : EduNoteColors.accentLight,
-                                    child: Text(
-                                      initials.toUpperCase(),
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w800,
-                                        color: student.gender == 'F'
-                                            ? const Color(0xFFD63384)
-                                            : EduNoteColors.accent,
+                      return InkWell(
+                        onTap: () => _showStudentDetails(student, result),
+                        borderRadius: BorderRadius.circular(12),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 11,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 14,
+                                      backgroundColor: student.gender == 'F'
+                                          ? const Color(0xFFFDE8F1)
+                                          : EduNoteColors.accentLight,
+                                      child: Text(
+                                        initials.toUpperCase(),
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w800,
+                                          color: student.gender == 'F'
+                                              ? const Color(0xFFD63384)
+                                              : EduNoteColors.accent,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      student.fullName,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 13,
-                                        color: EduNoteColors.primaryDark,
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        student.fullName,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 13,
+                                          color: EduNoteColors.primaryDark,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            _ScoreCell(result?.interrogationMean),
-                            _ScoreCell(result?.homework1),
-                            _ScoreCell(result?.homework2),
-                            _ScoreCell(result?.finalMean, isFinal: true),
-                          ],
+                              _ScoreCell(result?.interrogationMean),
+                              _ScoreCell(result?.homework1),
+                              _ScoreCell(result?.homework2),
+                              _ScoreCell(result?.finalMean, isFinal: true),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -572,6 +869,12 @@ class _HeaderCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const TextStyle(
+      fontWeight: FontWeight.w800,
+      fontSize: 11,
+      color: EduNoteColors.muted,
+      letterSpacing: 0.2,
+    );
     return Expanded(
       flex: 2,
       child: Text(
@@ -626,6 +929,79 @@ class _ScoreCell extends StatelessWidget {
             color: _color,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _DetailCard extends StatelessWidget {
+  const _DetailCard({
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.iconName,
+    required this.color,
+  });
+
+  final String title;
+  final String subtitle;
+  final String value;
+  final String iconName;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: EduNoteColors.background,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: EduNoteColors.cardBorder),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: EduColorIcon(name: iconName, size: 22),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: EduNoteColors.primaryDark,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: EduNoteColors.muted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w800,
+              color: color,
+            ),
+          ),
+        ],
       ),
     );
   }

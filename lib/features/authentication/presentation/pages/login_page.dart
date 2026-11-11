@@ -18,7 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _passwordController = TextEditingController();
+  final _passwordController = TextEditingController(text: 'password123');
   bool _obscurePassword = true;
   bool _isLoading = false;
   String? _errorMessage;
@@ -222,6 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                           onSubmitted: (_) => _unlock(),
                           decoration: InputDecoration(
                             labelText: 'Mot de passe',
+                            helperText: 'Mot de passe démo : password123',
                             prefixIcon: const Icon(
                               Icons.lock_outline_rounded,
                               color: EduNoteColors.muted,

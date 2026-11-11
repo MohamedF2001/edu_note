@@ -9,6 +9,11 @@ import '../../domain/usecases/get_schools.dart';
 import '../widgets/school_form_dialog.dart';
 import 'school_detail_page.dart';
 
+class SchoolRefreshNotifier {
+  static final ValueNotifier<int> version = ValueNotifier<int>(0);
+  static void notify() => version.value++;
+}
+
 class SchoolsPage extends StatefulWidget {
   const SchoolsPage({super.key, this.isActive = false});
 
@@ -20,67 +25,57 @@ class SchoolsPage extends StatefulWidget {
 
 class _SchoolsPageState extends State<SchoolsPage> {
   final _searchController = TextEditingController();
-  List<School> _allSchools = [];
-  bool _isLoading = true;
-  String? _errorMessage;
+  late Future<List<School>> _schoolsFuture;
   String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
-    _loadSchools();
+    _schoolsFuture = _loadSchools();
+    SchoolRefreshNotifier.version.addListener(_handleRefresh);
+  }
+
+  @override
+  void dispose() {
+    SchoolRefreshNotifier.version.removeListener(_handleRefresh);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _handleRefresh() {
+    if (mounted) {
+      setState(() {
+        _schoolsFuture = _loadSchools();
+      });
+    }
   }
 
   @override
   void didUpdateWidget(covariant SchoolsPage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!oldWidget.isActive && widget.isActive) {
-      _loadSchools();
+      setState(() {
+        _schoolsFuture = _loadSchools();
+      });
     }
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _loadSchools() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    try {
-      final getSchools = GetIt.I<GetSchools>();
-      final schools = await getSchools();
-      if (mounted) {
-        setState(() {
-          _allSchools = schools;
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-          _errorMessage = 'Impossible de charger les établissements.';
-        });
-      }
-    }
+  Future<List<School>> _loadSchools() async {
+    final getSchools = GetIt.I<GetSchools>();
+    return getSchools();
   }
 
   Future<void> _createSchool() async {
     final created = await SchoolFormDialog.show(context);
     if (created == true) {
-      _loadSchools();
+      SchoolRefreshNotifier.notify();
     }
   }
 
   Future<void> _editSchool(School school) async {
     final updated = await SchoolFormDialog.show(context, school: school);
     if (updated == true) {
-      _loadSchools();
+      SchoolRefreshNotifier.notify();
     }
   }
 
@@ -127,7 +122,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
               backgroundColor: EduNoteColors.primaryDark,
             ),
           );
-          _loadSchools();
+          SchoolRefreshNotifier.notify();
         }
       } catch (e) {
         if (mounted) {
@@ -144,159 +139,184 @@ class _SchoolsPageState extends State<SchoolsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredSchools = _allSchools.where((s) {
-      if (_searchQuery.isEmpty) return true;
-      final q = _searchQuery.toLowerCase();
-      return s.name.toLowerCase().contains(q) ||
-          s.city.toLowerCase().contains(q) ||
-          s.type.toLowerCase().contains(q);
-    }).toList();
-
     return Scaffold(
       backgroundColor: EduNoteColors.background,
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-              child: Row(
+        child: FutureBuilder<List<School>>(
+          future: _schoolsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Column(
                 children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          EduNoteColors.accentGradientStart,
-                          EduNoteColors.accentGradientEnd,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: EduNoteShadows.primaryGlow,
-                    ),
-                    child: const EduColorIcon(name: 'school', size: 26),
-                  ),
-                  const SizedBox(width: 14),
+                  _buildHeader(context),
                   const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Établissements',
-                          style: TextStyle(
-                            fontSize: 21,
-                            fontWeight: FontWeight.w800,
-                            color: EduNoteColors.primaryDark,
-                            letterSpacing: -0.4,
-                          ),
-                        ),
-                        Text(
-                          'Gérez vos écoles et collèges',
-                          style: TextStyle(
-                            fontSize: 12.5,
-                            color: EduNoteColors.muted,
-                          ),
-                        ),
-                      ],
+                    child: EduLottieState(
+                      lottieAsset: 'assets/lottie/loading.json',
+                      title: 'Chargement des établissements...',
+                      message: 'Accès sécurisé à vos espaces d\'écoles.',
+                      height: 120,
                     ),
                   ),
-                  BounceableTap(
-                    onTap: _createSchool,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 9,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            EduNoteColors.accentGradientStart,
-                            EduNoteColors.accentGradientEnd,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: EduNoteShadows.primaryGlow,
-                      ),
-                      child: const Row(
+                ],
+              );
+            }
+
+            if (snapshot.hasError) {
+              return Column(
+                children: [
+                  _buildHeader(context),
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.add_rounded, size: 18, color: Colors.white),
-                          SizedBox(width: 4),
-                          Text(
-                            'Ajouter',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 13.5,
-                            ),
+                          const Text('Impossible de charger les établissements.'),
+                          const SizedBox(height: 12),
+                          FilledButton(
+                            onPressed: _handleRefresh,
+                            child: const Text('Réessayer'),
                           ),
                         ],
                       ),
                     ),
                   ),
                 ],
-              ),
-            ),
-            if (_allSchools.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
-                ),
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: (val) => setState(() => _searchQuery = val.trim()),
-                  decoration: InputDecoration(
-                    hintText: 'Rechercher une école, une ville...',
-                    prefixIcon: const Icon(Icons.search_rounded),
-                    suffixIcon: _searchQuery.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear_rounded),
-                            onPressed: () {
-                              _searchController.clear();
-                              setState(() => _searchQuery = '');
-                            },
-                          )
-                        : null,
+              );
+            }
+
+            final allSchools = snapshot.data ?? [];
+            final filteredSchools = allSchools.where((s) {
+              if (_searchQuery.isEmpty) return true;
+              final q = _searchQuery.toLowerCase();
+              return s.name.toLowerCase().contains(q) ||
+                  s.city.toLowerCase().contains(q) ||
+                  s.type.toLowerCase().contains(q);
+            }).toList();
+
+            return Column(
+              children: [
+                _buildHeader(context),
+                if (allSchools.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 8,
+                    ),
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (val) =>
+                          setState(() => _searchQuery = val.trim()),
+                      decoration: InputDecoration(
+                        hintText: 'Rechercher une école, une ville...',
+                        prefixIcon: const Icon(Icons.search_rounded),
+                        suffixIcon: _searchQuery.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.clear_rounded),
+                                onPressed: () {
+                                  _searchController.clear();
+                                  setState(() => _searchQuery = '');
+                                },
+                              )
+                            : null,
+                      ),
+                    ),
                   ),
+                Expanded(
+                  child: _buildBody(allSchools, filteredSchools),
                 ),
-              ),
-            Expanded(
-              child: _buildBody(filteredSchools),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildBody(List<School> schools) {
-    if (_isLoading) {
-      return const EduLottieState(
-        lottieAsset: 'assets/lottie/loading.json',
-        title: 'Chargement des établissements...',
-        message: 'Accès sécurisé à vos espaces d\'écoles.',
-        height: 120,
-      );
-    }
-
-    if (_errorMessage != null) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(_errorMessage!),
-            const SizedBox(height: 12),
-            FilledButton(
-              onPressed: _loadSchools,
-              child: const Text('Réessayer'),
+  Widget _buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  EduNoteColors.accentGradientStart,
+                  EduNoteColors.accentGradientEnd,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: EduNoteShadows.primaryGlow,
             ),
-          ],
-        ),
-      );
-    }
+            child: const EduColorIcon(name: 'school', size: 26),
+          ),
+          const SizedBox(width: 14),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Établissements',
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w800,
+                    color: EduNoteColors.primaryDark,
+                    letterSpacing: -0.4,
+                  ),
+                ),
+                Text(
+                  'Gérez vos écoles et collèges',
+                  style: TextStyle(
+                    fontSize: 12.5,
+                    color: EduNoteColors.muted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          BounceableTap(
+            onTap: _createSchool,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 9,
+              ),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    EduNoteColors.accentGradientStart,
+                    EduNoteColors.accentGradientEnd,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: EduNoteShadows.primaryGlow,
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.add_rounded, size: 18, color: Colors.white),
+                  SizedBox(width: 4),
+                  Text(
+                    'Ajouter',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-    if (_allSchools.isEmpty) {
+  Widget _buildBody(List<School> allSchools, List<School> filteredSchools) {
+    if (allSchools.isEmpty) {
       return Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(28),
@@ -378,7 +398,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
       );
     }
 
-    if (schools.isEmpty) {
+    if (filteredSchools.isEmpty) {
       return const Center(
         child: Text(
           'Aucun établissement ne correspond à votre recherche.',
@@ -389,24 +409,21 @@ class _SchoolsPageState extends State<SchoolsPage> {
 
     return RefreshIndicator(
       color: EduNoteColors.accent,
-      onRefresh: _loadSchools,
+      onRefresh: () async => _handleRefresh(),
       child: ListView.separated(
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 24),
-        itemCount: schools.length,
+        itemCount: filteredSchools.length,
         separatorBuilder: (_, _) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
-          final school = schools[index];
+          final school = filteredSchools[index];
           return _SchoolCard(
             school: school,
             onTap: () async {
-              final changed = await Navigator.of(context).push<bool>(
+              await Navigator.of(context).push<bool>(
                 MaterialPageRoute(
                   builder: (_) => SchoolDetailPage(schoolId: school.id),
                 ),
               );
-              if (changed == true) {
-                _loadSchools();
-              }
             },
             onEdit: () => _editSchool(school),
             onDelete: () => _deleteSchool(school),
@@ -478,7 +495,7 @@ class _SchoolCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            school.type,
+                            school.type.isNotEmpty ? school.type : 'Collège',
                             style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -512,7 +529,8 @@ class _SchoolCard extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
-                icon: const Icon(Icons.more_vert_rounded, color: EduNoteColors.muted),
+                icon: const Icon(Icons.more_vert_rounded,
+                    color: EduNoteColors.muted),
                 onSelected: (val) {
                   if (val == 'edit') onEdit();
                   if (val == 'delete') onDelete();

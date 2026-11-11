@@ -7,6 +7,7 @@ import '../../../../core/database/app_database.dart' hide Teacher;
 import '../../../../core/services/sample_data_seeder.dart';
 import '../../../../core/widgets/edu_ui_components.dart';
 import '../../domain/entities/teacher.dart';
+import '../../domain/usecases/authenticate_teacher.dart';
 import '../../domain/usecases/get_teacher_profile.dart';
 import '../../domain/usecases/set_teacher_subject.dart';
 import '../../../subjects/domain/usecases/get_subject_by_id.dart';
@@ -41,6 +42,7 @@ class _TeacherProfilePageState extends State<TeacherProfilePage> {
   bool _isLoading = true;
   bool _isSaving = false;
   bool _isSeeding = false;
+  bool _isDeletingData = false;
 
   @override
   void initState() {
@@ -197,6 +199,43 @@ class _TeacherProfilePageState extends State<TeacherProfilePage> {
       }
     } finally {
       if (mounted) setState(() => _isSeeding = false);
+    }
+  }
+
+  Future<void> _deleteAllLocalData() async {
+    final password = await showDialog<String>(
+      context: context,
+      builder: (ctx) => const _DeleteLocalDataDialog(),
+    );
+    if (password == null || !mounted) return;
+
+    setState(() => _isDeletingData = true);
+    try {
+      final isPasswordValid = await GetIt.I<AuthenticateTeacher>()(password);
+      if (!isPasswordValid) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Mot de passe incorrect. Aucune donnée supprimée.'),
+            backgroundColor: EduNoteColors.crimson,
+          ),
+        );
+        return;
+      }
+
+      await GetIt.I<AppDatabase>().clearLocalData();
+      if (!mounted) return;
+      widget.onLogout();
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Impossible de supprimer les données : $error'),
+          backgroundColor: EduNoteColors.crimson,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isDeletingData = false);
     }
   }
 
@@ -531,6 +570,79 @@ class _TeacherProfilePageState extends State<TeacherProfilePage> {
             ),
             const SizedBox(height: 18),
 
+            // Destructive local data reset
+            SoftCard(
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: EduNoteColors.crimsonLight,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(
+                          Icons.delete_forever_outlined,
+                          color: EduNoteColors.crimson,
+                          size: 22,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Text(
+                          'Supprimer toutes les données locales',
+                          style: TextStyle(
+                            fontSize: 14.5,
+                            fontWeight: FontWeight.w700,
+                            color: EduNoteColors.primaryDark,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Efface définitivement votre profil, vos établissements, classes, élèves, évaluations et notes de cet appareil.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: EduNoteColors.muted,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _isDeletingData ? null : _deleteAllLocalData,
+                      icon: _isDeletingData
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.delete_outline_rounded),
+                      label: Text(
+                        _isDeletingData
+                            ? 'Suppression en cours...'
+                            : 'Supprimer toutes les données',
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: EduNoteColors.crimson,
+                        side: BorderSide(
+                          color: EduNoteColors.crimson.withValues(alpha: 0.5),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 18),
+
             // Security & Privacy Card
             SoftCard(
               padding: const EdgeInsets.all(18),
@@ -628,6 +740,88 @@ class _TeacherProfilePageState extends State<TeacherProfilePage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _DeleteLocalDataDialog extends StatefulWidget {
+  const _DeleteLocalDataDialog();
+
+  @override
+  State<_DeleteLocalDataDialog> createState() => _DeleteLocalDataDialogState();
+}
+
+class _DeleteLocalDataDialogState extends State<_DeleteLocalDataDialog> {
+  final _passwordController = TextEditingController();
+  bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: const Row(
+        children: [
+          Icon(Icons.warning_amber_rounded, color: EduNoteColors.crimson),
+          SizedBox(width: 8),
+          Expanded(child: Text('Supprimer toutes les données ?')),
+        ],
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Votre profil et toutes les données scolaires enregistrées sur cet appareil seront supprimés définitivement. Saisissez votre mot de passe pour confirmer.',
+            style: TextStyle(height: 1.45),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _passwordController,
+            autofocus: true,
+            obscureText: _obscurePassword,
+            textInputAction: TextInputAction.done,
+            onChanged: (_) => setState(() {}),
+            onSubmitted: (value) {
+              if (value.isNotEmpty) Navigator.of(context).pop(value);
+            },
+            decoration: InputDecoration(
+              labelText: 'Mot de passe',
+              prefixIcon: const Icon(Icons.lock_outline_rounded),
+              suffixIcon: IconButton(
+                onPressed: () =>
+                    setState(() => _obscurePassword = !_obscurePassword),
+                icon: Icon(
+                  _obscurePassword
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Annuler'),
+        ),
+        FilledButton(
+          onPressed: _passwordController.text.isEmpty
+              ? null
+              : () => Navigator.of(context).pop(_passwordController.text),
+          style: FilledButton.styleFrom(
+            backgroundColor: EduNoteColors.crimson,
+            foregroundColor: Colors.white,
+          ),
+          child: const Text('Confirmer la suppression'),
+        ),
+      ],
     );
   }
 }
