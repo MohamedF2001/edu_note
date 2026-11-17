@@ -5,6 +5,7 @@ import '../../../../app/theme/edu_note_theme.dart';
 import '../../domain/entities/school.dart';
 import '../../domain/usecases/create_school.dart';
 import '../../domain/usecases/update_school.dart';
+import '../pages/schools_page.dart';
 
 class SchoolFormDialog extends StatefulWidget {
   const SchoolFormDialog({super.key, this.school});
@@ -87,6 +88,8 @@ class _SchoolFormDialogState extends State<SchoolFormDialog> {
           address: addressValue,
         );
       }
+
+      SchoolRefreshNotifier.notify();
 
       if (mounted) {
         Navigator.of(context).pop(true);

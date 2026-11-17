@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../app/theme/edu_note_theme.dart';
+import '../../../../core/widgets/edu_ui_components.dart';
 import '../../domain/usecases/register_teacher.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -115,32 +116,35 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: EduNoteColors.canvas,
+      backgroundColor: EduNoteColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 28),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 480),
+              constraints: const BoxConstraints(maxWidth: 520),
               child: Form(
                 key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                child: StaggeredFadeSlideList(
                   children: [
+                    // Brand header
                     Row(
                       children: [
                         Container(
                           width: 48,
                           height: 48,
+                          padding: const EdgeInsets.all(9),
                           decoration: BoxDecoration(
-                            color: EduNoteColors.paleBlue,
+                            gradient: const LinearGradient(
+                              colors: [
+                                EduNoteColors.accentGradientStart,
+                                EduNoteColors.accentGradientEnd,
+                              ],
+                            ),
                             borderRadius: BorderRadius.circular(14),
+                            boxShadow: EduNoteShadows.primaryGlow,
                           ),
-                          child: const Icon(
-                            Icons.school_rounded,
-                            color: EduNoteColors.navy,
-                            size: 26,
-                          ),
+                          child: const EduColorIcon(name: 'graduation', size: 28),
                         ),
                         const SizedBox(width: 14),
                         const Column(
@@ -151,13 +155,15 @@ class _RegisterPageState extends State<RegisterPage> {
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w800,
-                                color: EduNoteColors.navy,
+                                color: EduNoteColors.primaryDark,
+                                letterSpacing: -0.4,
                               ),
                             ),
                             Text(
-                              'Espace Enseignant',
+                              'Espace Enseignant · Profil Local',
                               style: TextStyle(
                                 fontSize: 13,
+                                fontWeight: FontWeight.w500,
                                 color: EduNoteColors.muted,
                               ),
                             ),
@@ -165,248 +171,325 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 32),
-                    Text(
+                    const SizedBox(height: 28),
+
+                    // Title
+                    const Text(
                       'Créer votre compte local',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: EduNoteColors.ink,
-                            fontWeight: FontWeight.w800,
-                          ),
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w800,
+                        color: EduNoteColors.primaryDark,
+                        letterSpacing: -0.4,
+                      ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     const Text(
                       'Vos informations restent strictement confidentielles et stockées localement sur cet appareil.',
                       style: TextStyle(
                         fontSize: 14,
-                        color: EduNoteColors.muted,
-                        height: 1.4,
+                        color: EduNoteColors.textSecondary,
+                        height: 1.45,
                       ),
                     ),
                     const SizedBox(height: 24),
 
-                    if (_errorMessage != null) ...[
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.red.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          _errorMessage!,
-                          style: const TextStyle(
-                            color: Colors.red,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _firstNameController,
-                            decoration: const InputDecoration(
-                              labelText: 'Prénom',
-                              prefixIcon: Icon(Icons.person_outline_rounded),
-                            ),
-                            validator: (v) => v == null || v.trim().isEmpty
-                                ? 'Champ requis'
-                                : null,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: TextFormField(
-                            controller: _lastNameController,
-                            decoration: const InputDecoration(
-                              labelText: 'Nom',
-                              prefixIcon: Icon(Icons.person_outline_rounded),
-                            ),
-                            validator: (v) => v == null || v.trim().isEmpty
-                                ? 'Champ requis'
-                                : null,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    DropdownButtonFormField<String>(
-                      initialValue: _selectedProfession,
-                      isExpanded: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Profession',
-                        prefixIcon: Icon(Icons.work_outline_rounded),
-                      ),
-                      items: _professions
-                          .map(
-                            (p) => DropdownMenuItem(value: p, child: Text(p)),
-                          )
-                          .toList(),
-                      onChanged: (val) {
-                        if (val != null) {
-                          setState(() => _selectedProfession = val);
-                        }
-                      },
-                    ),
-
-                    if (_selectedProfession == 'Autre') ...[
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _customProfessionController,
-                        decoration: const InputDecoration(
-                          labelText: 'Précisez votre profession',
-                          prefixIcon: Icon(Icons.edit_outlined),
-                        ),
-                        validator: (v) {
-                          if (_selectedProfession == 'Autre' &&
-                              (v == null || v.trim().isEmpty)) {
-                            return 'Veuillez préciser votre profession';
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
-                    const SizedBox(height: 16),
-
-                    DropdownButtonFormField<String>(
-                      initialValue: _selectedSubject,
-                      isExpanded: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Matière enseignée',
-                        prefixIcon: Icon(Icons.menu_book_outlined),
-                      ),
-                      items: _subjects
-                          .map(
-                            (subject) => DropdownMenuItem(
-                              value: subject,
-                              child: Text(subject),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() => _selectedSubject = value);
-                        }
-                      },
-                    ),
-                    if (_selectedSubject == 'Autre') ...[
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _customSubjectController,
-                        decoration: const InputDecoration(
-                          labelText: 'Précisez la matière',
-                          prefixIcon: Icon(Icons.edit_outlined),
-                        ),
-                        validator: (value) =>
-                            _selectedSubject == 'Autre' &&
-                                (value == null || value.trim().isEmpty)
-                            ? 'Veuillez préciser la matière enseignée'
-                            : null,
-                      ),
-                    ],
-                    const SizedBox(height: 16),
-
-                    TextFormField(
-                      controller: _whatsappController,
-                      keyboardType: TextInputType.phone,
-                      decoration: const InputDecoration(
-                        labelText: 'Numéro WhatsApp',
-                        prefixIcon: Icon(Icons.phone_outlined),
-                        helperText: 'Par défaut +229 (Bénin)',
-                      ),
-                      validator: (v) =>
-                          v == null || v.trim().isEmpty ? 'Champ requis' : null,
-                    ),
-                    const SizedBox(height: 16),
-
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: _obscurePassword,
-                      decoration: InputDecoration(
-                        labelText: 'Mot de passe sécurisé',
-                        prefixIcon: const Icon(Icons.lock_outline_rounded),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
-                          ),
-                          onPressed: () => setState(
-                            () => _obscurePassword = !_obscurePassword,
-                          ),
-                        ),
-                      ),
-                      validator: (v) {
-                        if (v == null || v.length < 8) {
-                          return 'Le mot de passe doit contenir au moins 8 caractères';
-                        }
-                        if (!RegExp(r'[A-Za-z]').hasMatch(v) ||
-                            !RegExp(r'\d').hasMatch(v)) {
-                          return 'Ajoutez au moins une lettre et un chiffre';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-
-                    TextFormField(
-                      controller: _confirmPasswordController,
-                      obscureText: _obscureConfirmPassword,
-                      decoration: InputDecoration(
-                        labelText: 'Confirmer le mot de passe',
-                        prefixIcon: const Icon(Icons.lock_outline_rounded),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureConfirmPassword
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
-                          ),
-                          onPressed: () => setState(
-                            () => _obscureConfirmPassword =
-                                !_obscureConfirmPassword,
-                          ),
-                        ),
-                      ),
-                      validator: (v) {
-                        if (v != _passwordController.text) {
-                          return 'Les mots de passe ne correspondent pas';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 32),
-
-                    SizedBox(
-                      height: 52,
-                      child: FilledButton(
-                        style: FilledButton.styleFrom(
-                          backgroundColor: EduNoteColors.navy,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        onPressed: _isLoading ? null : _submit,
-                        child: _isLoading
-                            ? const SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2.5,
-                                ),
-                              )
-                            : const Text(
-                                'Créer mon compte',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                    // Form SoftCard
+                    SoftCard(
+                      padding: const EdgeInsets.all(22),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (_errorMessage != null) ...[
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: EduNoteColors.crimsonLight,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: EduNoteColors.crimson.withValues(alpha: 0.3),
                                 ),
                               ),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.error_outline_rounded,
+                                    color: EduNoteColors.crimson,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      _errorMessage!,
+                                      style: const TextStyle(
+                                        color: EduNoteColors.crimson,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _firstNameController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Prénom',
+                                    prefixIcon: Icon(Icons.person_outline_rounded),
+                                  ),
+                                  validator: (v) => v == null || v.trim().isEmpty
+                                      ? 'Champ requis'
+                                      : null,
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _lastNameController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Nom',
+                                    prefixIcon: Icon(Icons.person_outline_rounded),
+                                  ),
+                                  validator: (v) => v == null || v.trim().isEmpty
+                                      ? 'Champ requis'
+                                      : null,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+
+                          DropdownButtonFormField<String>(
+                            initialValue: _selectedProfession,
+                            isExpanded: true,
+                            decoration: const InputDecoration(
+                              labelText: 'Profession',
+                              prefixIcon: Icon(Icons.work_outline_rounded),
+                            ),
+                            items: _professions
+                                .map(
+                                  (p) => DropdownMenuItem(value: p, child: Text(p)),
+                                )
+                                .toList(),
+                            onChanged: (val) {
+                              if (val != null) {
+                                setState(() => _selectedProfession = val);
+                              }
+                            },
+                          ),
+
+                          if (_selectedProfession == 'Autre') ...[
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: _customProfessionController,
+                              decoration: const InputDecoration(
+                                labelText: 'Précisez votre profession',
+                                prefixIcon: Icon(Icons.edit_outlined),
+                              ),
+                              validator: (v) {
+                                if (_selectedProfession == 'Autre' &&
+                                    (v == null || v.trim().isEmpty)) {
+                                  return 'Veuillez préciser votre profession';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                          const SizedBox(height: 16),
+
+                          // Single unique subject picker highlighted
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: EduNoteColors.amberLight.withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: EduNoteColors.amber.withValues(alpha: 0.3),
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const EduColorIcon(name: 'award', size: 20),
+                                    const SizedBox(width: 8),
+                                    const Text(
+                                      'Matière enseignée unique (V1)',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700,
+                                        color: EduNoteColors.amber,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                DropdownButtonFormField<String>(
+                                  initialValue: _selectedSubject,
+                                  isExpanded: true,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Matière enseignée',
+                                    prefixIcon: Icon(Icons.menu_book_outlined),
+                                  ),
+                                  items: _subjects
+                                      .map(
+                                        (subject) => DropdownMenuItem(
+                                          value: subject,
+                                          child: Text(subject),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      setState(() => _selectedSubject = value);
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          if (_selectedSubject == 'Autre') ...[
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: _customSubjectController,
+                              decoration: const InputDecoration(
+                                labelText: 'Précisez la matière',
+                                prefixIcon: Icon(Icons.edit_outlined),
+                              ),
+                              validator: (value) =>
+                                  _selectedSubject == 'Autre' &&
+                                      (value == null || value.trim().isEmpty)
+                                  ? 'Veuillez préciser la matière enseignée'
+                                  : null,
+                            ),
+                          ],
+                          const SizedBox(height: 16),
+
+                          TextFormField(
+                            controller: _whatsappController,
+                            keyboardType: TextInputType.phone,
+                            decoration: const InputDecoration(
+                              labelText: 'Numéro WhatsApp',
+                              prefixIcon: Icon(Icons.phone_outlined),
+                              helperText: 'Identifiant local · Par défaut +229 (Bénin)',
+                            ),
+                            validator: (v) =>
+                                v == null || v.trim().isEmpty ? 'Champ requis' : null,
+                          ),
+                          const SizedBox(height: 16),
+
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: _obscurePassword,
+                            decoration: InputDecoration(
+                              labelText: 'Mot de passe sécurisé',
+                              prefixIcon: const Icon(Icons.lock_outline_rounded),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscurePassword
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
+                                ),
+                                onPressed: () => setState(
+                                  () => _obscurePassword = !_obscurePassword,
+                                ),
+                              ),
+                            ),
+                            validator: (v) {
+                              if (v == null || v.length < 8) {
+                                return 'Le mot de passe doit contenir au moins 8 caractères';
+                              }
+                              if (!RegExp(r'[A-Za-z]').hasMatch(v) ||
+                                  !RegExp(r'\d').hasMatch(v)) {
+                                return 'Ajoutez au moins une lettre et un chiffre';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+
+                          TextFormField(
+                            controller: _confirmPasswordController,
+                            obscureText: _obscureConfirmPassword,
+                            decoration: InputDecoration(
+                              labelText: 'Confirmer le mot de passe',
+                              prefixIcon: const Icon(Icons.lock_outline_rounded),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureConfirmPassword
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
+                                ),
+                                onPressed: () => setState(
+                                  () => _obscureConfirmPassword =
+                                      !_obscureConfirmPassword,
+                                ),
+                              ),
+                            ),
+                            validator: (v) {
+                              if (v != _passwordController.text) {
+                                return 'Les mots de passe ne correspondent pas';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 28),
+
+                          BounceableTap(
+                            onTap: _isLoading ? null : _submit,
+                            child: Container(
+                              height: 52,
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    EduNoteColors.accentGradientStart,
+                                    EduNoteColors.accentGradientEnd,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(14),
+                                boxShadow: EduNoteShadows.primaryGlow,
+                              ),
+                              alignment: Alignment.center,
+                              child: _isLoading
+                                  ? const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 2.5,
+                                      ),
+                                    )
+                                  : const Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Créer mon compte',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                            letterSpacing: 0.2,
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Icon(
+                                          Icons.check_circle_rounded,
+                                          size: 19,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

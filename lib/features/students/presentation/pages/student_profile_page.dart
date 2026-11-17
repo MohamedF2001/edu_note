@@ -1,7 +1,9 @@
+import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../app/theme/edu_note_theme.dart';
+import '../../../../core/database/app_database.dart' hide Student;
 import '../../domain/entities/student.dart';
 import '../../domain/usecases/delete_student.dart';
 import '../../domain/usecases/get_student_by_id.dart';
@@ -18,6 +20,7 @@ class StudentProfilePage extends StatefulWidget {
 
 class _StudentProfilePageState extends State<StudentProfilePage> {
   Student? _student;
+  List<(Evaluation, Grade, String)> _evaluationGrades = [];
   bool _isLoading = true;
   String? _errorMessage;
 
@@ -34,11 +37,39 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
     });
 
     try {
+      final db = GetIt.I<AppDatabase>();
       final getStudent = GetIt.I<GetStudentById>();
       final s = await getStudent(widget.studentId);
+
+      final query = db.select(db.grades).join([
+        innerJoin(
+          db.evaluations,
+          db.evaluations.id.equalsExp(db.grades.evaluationId),
+        ),
+        innerJoin(
+          db.classSubjects,
+          db.classSubjects.id.equalsExp(db.evaluations.classSubjectId),
+        ),
+        innerJoin(
+          db.subjects,
+          db.subjects.id.equalsExp(db.classSubjects.subjectId),
+        ),
+      ])
+        ..where(db.grades.studentId.equals(widget.studentId))
+        ..orderBy([OrderingTerm.desc(db.evaluations.evaluationDate)]);
+
+      final rows = await query.get();
+      final evalGrades = rows.map((row) {
+        final eval = row.readTable(db.evaluations);
+        final grade = row.readTable(db.grades);
+        final subject = row.readTable(db.subjects);
+        return (eval, grade, subject.name);
+      }).toList();
+
       if (mounted) {
         setState(() {
           _student = s;
+          _evaluationGrades = evalGrades;
           _isLoading = false;
         });
       }
@@ -214,7 +245,8 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  s.registrationNumber != null && s.registrationNumber!.isNotEmpty
+                  s.registrationNumber != null &&
+                          s.registrationNumber!.isNotEmpty
                       ? 'Matricule : ${s.registrationNumber}'
                       : 'Aucun matricule',
                   style: const TextStyle(
@@ -280,7 +312,9 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                 const Divider(height: 24),
                 _InfoRow(
                   label: 'Numéro d\'ordre dans la classe',
-                  value: s.orderNumber != null ? '${s.orderNumber}' : 'Non renseigné',
+                  value: s.orderNumber != null
+                      ? '${s.orderNumber}'
+                      : 'Non renseigné',
                   icon: Icons.format_list_numbered_rounded,
                 ),
               ],
@@ -288,34 +322,112 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
           ),
           const SizedBox(height: 20),
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: const Color(0xFFE7EDF1)),
             ),
-            child: const Column(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.assignment_outlined,
-                  size: 40,
-                  color: EduNoteColors.muted,
+                const Row(
+                  children: [
+                    Icon(
+                      Icons.assignment_outlined,
+                      color: EduNoteColors.accent,
+                      size: 20,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'Historique des évaluations',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                        color: EduNoteColors.ink,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 12),
-                Text(
-                  'Historique des évaluations',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                    color: EduNoteColors.ink,
+                const SizedBox(height: 16),
+                if (_evaluationGrades.isEmpty)
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Text(
+                        'Aucune note enregistrée pour cet élève.',
+                        style: TextStyle(
+                            fontSize: 13, color: EduNoteColors.muted),
+                      ),
+                    ),
+                  )
+                else
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _evaluationGrades.length,
+                    separatorBuilder: (_, _) => const Divider(height: 16),
+                    itemBuilder: (context, index) {
+                      final (eval, grade, subjectName) =
+                          _evaluationGrades[index];
+                      final scoreText = grade.status == 'absent'
+                          ? 'Absent(e)'
+                          : grade.score != null
+                              ? '${grade.score!.toStringAsFixed(2)} / ${eval.maxScore.toStringAsFixed(0)}'
+                              : 'Non noté';
+                      final color = grade.status == 'absent'
+                          ? EduNoteColors.crimson
+                          : grade.score != null
+                              ? (grade.score! >= 10
+                                  ? EduNoteColors.emerald
+                                  : EduNoteColors.crimson)
+                              : EduNoteColors.muted;
+
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  eval.title ?? 'Évaluation',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                    color: EduNoteColors.ink,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  '$subjectName • ${eval.evaluationDate.day.toString().padLeft(2, '0')}/${eval.evaluationDate.month.toString().padLeft(2, '0')}/${eval.evaluationDate.year}',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: EduNoteColors.muted,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: color.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              scoreText,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 13,
+                                color: color,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Les notes et moyennes de cet élève apparaîtront après la saisie des premières évaluations.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 13, color: EduNoteColors.muted),
-                ),
               ],
             ),
           ),

@@ -107,9 +107,7 @@ class _ClassWorkspacePageState extends State<ClassWorkspacePage> {
     });
     try {
       final subjects = await GetIt.I<GetSubjectsByClass>()(schoolClass.id);
-      final periods = _isEvaluations
-          ? await GetIt.I<GetAcademicPeriods>()(schoolClass.academicYearId)
-          : <AcademicPeriod>[];
+      final periods = await GetIt.I<GetAcademicPeriods>()(schoolClass.academicYearId);
       if (!mounted || request != _selectionRequest) return;
       setState(() {
         _subjects = subjects;
@@ -247,6 +245,7 @@ class _ClassWorkspacePageState extends State<ClassWorkspacePage> {
       key: ValueKey('results-${selectedClass.id}'),
       classId: selectedClass.id,
       classSubjects: _subjects,
+      periods: _periods,
     );
   }
 }
