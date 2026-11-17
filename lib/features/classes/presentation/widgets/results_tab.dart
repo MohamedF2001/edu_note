@@ -603,6 +603,13 @@ class _ResultsTabState extends State<ResultsTab> {
             ),
             const SizedBox(height: 18),
 
+            // Charts Section
+            _ResultsChartsSection(
+              students: _students,
+              results: _results,
+            ),
+            const SizedBox(height: 18),
+
             // Results Table Card
             SoftCard(
               padding: EdgeInsets.zero,
@@ -1003,6 +1010,374 @@ class _DetailCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ResultsChartsSection extends StatefulWidget {
+  const _ResultsChartsSection({
+    required this.students,
+    required this.results,
+  });
+
+  final List<Student> students;
+  final Map<String, StudentSubjectResult> results;
+
+  @override
+  State<_ResultsChartsSection> createState() => _ResultsChartsSectionState();
+}
+
+class _ResultsChartsSectionState extends State<_ResultsChartsSection> {
+  int _selectedChartTab = 0; // 0: Distribution, 1: Comparatif par épreuve
+
+  @override
+  Widget build(BuildContext context) {
+    final completedResults = widget.results.values
+        .where((r) => r.isComplete && r.finalMean != null)
+        .toList();
+
+    if (completedResults.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    int bracket0_10 = 0;
+    int bracket10_12 = 0;
+    int bracket12_14 = 0;
+    int bracket14_16 = 0;
+    int bracket16_20 = 0;
+
+    for (final r in completedResults) {
+      final m = r.finalMean!;
+      if (m < 10) {
+        bracket0_10++;
+      } else if (m < 12) {
+        bracket10_12++;
+      } else if (m < 14) {
+        bracket12_14++;
+      } else if (m < 16) {
+        bracket14_16++;
+      } else {
+        bracket16_20++;
+      }
+    }
+
+    final totalCompleted = completedResults.length;
+
+    double? sumInter = 0;
+    int countInter = 0;
+    double? sumH1 = 0;
+    int countH1 = 0;
+    double? sumH2 = 0;
+    int countH2 = 0;
+    double? sumFinal = 0;
+    int countFinal = 0;
+
+    for (final r in widget.results.values) {
+      if (r.interrogationMean != null) {
+        sumInter = sumInter! + r.interrogationMean!;
+        countInter++;
+      }
+      if (r.homework1 != null) {
+        sumH1 = sumH1! + r.homework1!;
+        countH1++;
+      }
+      if (r.homework2 != null) {
+        sumH2 = sumH2! + r.homework2!;
+        countH2++;
+      }
+      if (r.finalMean != null) {
+        sumFinal = sumFinal! + r.finalMean!;
+        countFinal++;
+      }
+    }
+
+    final avgInter = countInter > 0 ? sumInter! / countInter : null;
+    final avgH1 = countH1 > 0 ? sumH1! / countH1 : null;
+    final avgH2 = countH2 > 0 ? sumH2! / countH2 : null;
+    final avgFinal = countFinal > 0 ? sumFinal! / countFinal : null;
+
+    return SoftCard(
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Row(
+                children: [
+                  EduColorIcon(name: 'chart', size: 22),
+                  SizedBox(width: 10),
+                  Text(
+                    'Graphiques &\nAnalyses',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: EduNoteColors.primaryDark,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: EduNoteColors.background,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: EduNoteColors.cardBorder),
+                ),
+                child: Row(
+                  children: [
+                    _ChartTabButton(
+                      title: 'Répartition',
+                      isSelected: _selectedChartTab == 0,
+                      onTap: () => setState(() => _selectedChartTab = 0),
+                    ),
+                    _ChartTabButton(
+                      title: 'Moyennes',
+                      isSelected: _selectedChartTab == 1,
+                      onTap: () => setState(() => _selectedChartTab = 1),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          if (_selectedChartTab == 0) ...[
+            const Text(
+              'Répartition des moyennes finales (/20)',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: EduNoteColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 14),
+            _DistributionBarItem(
+              label: '0 - 9.99 (Non Admis)',
+              count: bracket0_10,
+              total: totalCompleted,
+              color: EduNoteColors.crimson,
+            ),
+            const SizedBox(height: 10),
+            _DistributionBarItem(
+              label: '10 - 11.99 (Passable)',
+              count: bracket10_12,
+              total: totalCompleted,
+              color: EduNoteColors.amber,
+            ),
+            const SizedBox(height: 10),
+            _DistributionBarItem(
+              label: '12 - 13.99 (Assez Bien)',
+              count: bracket12_14,
+              total: totalCompleted,
+              color: EduNoteColors.accent,
+            ),
+            const SizedBox(height: 10),
+            _DistributionBarItem(
+              label: '14 - 15.99 (Bien)',
+              count: bracket14_16,
+              total: totalCompleted,
+              color: EduNoteColors.emerald,
+            ),
+            const SizedBox(height: 10),
+            _DistributionBarItem(
+              label: '16 - 20 (Très Bien)',
+              count: bracket16_20,
+              total: totalCompleted,
+              color: EduNoteColors.emeraldGlow,
+            ),
+          ] else ...[
+            const Text(
+              'Moyenne de classe par type d\'épreuve (/20)',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: EduNoteColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 14),
+            _AverageBarItem(
+              label: 'Interrogations',
+              average: avgInter,
+              color: EduNoteColors.accent,
+            ),
+            const SizedBox(height: 12),
+            _AverageBarItem(
+              label: 'Devoir 1 (DEV. 1)',
+              average: avgH1,
+              color: EduNoteColors.blue,
+            ),
+            const SizedBox(height: 12),
+            _AverageBarItem(
+              label: 'Devoir 2 (DEV. 2)',
+              average: avgH2,
+              color: EduNoteColors.amber,
+            ),
+            const SizedBox(height: 12),
+            _AverageBarItem(
+              label: 'Moyenne Finale',
+              average: avgFinal,
+              color: EduNoteColors.emerald,
+              isHighlight: true,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _ChartTabButton extends StatelessWidget {
+  const _ChartTabButton({
+    required this.title,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String title;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected ? EduNoteColors.accent : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: isSelected ? Colors.white : EduNoteColors.textSecondary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DistributionBarItem extends StatelessWidget {
+  const _DistributionBarItem({
+    required this.label,
+    required this.count,
+    required this.total,
+    required this.color,
+  });
+
+  final String label;
+  final int count;
+  final int total;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final double percentage = total > 0 ? count / total : 0.0;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 12.5,
+                fontWeight: FontWeight.w600,
+                color: EduNoteColors.primaryDark,
+              ),
+            ),
+            Text(
+              '$count élève(s) (${(percentage * 100).toStringAsFixed(1)}%)',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: LinearProgressIndicator(
+            value: percentage,
+            minHeight: 8,
+            backgroundColor: EduNoteColors.background,
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AverageBarItem extends StatelessWidget {
+  const _AverageBarItem({
+    required this.label,
+    required this.average,
+    required this.color,
+    this.isHighlight = false,
+  });
+
+  final String label;
+  final double? average;
+  final Color color;
+  final bool isHighlight;
+
+  @override
+  Widget build(BuildContext context) {
+    final double score = average ?? 0.0;
+    final double ratio = (score / 20.0).clamp(0.0, 1.0);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                if (isHighlight) ...[
+                  const EduColorIcon(name: 'trophy', size: 16),
+                  const SizedBox(width: 6),
+                ],
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12.5,
+                    fontWeight: isHighlight ? FontWeight.w800 : FontWeight.w600,
+                    color: EduNoteColors.primaryDark,
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              average != null ? '${average!.toStringAsFixed(2)} / 20' : '— / 20',
+              style: TextStyle(
+                fontSize: 12.5,
+                fontWeight: FontWeight.w800,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: LinearProgressIndicator(
+            value: ratio,
+            minHeight: isHighlight ? 10 : 8,
+            backgroundColor: EduNoteColors.background,
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+          ),
+        ),
+      ],
     );
   }
 }
